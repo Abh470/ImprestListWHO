@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": false,
+    "version": "1.14.0",
+    "libraryName": "dashboard-list",
+    "libraryId": "d255a3e6-933a-4c8c-98d8-9b60aef0ebdb",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "DashboardList",
+    "solutionShortDescription": "DashboardList description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

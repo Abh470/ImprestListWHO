@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Approver edit form</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap-3.4.1.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="css/style.css" rel="stylesheet">
+<link href="css/padding.css" rel="stylesheet">
+<link rel="stylesheet" href="css/owl.carousel.min.css">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --> 
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// --> 
+<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+</head>
+<body>
+<nav class="navbar navbar-custom header-nav">
+  <div class="container-fluid">
+    <div class="navbar-header navbar-header-custom"> <a class="navbar-brand col-sm-3 col-xs-12" href="Titan-External-Employee-Portal.html"><img src="images/who-logo.png" class="logo" alt=""></a>
+      <h2 class="m-0 col-sm-12 col-xs-12 text-center pt10 pb10">Imprest Checklist </h2>
+      <div class="col-md-4 col-sm-12 col-xs-12 pr0 tpr15 tmb10">
+        <div class="col-xs-12 external-emp-profile-box"> 
+          <img src="images/1.png" class="img-circle" alt="">
+          <div class="ml15 mr15">
+            <h3 id="text">Patrick Moore</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+  <section class="preview mb-50 panel">
+    <div class="message_panel imprest-panel">
+      <div class="field-section row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-10 p-0">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-lg-3 col-md-4 col-sm-4 col-xs-12">Country</label>
+                                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+                                    <input class="form-control" type="text">
+                                </div>
+                            </div>	
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-lg-3 col-md-4 col-sm-4 col-xs-12">Month & Year</label>
+                                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+                                    <input class="form-control" type="date">
+                                </div>
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-15">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-lg-3 col-md-4 col-sm-4 col-xs-12">Imprest Account</label>
+                                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+                                    <input class="form-control" type="text">
+                                </div>
+                            </div>	
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-lg-3 col-md-4 col-sm-4 col-xs-12">GL Account(s)</label>
+                                <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+                                    <input class="form-control" type="text">
+                                </div>
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="clearfix"></div>
+          <div class="table-responsive mt-15">
+            <table class="table table-bordered table-white">
+              <thead class="blue_bg">
+                <tr>
+                  <th class="tw-5">S No.</th>
+                  <th>Checklist Item</th>
+                  <th class="tw-15">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>
+                      <p>Is each transaction supported by appropriate supporting documents?</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>
+                      <p>Payment per transaction charged to IPO does not exceed $2,500</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>
+                      <p>Payments charged/receipts credited to IPOs are in line with Imprest PO guidelines.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>
+                      <p>Imprest payments are not batch processed in GSM.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>
+                      <p>Imprest ceiling is adequate.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>
+                      <p>Cash or bank balance was positive throughout the month and no overdraft was observed at any point during the month.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>
+                      <p>Cheques have been issued serially and Cheque Number(s)/P.I. Number(s) are mentioned appropriately for each of the transaction in GSM.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>
+                      <p>Cash-in-safe has been maintained within the insurance limit at all the times during the month.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>
+                      <p>Are proper handing over documents signed and attached to the Imprest Returns, if applicable?</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>
+                      <p>Currency conversion greater than $100,000 is supported by competitive bidding process and cumulative currency conversion in excess of $500,000 per month is coordinated through BFO/SEARO.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>
+                      <p>There is no other comment to add.</p>
+                      <textarea class="form-control" rows="4"></textarea>
+                  </td>
+                  <td>
+                    <select class="form-control">
+                        <option>Exceptionally Approved</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="clearfix"></div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0">
+                <div class="form-group">
+                    <label class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pl0 pt15">Feedback</label>
+                    <textarea class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Attachment(s):</label>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                                <input class="form-control" type="file" name="uploadfile" id="img" style="display:none;">
+                                <label for="img" class="d-block"><i class="fa fa-upload upload-font"></i> Click to upload file</label>
+                            </div>
+                        </div>	
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8 table-responsive p-0">
+                <table class="table table-bordered table-white">
+                  <thead class="blue_bg">
+                    <tr>
+                      <th>S No.</th>
+                      <th>File Name</th>
+                      <th>Attached by</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td><a href="#">file name here</a></td>
+                      <td>Name Here</td>
+                      <td style="font-size: 18px;"> <a href="#"><i class="fa fa-trash"></i></a> </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td><a href="#">file name here</a></td>
+                      <td>Name Here</td>
+                      <td style="font-size: 18px;"> <a href="#"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt20 text-center">
+                <button type="button" class="btn btn-warning mr5">Save</button>
+                <button type="button" class="btn btn-success mr5">Submit</button>
+                <button type="button" class="btn btn-danger">Print</button>
+              </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.12.4.min.js"></script> 
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+
+<script src="js/bootstrap-3.4.1.js"></script>
+	<script src="js/nav-custom.js"></script> 
+<script>
+$("textarea").each(function () {
+  this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden; resize:none; min-height:75px;");
+}).on("input", function () {
+  this.style.height = 0;
+  this.style.height = (this.scrollHeight) + "px";
+});
+</script> 
+</body>
+</html>
