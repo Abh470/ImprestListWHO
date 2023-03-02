@@ -487,6 +487,9 @@ table +=`
 </tbody>
 `
 
+
+
+/////
 document.getElementById('data').innerHTML = table;
     
 
