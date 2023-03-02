@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Reciprocal Add</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/padding.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="custom-panel">
+                <div class="panel-head">
+                    <h1 class="panel-head-text">Reciprocal Add Screen</h1>
+                </div>
+                <div class="panel-body">
+                        <div class="row mt25">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group custom-form-group department-filter-box">
+                                    <label>Society:</label>
+                                    <select class="selectpicker" data-live-search="true" data-live-search-placeholder="Search">
+                                        <option data-tokens="Buma">Buma</option>
+                                        <option data-tokens="Society Name 1">Society Name 1</option>
+                                        <option data-tokens="Society Name 2">Society Name 2</option>
+                                        <option data-tokens="Society Name 3">Society Name 3</option>
+                                        <option data-tokens="Society Name 4">Society Name 4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="form-group custom-form-group">
+                                    <label>Right Type:<span class="text-red">*</span></label>
+                                    <select class="form-control">
+                                        <option>Perf Right</option>
+                                        <option>Mech Right</option>
+                                        <option>Sync Right</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt15">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="table-responsive reciprocal-table skill-set-table scrollbar-panel">
+                                    <table class="table mb0 custom-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-10-th">Source <span class="text-red">*</span></th>
+                                                <th class="w-10-th">Grant</th>
+                                                <th>Inclusion</th>
+                                                <th>Exclusion</th>
+                                                <th class="w-1-th">Valid From <span class="text-red">*</span></th>
+                                                <th class="w-1-th">Valid Till <span class="text-red">*</span></th>
+                                                <th>Remarks</th>
+                                                <th class="w-5-th">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="ellipsis-2">Television Broadcasting</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control">
+                                                                <option>--Select--</option>
+                                                                <option selected>Exclusive</option>
+                                                                <option>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" value="Facebook">
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#inclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" value="YouTube">
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#exclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" value="2023-02-14">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" value="2023-03-28">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id="" placeholder="">Lorem ipsum dolor sit amet do solor.</textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ellipsis-2">Internet Streaming</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control" disabled>
+                                                                <option>--Select--</option>
+                                                                <option>Exclusive</option>
+                                                                <option selected>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" value="Facebook" readonly>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#inclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" value="YouTube" readonly>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#exclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" readonly value="2023-02-14">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" readonly value="2023-03-28">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id="" placeholder="Lorem ipsum dolor sit amet do solor." readonly></textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ellipsis-2">Radio Broadcasting</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control">
+                                                                <option>--Select--</option>
+                                                                <option>Exclusive</option>
+                                                                <option>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn disabled" data-toggle="modal" data-target="#">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn disabled" data-toggle="modal" data-target="#">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id="" disabled></textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ellipsis-2">Public Performance</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control">
+                                                                <option>--Select--</option>
+                                                                <option>Exclusive</option>
+                                                                <option>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="" disabled>
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="" disabled>
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled  placeholder="">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id="" disabled></textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ellipsis-2">Physical Format</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control">
+                                                                <option>--Select--</option>
+                                                                <option selected>Exclusive</option>
+                                                                <option>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="">
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#inclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="">
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#exclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name=""  placeholder="">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id=""></textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ellipsis-2">Lyric Display Right</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control">
+                                                                <option>--Select--</option>
+                                                                <option>Exclusive</option>
+                                                                <option selected>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="">
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#inclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="">
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#exclusionlist">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name=""  placeholder="">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id=""></textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ellipsis-2">Phonogram</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control">
+                                                                <option>--Select--</option>
+                                                                <option>Exclusive</option>
+                                                                <option>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn disabled">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn disabled">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id="" disabled></textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="ellipsis-2">Private Copying</td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <select class="form-control">
+                                                                <option>--Select--</option>
+                                                                <option>Exclusive</option>
+                                                                <option>Non-Exclusive</option>
+                                                                <option>Blank</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#alert-new-add">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn disabled">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="inner-field-flex-section">
+                                                        <div class="form-group custom-form-group mb0 w-100">
+                                                            <input type="text" class="form-control" name="" disabled>
+                                                        </div>
+                                                        <div class="project-edit-lock-btn-box ml5 d-none">
+                                                            <a type="button" href="#" class="custom-edit-btn disabled">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <input type="date" class="form-control" name="" disabled>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group custom-form-group mb0">
+                                                        <textarea class="form-control resize-none" rows="3" id="" disabled></textarea>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="mt20 text-center">
+                        <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90">Submit</button>
+                        <a href="career-dashboard.html" type="button" class="btn custom-btn-two-cancel wpx-90">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        
+        
+        <div id="alert-new-add" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                 <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">Ã—</span></button>
+                <h4 class="modal-title">Alert</h4>
+              </div>
+              <div class="modal-body">
+                <p class="font-18">Are you sure you want to add new record?</p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn custom-btn mr-8" data-dismiss="modal">Yes</button>
+                <button class="btn custom-btn-two-cancel" data-dismiss="modal">No</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        <div id="unauthorized-modal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                 <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">Ã—</span></button>
+                <h4 class="modal-title">Alert</h4>
+              </div>
+              <div class="modal-body">
+                <p class="font-18">Unauthorized access</p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        
+        <div id="inclusionlist" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                 <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">Ã—</span></button>
+                <h4 class="modal-title">Add Inclusions</h4>
+              </div>
+              <div class="modal-body">
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">YouTube</label>
+                </div>
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">Resso</label>
+                </div>
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">LinkedIn</label>
+                </div>
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">Facebook</label>
+                </div>
+                <div class="form-group custom-form-group wpx-250">
+                    <input type="text" class="form-control" name="" placeholder="custom text field">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90">Add</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+       
+        
+        <div id="exclusionlist" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                 <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">Ã—</span></button>
+                <h4 class="modal-title">Add Exclusions</h4>
+              </div>
+              <div class="modal-body">
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">YouTube</label>
+                </div>
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">Resso</label>
+                </div>
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">LinkedIn</label>
+                </div>
+                <div class="checkbox">
+                   <label><input type="checkbox" value="">Facebook</label>
+                </div>
+                <div class="form-group custom-form-group wpx-250">
+                    <input type="text" class="form-control" name="" placeholder="custom text field">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90">Add</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+            <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+        
+         
+    </body>
+
+</html>
