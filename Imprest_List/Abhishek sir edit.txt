@@ -1,0 +1,150 @@
+import { Version } from '@microsoft/sp-core-library';
+import {
+  IPropertyPaneConfiguration,
+  PropertyPaneTextField
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { IReadonlyTheme } from '@microsoft/sp-component-base';
+import { escape } from '@microsoft/sp-lodash-subset';
+
+import * as strings from 'SpfxPnpWebPartStrings';
+import * as pnp from 'sp-pnp-js'
+//import { sp } from "@pnp/sp/presets/all";
+//import { sp } from "@pnp/sp";
+
+export interface ISpfxPnpWebPartProps {
+  description: string;
+}
+
+export default class SpfxPnpWebPart extends BaseClientSideWebPart<ISpfxPnpWebPartProps> {
+  
+  public onInit(): Promise<void> {
+
+    return super.onInit().then(_ => {
+  
+      // other init code may be present
+  
+      pnp.setup({
+        spfxContext: this.context
+      });
+    });
+  }
+  private _isDarkTheme: boolean = false;
+  private _environmentMessage: string = '';
+
+  public render(): void {
+    this.domElement.innerHTML = `
+  <div>
+  <head>
+        <h1>Student Form</h1>
+    </head>
+    <body>
+        <form>
+            <table border="4">
+                <tr>           
+                    <td>Student ID :</td>
+                    <td> <input type="number" placeholder="ID" id="StudentID" > </td>
+                </tr>
+                <tr>
+                    <td>Name :</td>
+                  <td><input type="text" placeholder="name" id="name"</td>
+                </tr>
+                    <td>Age :</td>
+                    <td> <input type="number" placeholder="age" id="age"></td>
+                </tr>
+                <tr>
+                    <td>Favourite Subject :</td>
+                    <td> <input type="text" placeholder="Fav.Subject" id="FavouriteSubject"></td>
+                </tr>
+                <tr>
+                    <br>
+                    <td>
+                      <input type="submit" value="Insert" id="btnInsert"/>
+                      <input type="submit" value="Update" id="btnUpdate"/>
+                      <input type="submit" value="Delete" id="btnDelete"/>
+                           
+                    </td>
+                    </tr>
+            </table>
+        </form>
+    </body>
+  </div>
+  
+
+  <div id="MsgStatus" />
+  </div> `;
+  
+  this.bindEvent();
+
+  }
+
+private bindEvent() : void
+{
+  this.domElement.querySelector('#btnInsert').addEventListener('click' , ()=>{ this.insertStudent();  
+  })
+}
+private insertStudent() : void{
+  
+  var StudentID = document.getElementById("StudentID")["value"];
+  var StudentName = document.getElementById("name")["value"];
+  var StudentAge = document.getElementById("age")["value"];
+  var StudentFavSub= document.getElementById("FavouriteSubject")["value"];
+
+  const siteurl : string = this.context.pageContext.site.absoluteUrl + "/_api/web/lists/getbytitle('Students')/items";
+
+  pnp.sp.web.lists.getByTitle('Students').items.add({
+    Title : StudentID,
+    Name : StudentName,
+    Age : StudentAge,
+    Favourite_Subject : StudentFavSub
+
+  }).then(response =>{
+    alert('Adding an item has been completed Successfully');
+  }).catch(error=>{
+    alert(error);
+  })                    
+
+}
+
+  protected get dataVersion(): Version {
+    return Version.parse('1.0');
+  }
+
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    return {
+      pages: [
+        {
+          header: {
+            description: strings.PropertyPaneDescription
+          },
+          groups: [
+            {
+              groupName: strings.BasicGroupName,
+              groupFields: [
+                PropertyPaneTextField('description', {
+                  label: strings.DescriptionFieldLabel
+                })
+              ]
+            }
+          ]
+        }
+      ]
+    };
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+let lookupvalue: number = item[""];
+
+const i = await list.items.getById().update({ :lookupvalue});
