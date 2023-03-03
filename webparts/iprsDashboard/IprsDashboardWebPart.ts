@@ -477,11 +477,11 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     for(let i=0; i<items.length; i++)
 table +=`
 <tbody>
-<td>${items[i].Society.Title}</td>     
-<td>${items[i].RightType.Title}</td>     
-<td>${items[i].Source.Title}</td>     
-<td>${items[i].Grant.Title}</td>     
-<td>${items[i].ValidFrom}</td>     
+<td>${items[i].Society.Title}</td>
+<td>${items[i].RightType.Title}</td>
+<td>${items[i].Source.Title}</td>
+<td>${items[i].Grant.Title}</td>
+<td>${items[i].ValidFrom}</td>
 <td>${items[i].ValidTill}</td>
 <td> <button id="delete${i}">Details</button></td>
 </tbody>
