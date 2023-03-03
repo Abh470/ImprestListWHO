@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "iprs-new-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/iprsNew/IprsNewWebPart.js",
+          "manifest": "./src/webparts/iprsNew/IprsNewWebPart.manifest.json"
+        }
+      ]
+    },
+    "iprs-dashboard-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/iprsDashboard/IprsDashboardWebPart.js",
+          "manifest": "./src/webparts/iprsDashboard/IprsDashboardWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {
+    "jquery": {
+      "path": "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js",
+      "globalName": "jquery"
+    },
+    "bootstrap": {
+      "path": "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
+      "globalName": "bootstrap",
+      "globalDependencies": [
+        "jquery"
+      ]
+    }
+  },
+  "localizedResources": {
+    "IprsNewWebPartStrings": "lib/webparts/iprsNew/loc/{locale}.js",
+    "IprsDashboardWebPartStrings": "lib/webparts/iprsDashboard/loc/{locale}.js"
+  }
+}

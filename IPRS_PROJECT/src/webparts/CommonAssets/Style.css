@@ -1,0 +1,19 @@
+/* Spfx special all align custom css --START-- */
+.sp-custom-main-box {
+    max-width: 100% !important;
+}
+
+.sp-custom-main-box div[data-automation-id="CanvasSection"] {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.sp-custom-main-box div[data-automation-id="CanvasControl"] {
+    margin: 0px 0px !important;
+    padding: 0px !important;
+}
+
+#workbenchPageContent,
+.CanvasComponent.LCS .CanvasZone {
+    max-width: 100% !important;
+}

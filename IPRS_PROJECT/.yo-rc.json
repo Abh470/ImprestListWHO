@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": false,
+    "nodeVersion": "16.16.0",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.4.1"
+    },
+    "version": "1.16.1",
+    "libraryName": "iprs",
+    "libraryId": "0cbbc099-e119-47ab-98a3-ce791dbb6393",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "IPRS",
+    "solutionShortDescription": "IPRS description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
