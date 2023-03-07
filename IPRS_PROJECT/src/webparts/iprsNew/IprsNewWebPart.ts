@@ -43,6 +43,23 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public GrantMaster: any[];
   public InclusionMaster: any[];
   public ExclusionMaster: any[];
+  public table =
+    `<thead>
+    <tr>
+    <th class="w-10-th">Source <span class="text-red">*</span></th>
+    <th class="w-10-th">Grant</th>
+    <th>Inclusion</th>
+    <th>Exclusion</th>
+    <th class="w-1-th">Valid From <span class="text-red">*</span></th>
+    <th class="w-1-th">Valid Till <span class="text-red">*</span></th>
+    <th>Remarks</th>
+    <th class="w-5-th">Action</th>
+</tr>
+</thead>`
+public ExclusionMasterHTML =``;
+public modalHTMLExclusion =``;
+public InclusionMasterHTML =``;
+public modalHTMLInclusion=``;
   
 
    public async render(): Promise<void> {
@@ -82,58 +99,18 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                         </div>  
                     </div>
                 </div>
+<div id ="modal-list-collection-inclusion">
+</div>
+
+  <div id ="modal-list-collection-exclusion">
+  </div>
 
 
-
-                <div id="inclusionlist" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content reciprocal-custom-modal">
-              <div class="modal-header">
-                 <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>
-                <h4 class="modal-title">Add Inclusions</h4>
-              </div>
-              <div class="modal-body" id="inclusionID">
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90">Add</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div id="exclusionlist" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content reciprocal-custom-modal">
-              <div class="modal-header">
-              <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>  
-                <h4 class="modal-title">Add Exclusions</h4>
-              </div>
-              <div class="modal-body" id="exclusionID">
-            
-              </div>
-              <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90">Add</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt20 text-center">
+  <div class="mt20 text-center">
         <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id ="btnsubmit">Submit</button>
         <a href="career-dashboard.html" type="button" class="btn custom-btn-two-cancel wpx-90">Cancel</a>
     </div>
-        
-
-                        
-
-
-    `           
+        `           
    
    await this.fetchfromsocietymaster()
    await this.righttypemaster()
@@ -143,11 +120,12 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
    await this.fetchthetable()
    this.forselectedoptionSociety()
    this.forselectedoptionRightType()
+   this.fetchfromIPRS()
 
-   this.domElement.querySelector('#btnSubmit').addEventListener('click', () => {
-    this.submitdata()
+  //  this.domElement.querySelector('#btnSubmit').addEventListener('click', () => {
+  //   this.submitdata()
     
-   })
+  // })
 
 }
 
@@ -194,19 +172,25 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
 //forselectedoptionSociety
 private forselectedoptionSociety() {
-  var selectedSociety = $("#societymaster").change(function() {
-    alert( $('option:selected', this).val() );
+ var scope = this
+   $("#societymaster").change(function() {
+    var selectedSociety = $('option:selected', this).val();
+    console.log(selectedSociety)
+    scope.fetchfromIPRS()
 });
-console.log(selectedSociety)
+
 }
 
 
 //forselectedoptionRightType
 private forselectedoptionRightType(){
-  var selectedRightType = $("#righttypemaster").change(function() {
-    alert( $('option:selected', this).text() );
+  var scope = this
+  $("#righttypemaster").change(function() {
+    var selectedRightType =  $('option:selected', this).val() ;
+    console.log(selectedRightType)
+    scope.fetchfromIPRS()
   });
- console.log(selectedRightType)  
+   
 }
 
 
@@ -237,19 +221,7 @@ private async fetchthetable(): Promise<void>{
     const items: any[] = await sp.web.lists.getByTitle("SourceMaster").items.get()
     console.log(items)
 
-    let table =
-    `<thead>
-    <tr>
-    <th class="w-10-th">Source <span class="text-red">*</span></th>
-    <th class="w-10-th">Grant</th>
-    <th>Inclusion</th>
-    <th>Exclusion</th>
-    <th class="w-1-th">Valid From <span class="text-red">*</span></th>
-    <th class="w-1-th">Valid Till <span class="text-red">*</span></th>
-    <th>Remarks</th>
-    <th class="w-5-th">Action</th>
-</tr>
-</thead>`
+    
 
 //GrantMasterHTML
 let GrantMasterHTML =`<option value=''>--Select--</option>`;
@@ -261,38 +233,40 @@ for (let i = 0; i < this.GrantMaster.length; i++) {
 
  
 //InclusionMasterHTML
-  let InclusionMasterHTML =``;
+
  for (let i = 0; i < this.InclusionMaster.length; i++) { 
     
-    InclusionMasterHTML += `<div class="checkbox">
-    <label><input type="checkbox" value="${this.InclusionMaster[i].ID}">${this.InclusionMaster[i].Title}</label>
+    this.InclusionMasterHTML += `<div class="checkbox">
+    <label><input type="checkbox" name="type" value="${this.InclusionMaster[i].ID}">${this.InclusionMaster[i].Title}</label>
  
     </div>`;
-    console.log(this.InclusionMaster[i].Title)
+   
+    //console.log(this.InclusionMaster[i].Title)
 
     
   }
-  document.getElementById('inclusionID').innerHTML = InclusionMasterHTML;
+  //document.getElementsByClassName('inclusion-Modal-body').innerHTML = InclusionMasterHTML;
 
-//ExclusionMasterHTML
-  let ExclusionMasterHTML =``;
+
+  //ExclusionMasterHTML
+ 
   for (let i = 0; i < this.ExclusionMaster.length; i++) { 
      
-    ExclusionMasterHTML += `<div class="checkbox">
-     <label><input type="checkbox" value="${this.ExclusionMaster[i].ID}">${this.ExclusionMaster[i].Title}</label>
+    this.ExclusionMasterHTML += `<div class="checkbox">
+     <label><input type="checkbox" name="type" value="${this.ExclusionMaster[i].ID}">${this.ExclusionMaster[i].Title}</label>
   
      </div>`;
-     console.log(this.ExclusionMaster[i].Title)
+     //console.log(this.ExclusionMaster[i].Title)
  
 
    }
-   document.getElementById('exclusionID').innerHTML = ExclusionMasterHTML;
+   //document.getElementById('exclusionID').innerHTML = ExclusionMasterHTML;
 
 
 //for loop for fetchfortable
 for(let i=0; i<items.length; i++)
 {
-    table += `
+    this.table += `
     <tbody>
     <tr>
     <td class="ellipsis-2">${items[i].Title}</td>
@@ -308,10 +282,11 @@ for(let i=0; i<items.length; i++)
     <td>
         <div class="inner-field-flex-section">
             <div class="form-group custom-form-group mb0 w-100">
-                <input type="text" class="form-control" name="" value="">
+                <input type="text" class="form-control" name="InclusionDisplayName" id="InclusionDisplayName${i}" value="">
+                <input type="hidden" class="form-control" name="InclusionDisplayName" id="InclusionDisplayID${i}" value="">
             </div>
             <div class="project-edit-lock-btn-box ml5">
-                <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#inclusionlist">
+                <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#inclusionlist${i}">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
@@ -320,10 +295,11 @@ for(let i=0; i<items.length; i++)
     <td>
         <div class="inner-field-flex-section">
             <div class="form-group custom-form-group mb0 w-100">
-                <input type="text" class="form-control" name="" value="">
+            <input type="text" class="form-control" name="InclusionDisplayName" id="ExclusionDisplayName${i}" value="">
+            <input type="hidden" class="form-control" name="InclusionDisplayName" id="ExclusionDisplayID${i}" value="">
             </div>
             <div class="project-edit-lock-btn-box ml5">
-                <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#exclusionlist">
+                <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#exclusionlist${i}">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
@@ -346,29 +322,255 @@ for(let i=0; i<items.length; i++)
     </td>
     <td>
         <div class="reciprocal-action-btn-box">
-            <a type="button" href="#" class="custom-edit-btn mr15">
+            <a type="button" href="#" class="custom-edit-btn mr15" id="edit${i}">
                 <i class="fa fa-pencil"></i>
             </a>
-            <a type="button" href="#" class="custom-edit-btn">
+            <a type="button" href="#" class="custom-edit-btn" id="newrow${i}">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
     </td>
 </tr>
 <tbody>`
+{
+  this.modalHTMLInclusion +=`<div id="inclusionlist${i}" class="modal fade" role="dialog">
+<div class="modal-dialog">
 
-document.getElementById('data').innerHTML = table;
+  <!-- Modal content-->
+  <div class="modal-content reciprocal-custom-modal">
+    <div class="modal-header">
+       <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>
+      <h4 class="modal-title">Add Inclusions</h4>
+    </div>
+    <div class="modal-body" id="inclusionID${i}" class="inclusion-Modal-body">
+      ${this.InclusionMasterHTML}
+    </div>
+    <div class="modal-footer">
+      <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-inclusion${i}">Add</button>
+    </div>
+  </div>
+</div>
+</div>`
+$(document).on('click', `#Add-btn-modal-inclusion${i}`, async function (this) {
+  
+  //  var checkedInclusion :any = '';
+//  checkedInclusion = $(`#inclusionID${i}`).find("div.checkbox").find("input:checked").val();
+
+var arrayinclusion:any[] = [];
+var arrayinclusionName:any[] = [];
+$(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function() {
+  arrayinclusionName.push($(this).closest("label").text())
+  arrayinclusion.push($(this).val());
+  
+ 
+
+});
+$(`#InclusionDisplayName${i}`).val(arrayinclusionName)
+$(`#InclusionDisplayID${i}`).val(arrayinclusion)
+            console.log(arrayinclusion,arrayinclusionName)
+ });
+}
+
+{
+  this.modalHTMLExclusion +=` <div id="exclusionlist${i}" class="modal fade" role="dialog">
+<div class="modal-dialog">
+
+  <!-- Modal content-->
+  <div class="modal-content reciprocal-custom-modal">
+    <div class="modal-header">
+    <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>  
+      <h4 class="modal-title">Add Exclusions</h4>
+    </div>
+    <div class="modal-body" id="exclusionID${i}">
+     ${this.ExclusionMasterHTML}
+    </div>
+    <div class="modal-footer">
+      <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-exclusion${i}">Add</button>
+    </div>
+  </div>
+</div>
+</div>`
+$(document).on('click', `#Add-btn-modal-exclusion${i}`, async function (this) {
+
+  var arrayexclusion:any[] = [];
+  var arrayexclusionName:any[] = [];
+  $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function() {
+    arrayexclusionName.push($(this).closest("label").text())
+    arrayexclusion.push($(this).val());
+
+$(`#ExclusionDisplayName${i}`).val(arrayexclusionName)
+$(`#ExclusionDisplayID${i}`).val(arrayexclusion)
+              });
+              console.log(arrayexclusion,arrayexclusionName)
+   })
+  }
+
+
+
+document.getElementById('data').innerHTML = this.table;
+document.getElementById('modal-list-collection-inclusion').innerHTML = this.modalHTMLInclusion;
+document.getElementById('modal-list-collection-exclusion').innerHTML = this.modalHTMLExclusion;
+//$(`#inclusionID${i}`).html(InclusionMasterHTML);
 }
 
 }
 
 
+private async fetchfromIPRS(): Promise<void>{
+  const items: any[] = await sp.web.lists.getByTitle("IPRS").items.filter("RightTypeId eq '3' and SocietyId eq '3'").get()
+  console.log(items)
+ 
+ 
+  for(let i=0; i<items.length; i++)
+{
+    this.table += `
+    <tbody>
+    <tr>
+    <td class="ellipsis-2">${items[i].Title}</td>
+    <td>
+    <div class="inner-field-flex-section">
+      <div class="form-group custom-form-group mb0 w-100">
+        <select class="form-control">
+           
+        </select>
+     </div>
+        </div>
+    </td>
+    <td>
+        <div class="inner-field-flex-section">
+            <div class="form-group custom-form-group mb0 w-100">
+                <input type="text" class="form-control" name="InclusionDisplayName" id="InclusionDisplayName${i}" value="">
+                <input type="hidden" class="form-control" name="InclusionDisplayName" id="InclusionDisplayID${i}" value="">
+            </div>
+            <div class="project-edit-lock-btn-box ml5">
+                <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#inclusionlist${i}">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="inner-field-flex-section">
+            <div class="form-group custom-form-group mb0 w-100">
+            <input type="text" class="form-control" name="InclusionDisplayName" id="ExclusionDisplayName${i}" value="">
+            <input type="hidden" class="form-control" name="InclusionDisplayName" id="ExclusionDisplayID${i}" value="">
+            </div>
+            <div class="project-edit-lock-btn-box ml5">
+                <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#exclusionlist${i}">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="form-group custom-form-group mb0">
+            <input type="date" class="form-control" name="" value="">
+        </div>
+    </td>
+    <td>
+        <div class="form-group custom-form-group mb0">
+            <input type="date" class="form-control" name="" value="">
+        </div>
+    </td>
+    <td>
+        <div class="form-group custom-form-group mb0">
+            <textarea class="form-control resize-none" rows="3" id="" placeholder="type here"></textarea>
+        </div>
+    </td>
+    <td>
+        <div class="reciprocal-action-btn-box">
+            <a type="button" href="#" class="custom-edit-btn mr15" id="edit${i}">
+                <i class="fa fa-pencil"></i>
+            </a>
+            <a type="button" href="#" class="custom-edit-btn" id="newrow${i}">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+<tbody>`
+{
+  this.modalHTMLInclusion +=`<div id="inclusionlist${i}" class="modal fade" role="dialog">
+<div class="modal-dialog">
 
-//FortheSubmitButton
-private submitdata(){
+  <!-- Modal content-->
+  <div class="modal-content reciprocal-custom-modal">
+    <div class="modal-header">
+       <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>
+      <h4 class="modal-title">Add Inclusions</h4>
+    </div>
+    <div class="modal-body" id="inclusionID${i}" class="inclusion-Modal-body">
+      ${this.InclusionMasterHTML}
+    </div>
+    <div class="modal-footer">
+      <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-inclusion${i}">Add</button>
+    </div>
+  </div>
+</div>
+</div>`
+$(document).on('click', `#Add-btn-modal-inclusion${i}`, async function (this) {
+  
+  //  var checkedInclusion :any = '';
+//  checkedInclusion = $(`#inclusionID${i}`).find("div.checkbox").find("input:checked").val();
 
+var arrayinclusion:any[] = [];
+var arrayinclusionName:any[] = [];
+$(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function() {
+  arrayinclusionName.push($(this).closest("label").text())
+  arrayinclusion.push($(this).val());
+  
+ 
+
+});
+$(`#InclusionDisplayName${i}`).val(arrayinclusionName)
+$(`#InclusionDisplayID${i}`).val(arrayinclusion)
+            console.log(arrayinclusion,arrayinclusionName)
+ });
 }
 
+{
+  this.modalHTMLExclusion +=` <div id="exclusionlist${i}" class="modal fade" role="dialog">
+<div class="modal-dialog">
+
+  <!-- Modal content-->
+  <div class="modal-content reciprocal-custom-modal">
+    <div class="modal-header">
+    <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>  
+      <h4 class="modal-title">Add Exclusions</h4>
+    </div>
+    <div class="modal-body" id="exclusionID${i}">
+     ${this.ExclusionMasterHTML}
+    </div>
+    <div class="modal-footer">
+      <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-exclusion${i}">Add</button>
+    </div>
+  </div>
+</div>
+</div>`
+$(document).on('click', `#Add-btn-modal-exclusion${i}`, async function (this) {
+
+  var arrayexclusion:any[] = [];
+  var arrayexclusionName:any[] = [];
+  $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function() {
+    arrayexclusionName.push($(this).closest("label").text())
+    arrayexclusion.push($(this).val());
+
+$(`#ExclusionDisplayName${i}`).val(arrayexclusionName)
+$(`#ExclusionDisplayID${i}`).val(arrayexclusion)
+              });
+              console.log(arrayexclusion,arrayexclusionName)
+   })
+  }
+
+
+
+document.getElementById('data').innerHTML = this.table;
+document.getElementById('modal-list-collection-inclusion').innerHTML = this.modalHTMLInclusion;
+document.getElementById('modal-list-collection-exclusion').innerHTML = this.modalHTMLExclusion;
+//$(`#inclusionID${i}`).html(InclusionMasterHTML);
+}
+
+}
 
 
   protected get dataVersion(): Version {
