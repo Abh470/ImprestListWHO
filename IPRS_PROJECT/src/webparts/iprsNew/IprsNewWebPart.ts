@@ -41,7 +41,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   //public fetchfromsocietymaster(): any[];
   public GrantMaster: any[];
-  public InclusionMaster: any[];
+  public InclusionMaster: any[];  
   public ExclusionMaster: any[];
   public table =
     `<thead>
