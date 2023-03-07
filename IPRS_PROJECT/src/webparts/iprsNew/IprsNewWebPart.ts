@@ -18,7 +18,7 @@ require("../../webparts/CommonAssets/Common.js");
 require("../../webparts/CommonAssets/Style.css");
 import { SPComponentLoader } from '@microsoft/sp-loader';
 
-
+  
  
 //import * as $ from 'jquery';
 export interface IIprsNewWebPartProps {
