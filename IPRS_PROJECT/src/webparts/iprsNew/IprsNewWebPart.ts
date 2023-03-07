@@ -1,5 +1,5 @@
 import { Version } from '@microsoft/sp-core-library';
-import {
+import { 
   IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
@@ -26,7 +26,7 @@ export interface IIprsNewWebPartProps {
 }
 
 //declare var GrantMaster: any[];
-//declare var InclusionMaster: any[];
+//declare var InclusionMaster: any[]; 
 //declare var ExclusionMaster: any[];
 
 export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPartProps> {
