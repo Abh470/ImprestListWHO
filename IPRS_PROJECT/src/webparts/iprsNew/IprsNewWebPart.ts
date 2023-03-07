@@ -1,8 +1,8 @@
 import { Version } from '@microsoft/sp-core-library';
 import { 
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
+  PropertyPaneTextField 
+} from '@microsoft/sp-property-pane'; 
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 //import { IReadonlyTheme } from '@microsoft/sp-component-base';
 //import { escape } from '@microsoft/sp-lodash-subset';
