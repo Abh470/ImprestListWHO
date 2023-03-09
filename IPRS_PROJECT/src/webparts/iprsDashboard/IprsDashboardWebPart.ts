@@ -13,11 +13,12 @@ import { sp } from "@pnp/sp/presets/all";
 import * as strings from "IprsDashboardWebPartStrings";
 import { SPComponentLoader } from "@microsoft/sp-loader";
 import "jquery";
+
 require("bootstrap");
 require("../../webparts/iprsDashboard/assets/assets/css/padding.css");
 require("../../webparts/iprsDashboard/assets/assets/css/styles.css");
-require("../../webparts/CommonAssets/Style.css");
-require("../../webparts/CommonAssets/Common.js");
+require("../../webparts/CommonAssests/Style.css");
+require("../../webparts/CommonAssests/Common.js");
 const ADDUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/plus-icon.png');
 const filterUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/export-icon.png');
@@ -35,6 +36,10 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
         sp.setup(this.context as any);
         return super.onInit();
     }
+
+    public APIDataFilter : any[];
+    public APIDataForFilterSort : any[]; 
+    const IsFilterApplied : any[]; 
 
     public async render(): Promise<void> {
         SPComponentLoader.loadCss(
@@ -182,22 +187,16 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
             <div class="col-sm-6 col-xs-12">
                 <div class="form-group custom-form-group">
                     <label>Society:</label>
-                    <select id="society" name="society_basic[]" multiple="multiple" class="3col active form-control">
-                        <option value="buma">Buma</option>
-                        <option value="societyname1">Society Name 1</option>
-                        <option value="societyname2">Society Name 2</option>
-                        <option value="societyname3">Society Name 3</option>
-                        <option value="societyname4">Society Name 4</option>
+                    <select id="society" name="society_basic[]" multiple="multiple" class="form-control">
+                        
                     </select>
                 </div>
             </div>
             <div class="col-sm-6 col-xs-12">
                 <div class="form-group custom-form-group">
                     <label>Right Type:</label>
-                    <select class="form-control">
-                        <option>Perf Right</option>
-                        <option>Mech Right</option>
-                        <option>Sync Right</option>
+                    <select id="righttype" class="form-control">
+
                     </select>
                 </div>
             </div>
@@ -206,25 +205,16 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
             <div class="col-sm-6 col-xs-12">
                 <div class="form-group custom-form-group">
                     <label>Source:</label>
-                    <select class="form-control">
-                        <option>Television Broadcasting</option>
-                        <option>Internet Streaming</option>
-                        <option>Radio Broadcasting</option>
-                        <option>Public Performance</option>
-                        <option>Physical Format</option>
-                        <option>Lyric Display Right</option>
-                        <option>Phonogram</option>
-                        <option>Private Copying</option>
+                    <select id="source"class="form-control">
+                        
                     </select>
                 </div>
             </div>
             <div class="col-sm-6 col-xs-12">
                 <div class="form-group custom-form-group">
                     <label>Grant:</label>
-                    <select class="form-control">
-                        <option>Exclusive</option>
-                        <option>Non-Exclusive</option>
-                        <option>Blank</option>
+                    <select id="grant"class="form-control">
+                        
                     </select>
                 </div>
             </div>
@@ -256,212 +246,99 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
 <div id="detail-modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content reciprocal-custom-modal">
-      <div class="modal-header">
-        <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
-        <h4 class="modal-title">Details</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row mt10">
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Society:</label>
-                    <p>Buma</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Right Type:</label>
-                    <p>Perf Right</p>
-                </div>
-            </div>
-        </div>
-        <div class="row mt10">
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Source:</label>
-                    <p>Television Broadcasting</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Grant:</label>
-                    <p>Exclusive</p>
-                </div>
-            </div>
-        </div>
-        <div class="row mt10">
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Inclusion:</label>
-                    <p>Facebook</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Exclusion:</label>
-                    <p>Youtube</p>
-                </div>
-            </div>
-        </div>
-        <div class="row mt10">
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Valid From:</label>
-                    <p>14-02-2023</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Valid To:</label>
-                    <p>28-03-2023</p>
-                </div>
-            </div>
-        </div>
-        <div class="row mt10">
-            <div class="col-sm-12 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Remarks:</label>
-                    <p>Lorem ipsum dolor sit amet do solor. Lorem ipsum dolor sit amet do solor. Lorem ipsum dolor sit amet do solor. </p>
-                </div>
-            </div>
-        </div>
-        <div class="row mt10">
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Created By:</label>
-                    <div class="reciprocal-user-card-panel">
-                        <div class="reciprocal-user-card-img">
-                            <img src="assets/images/img-21.jpg" alt="user">
-                        </div>
-                        <div class="reciprocal-user-card-info">
-                            <div class="reciprocal-user-card-name ellipsis-1">
-                                Patrick Dawson
-                            </div>
-                            <div class="reciprocal-user-card-email ellipsis-1">
-                                pat.dawson@mail-india.com
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Created On:</label>
-                    <p>16-02-2023</p>
-                </div>
-            </div>
-        </div>
-        <div class="row mt10">
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Modified By:</label>
-                    <div class="reciprocal-user-card-panel">
-                        <div class="reciprocal-user-card-img">
-                            <img src="assets/images/1.png" alt="user">
-                        </div>
-                        <div class="reciprocal-user-card-info">
-                            <div class="reciprocal-user-card-name ellipsis-1">
-                                David Norman
-                            </div>
-                            <div class="reciprocal-user-card-email ellipsis-1">
-                                dav.norman@mail-india.com
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-                <div class="form-group custom-form-group">
-                    <label>Modified On:</label>
-                    <p>01-03-2023</p>
-                </div>
-            </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
-      </div>
     </div>
 
-  </div>
-</div>
-
-<div id="inclusionlist" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content reciprocal-custom-modal">
-      <div class="modal-header">
-         <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
-        <h4 class="modal-title">Add Inclusions</h4>
-      </div>
-      <div class="modal-body">
-        <div class="checkbox">
-           <label><input type="checkbox" value="">YouTube</label>
-        </div>
-        <div class="checkbox">
-           <label><input type="checkbox" value="">Resso</label>
-        </div>
-        <div class="checkbox">
-           <label><input type="checkbox" value="">LinkedIn</label>
-        </div>
-        <div class="checkbox">
-           <label><input type="checkbox" value="">Facebook</label>
-        </div>
-        <div class="form-group custom-form-group wpx-250">
-            <input type="text" class="form-control" name="" placeholder="custom text field">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90">Add</button>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 
-
-<div id="exclusionlist" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content reciprocal-custom-modal">
-      <div class="modal-header">
-         <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
-        <h4 class="modal-title">Add Exclusions</h4>
-      </div>
-      <div class="modal-body">
-        <div class="checkbox">
-           <label><input type="checkbox" value="">YouTube</label>
-        </div>
-        <div class="checkbox">
-           <label><input type="checkbox" value="">Resso</label>
-        </div>
-        <div class="checkbox">
-           <label><input type="checkbox" value="">LinkedIn</label>
-        </div>
-        <div class="checkbox">
-           <label><input type="checkbox" value="">Facebook</label>
-        </div>
-        <div class="form-group custom-form-group wpx-250">
-            <input type="text" class="form-control" name="" placeholder="custom text field">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90">Add</button>
-      </div>
-    </div>
-
-  </div>
 </div>
 `;
         this.fetchfromIPRS();
-    }
+        this.fetchfromSocietyMaster();
+        this.fetchfromRightTypeMaster();
+        this.fetchfromSourceMaster();
+        this.fetchfromGrantMaster();
+       this.FilterAPIData();
+       this.domElement.querySelector('#exportid').addEventListener('click', () => {     
+            this.exportfile();     
+            }) 
+    
+    } 
+    
+    //fetchfromsocietymaster
+    private async fetchfromSocietyMaster(): Promise<void> {
+        const items: any[] = await sp.web.lists
+          .getByTitle("SocietyMaster")
+          .items.get();
+        console.log(items);
+        
+    var fetch = ``
 
-    private async fetchfromIPRS(): Promise<void> {
+        for (var i = 0; i < items.length; i++) {
+           fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+           console.log(items[i].Title)
+        }
+        
+        document.getElementById("society").innerHTML=fetch;
+      }
+    
+
+      //fetchfromRightTypeMaster
+    
+      private async fetchfromRightTypeMaster(): Promise<void> {
+        const items: any[] = await sp.web.lists
+          .getByTitle("RightTypeMaster")
+          .items.get();
+        console.log(items);
+        
+    var fetch = ``
+
+        for (var i = 0; i < items.length; i++) {
+           fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+           console.log(items[i].Title)
+        }
+        
+        document.getElementById("righttype").innerHTML=fetch;
+      }
+
+
+      //fetchfromSourceMaster
+
+      private async fetchfromSourceMaster(): Promise<void> {
+        const items: any[] = await sp.web.lists
+          .getByTitle("SourceMaster")
+          .items.get();
+        console.log(items.length);
+     
+      var fetch =``
+        for (var i = 0; i < items.length; i++) {
+         fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+         console.log(items[i].Title)
+        }
+        document.getElementById("source").innerHTML=fetch;
+      }
+
+
+
+//fetchfromGrantMaster
+      private async fetchfromGrantMaster(): Promise<void> {
+        const items: any[] = await sp.web.lists
+          .getByTitle("GrantMaster")
+          .items.get();
+        console.log(items.length);
+     
+      var fetch =``
+        for (var i = 0; i < items.length; i++) {
+         fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+         console.log(items[i].Title)
+        }
+        document.getElementById("grant").innerHTML=fetch;
+      }
+
+
+
+
+       //fetchfromIPRS
+        private async fetchfromIPRS(): Promise<void> {
         const items = await sp.web.lists.getByTitle("IPRS")
         .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,*")
         .expand("Society,RightType,Source,Grant").get();
@@ -481,6 +358,7 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     </thead>`
 
     for(let i=0; i<items.length; i++)
+    {
 table +=`
 <tbody>
 <td>${items[i].Society.Title}</td>
@@ -489,22 +367,103 @@ table +=`
 <td>${items[i].Grant.Title}</td>
 <td>${items[i].ValidFrom}</td>
 <td>${items[i].ValidTill}</td>
-<td> <button id="delete${i}">Details</button></td>
+<td> <div class="reciprocal-action-btn-box">
+<a href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal">Details</a>
+</div></td>
 </tbody>
 `
+document.getElementById('data').innerHTML = table;  
+}   
+}
+
+private async exportfile(): Promise<void> {
+    var htmltable= document.getElementById('data');
+       var html = htmltable.outerHTML;
+       window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+    }
 
 
 
-/////
-document.getElementById('data').innerHTML = table;
+
+
+        
+
+// private forselectedSociety() {   $("#society").change(function() {   
+//     var selectedSociety = $('#society option:selected', this).val();    
+//     console.log(selectedSociety)});
+// }
+
+
+
+private FilterAPIData() {
+    let filterSociety = $("#subject-having").val();
+    let filterRightType = $("#righttype").val();
+   // let filterSource = $("#source").val();
+    // let filterGrant = $("#grant").val();
+  
+    this.APIDataFilter = this.APIDataForFilterSort;
     
+    if (filterSociety != "" || filterRightType != "") {
+        this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
+        let sub = el.subject.toUpperCase();
+        let RightType = el.RightType.emailAddress.name.toUpperCase();
+        return sub.includes(filterSociety.toUpperCase()) && RightType.includes(filterRightType.toUpperCase())
+      });
+    }
+    if (filterSociety == "Having Attachments") {
+        this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+        return el.hasAttachments === true;
+      })
+    }
+    else if (filterSociety == "without Attachments") {
+        this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+        return el.hasAttachments === false;
+      })
+    } 
+    this.AppendFilterandSortingHTML(this.APIDataFilter);
+     IsFilterApplied = true;
+}
+
+  private async SortAPIData(SortByName) {
+    let APIDataSort;
+    if (IsFilterApplied) {
+      APIDataSort = this.APIDataFilter
+    }
+    APIDataSort = this.APIDataForFilterSort;
+    APIDataSort.sort(function (a, b) {
+      if (SocietyMaster == "By Subject") {
+        if (a.subject < b.subject) { return -1; }
+        if (a.subject > b.subject) { return 1; }
+        return 0;
+      }
+      else if (SortByName == "By RightType") {
+        if (a.RightType.emailAddress.name < b.RightType.emailAddress.name) { return -1; }
+        if (a.RightType.emailAddress.name > b.RightType.emailAddress.name) { return 1; }
+        return 0;
+      }
+      else if (SortByName == "By Date") {
+        if (a.sentDateTime > b.sentDateTime) { return -1; }
+        if (a.sentDateTime < b.sentDateTime) { return 1; }
+        return 0;
+      }
+    })
+    //console.log(APIDataSort);
+    this.AppendFilterandSortingHTML(APIDataSort);
+  }
+
+
+
 
    
-//  this.domElement.querySelector('#').addEventListener('click', () => {     
-//          this.exportfile();     
-        
-//  })
  
+ 
+
+
+
+
+
+
+
 //  declare global {
 //     interface Navigator {
 //       msSaveOrOpenBlob: (blobOrBase64: Blob | string, filename: string) => void
@@ -541,7 +500,7 @@ document.getElementById('data').innerHTML = table;
 
 
 
-}
+
 
     protected get dataVersion(): Version {
         return Version.parse("1.0");
