@@ -17,8 +17,8 @@ import "jquery";
 require("bootstrap");
 require("../../webparts/iprsDashboard/assets/assets/css/padding.css");
 require("../../webparts/iprsDashboard/assets/assets/css/styles.css");
-require("../../webparts/CommonAssests/Style.css");
-require("../../webparts/CommonAssests/Common.js");
+require("../../webparts/CommonAssets/Style.css");
+require("../../webparts/CommonAssets/Common.js");
 const ADDUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/plus-icon.png');
 const filterUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/export-icon.png');
@@ -32,7 +32,7 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   // private _isDarkTheme: boolean = false;
   // private _environmentMessage: string = "";
 
-  protected onInit(): Promise<void> {
+  protected onInit(): Promise<void> { 
     sp.setup(this.context as any);
     return super.onInit();
   }
@@ -306,7 +306,7 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   private async fetchfromSourceMaster(): Promise<void> {
     const items: any[] = await sp.web.lists
       .getByTitle("SourceMaster")
-      .items.get();
+      .items.get(); 
     console.log(items.length);
 
     var fetch = ``
