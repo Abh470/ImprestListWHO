@@ -19,6 +19,7 @@
     "@microsoft/sp-webpart-base": "1.16.1",
     "@pnp/sp": "2.10",
     "@types/jquery": "^3.5.16",
+    "moment": "^2.29.4",
     "tslib": "2.3.1"
   },
   "devDependencies": {
