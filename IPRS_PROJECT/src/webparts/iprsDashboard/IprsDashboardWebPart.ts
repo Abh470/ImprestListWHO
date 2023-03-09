@@ -1,7 +1,7 @@
 import { Version } from "@microsoft/sp-core-library";
 import {
-    IPropertyPaneConfiguration,
-    PropertyPaneTextField,
+  IPropertyPaneConfiguration,
+  PropertyPaneTextField,
 } from "@microsoft/sp-property-pane";
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 //import { IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -25,30 +25,30 @@ const ExportUploaded: any = require('../../webparts/iprsDashboard/assets/assets/
 const SortUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/sort-icon.png');
 const ExpandArrowUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/expand-arrow-icon.png');
 export interface IIprsDashboardWebPartProps {
-    description: string;
+  description: string;
 }
 
 export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDashboardWebPartProps> {
-    // private _isDarkTheme: boolean = false;
-    // private _environmentMessage: string = "";
+  // private _isDarkTheme: boolean = false;
+  // private _environmentMessage: string = "";
 
-    protected onInit(): Promise<void> {
-        sp.setup(this.context as any);
-        return super.onInit();
-    }
+  protected onInit(): Promise<void> {
+    sp.setup(this.context as any);
+    return super.onInit();
+  }
 
-    public APIDataFilter : any[];
-    public APIDataForFilterSort : any[]; 
-    const IsFilterApplied : any[]; 
+  public APIDataFilter: any[];
+  public APIDataForFilterSort: any[];
+  //const IsFilterApplied: any[];
 
-    public async render(): Promise<void> {
-        SPComponentLoader.loadCss(
-            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        );
-        SPComponentLoader.loadCss(
-            "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-        );
-        this.domElement.innerHTML = `
+  public async render(): Promise<void> {
+    SPComponentLoader.loadCss(
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    );
+    SPComponentLoader.loadCss(
+      "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    );
+    this.domElement.innerHTML = `
 <div class="container-fluid">
     <div class="custom-panel">
         <div class="panel-head">
@@ -252,100 +252,100 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
 
 </div>
 `;
-        this.fetchfromIPRS();
-        this.fetchfromSocietyMaster();
-        this.fetchfromRightTypeMaster();
-        this.fetchfromSourceMaster();
-        this.fetchfromGrantMaster();
-       this.FilterAPIData();
-       this.domElement.querySelector('#exportid').addEventListener('click', () => {     
-            this.exportfile();     
-            }) 
-    
-    } 
-    
-    //fetchfromsocietymaster
-    private async fetchfromSocietyMaster(): Promise<void> {
-        const items: any[] = await sp.web.lists
-          .getByTitle("SocietyMaster")
-          .items.get();
-        console.log(items);
-        
+    this.fetchfromIPRS();
+    this.fetchfromSocietyMaster();
+    this.fetchfromRightTypeMaster();
+    this.fetchfromSourceMaster();
+    this.fetchfromGrantMaster();
+    //  this.FilterAPIData();
+    this.domElement.querySelector('#exportid').addEventListener('click', () => {
+      this.exportfile();
+    })
+
+  }
+
+  //fetchfromsocietymaster
+  private async fetchfromSocietyMaster(): Promise<void> {
+    const items: any[] = await sp.web.lists
+      .getByTitle("SocietyMaster")
+      .items.get();
+    console.log(items);
+
     var fetch = ``
 
-        for (var i = 0; i < items.length; i++) {
-           fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-           console.log(items[i].Title)
-        }
-        
-        document.getElementById("society").innerHTML=fetch;
-      }
-    
+    for (var i = 0; i < items.length; i++) {
+      fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+      console.log(items[i].Title)
+    }
 
-      //fetchfromRightTypeMaster
-    
-      private async fetchfromRightTypeMaster(): Promise<void> {
-        const items: any[] = await sp.web.lists
-          .getByTitle("RightTypeMaster")
-          .items.get();
-        console.log(items);
-        
+    document.getElementById("society").innerHTML = fetch;
+  }
+
+
+  //fetchfromRightTypeMaster
+
+  private async fetchfromRightTypeMaster(): Promise<void> {
+    const items: any[] = await sp.web.lists
+      .getByTitle("RightTypeMaster")
+      .items.get();
+    console.log(items);
+
     var fetch = ``
 
-        for (var i = 0; i < items.length; i++) {
-           fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-           console.log(items[i].Title)
-        }
-        
-        document.getElementById("righttype").innerHTML=fetch;
-      }
+    for (var i = 0; i < items.length; i++) {
+      fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+      console.log(items[i].Title)
+    }
+
+    document.getElementById("righttype").innerHTML = fetch;
+  }
 
 
-      //fetchfromSourceMaster
+  //fetchfromSourceMaster
 
-      private async fetchfromSourceMaster(): Promise<void> {
-        const items: any[] = await sp.web.lists
-          .getByTitle("SourceMaster")
-          .items.get();
-        console.log(items.length);
-     
-      var fetch =``
-        for (var i = 0; i < items.length; i++) {
-         fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-         console.log(items[i].Title)
-        }
-        document.getElementById("source").innerHTML=fetch;
-      }
+  private async fetchfromSourceMaster(): Promise<void> {
+    const items: any[] = await sp.web.lists
+      .getByTitle("SourceMaster")
+      .items.get();
+    console.log(items.length);
 
-
-
-//fetchfromGrantMaster
-      private async fetchfromGrantMaster(): Promise<void> {
-        const items: any[] = await sp.web.lists
-          .getByTitle("GrantMaster")
-          .items.get();
-        console.log(items.length);
-     
-      var fetch =``
-        for (var i = 0; i < items.length; i++) {
-         fetch +=`<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-         console.log(items[i].Title)
-        }
-        document.getElementById("grant").innerHTML=fetch;
-      }
+    var fetch = ``
+    for (var i = 0; i < items.length; i++) {
+      fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+      console.log(items[i].Title)
+    }
+    document.getElementById("source").innerHTML = fetch;
+  }
 
 
 
+  //fetchfromGrantMaster
+  private async fetchfromGrantMaster(): Promise<void> {
+    const items: any[] = await sp.web.lists
+      .getByTitle("GrantMaster")
+      .items.get();
+    console.log(items.length);
 
-       //fetchfromIPRS
-        private async fetchfromIPRS(): Promise<void> {
-        const items = await sp.web.lists.getByTitle("IPRS")
-        .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,*")
-        .expand("Society,RightType,Source,Grant").get();
-        console.log(items);
+    var fetch = ``
+    for (var i = 0; i < items.length; i++) {
+      fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+      console.log(items[i].Title)
+    }
+    document.getElementById("grant").innerHTML = fetch;
+  }
 
-        let table = 
-        `<thead>
+
+
+
+  //fetchfromIPRS
+  private async fetchfromIPRS(): Promise<void> {
+    const items = await sp.web.lists.getByTitle("IPRS")
+      .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,*")
+      .expand("Society,RightType,Source,Grant").get();
+    console.log(items);
+
+    let table =
+      `<thead>
         <tr>
             <th class="w-10-th">Society</th>
             <th class="w-10-th">Right</th>
@@ -357,9 +357,8 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
         </tr>
     </thead>`
 
-    for(let i=0; i<items.length; i++)
-    {
-table +=`
+    for (let i = 0; i < items.length; i++) {
+      table += `
 <tbody>
 <td>${items[i].Society.Title}</td>
 <td>${items[i].RightType.Title}</td>
@@ -372,91 +371,84 @@ table +=`
 </div></td>
 </tbody>
 `
-document.getElementById('data').innerHTML = table;  
-}   
-}
-
-private async exportfile(): Promise<void> {
-    var htmltable= document.getElementById('data');
-       var html = htmltable.outerHTML;
-       window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
+      document.getElementById('data').innerHTML = table;
     }
+  }
 
-
-
-
-
-        
-
-// private forselectedSociety() {   $("#society").change(function() {   
-//     var selectedSociety = $('#society option:selected', this).val();    
-//     console.log(selectedSociety)});
-// }
-
-
-
-private FilterAPIData() {
-    let filterSociety = $("#subject-having").val();
-    let filterRightType = $("#righttype").val();
-   // let filterSource = $("#source").val();
-    // let filterGrant = $("#grant").val();
-  
-    this.APIDataFilter = this.APIDataForFilterSort;
-    
-    if (filterSociety != "" || filterRightType != "") {
-        this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
-        let sub = el.subject.toUpperCase();
-        let RightType = el.RightType.emailAddress.name.toUpperCase();
-        return sub.includes(filterSociety.toUpperCase()) && RightType.includes(filterRightType.toUpperCase())
-      });
-    }
-    if (filterSociety == "Having Attachments") {
-        this.APIDataFilter = this.APIDataFilter.filter(function (el) {
-        return el.hasAttachments === true;
-      })
-    }
-    else if (filterSociety == "without Attachments") {
-        this.APIDataFilter = this.APIDataFilter.filter(function (el) {
-        return el.hasAttachments === false;
-      })
-    } 
-    this.AppendFilterandSortingHTML(this.APIDataFilter);
-     IsFilterApplied = true;
-}
-
-  private async SortAPIData(SortByName) {
-    let APIDataSort;
-    if (IsFilterApplied) {
-      APIDataSort = this.APIDataFilter
-    }
-    APIDataSort = this.APIDataForFilterSort;
-    APIDataSort.sort(function (a, b) {
-      if (SocietyMaster == "By Subject") {
-        if (a.subject < b.subject) { return -1; }
-        if (a.subject > b.subject) { return 1; }
-        return 0;
-      }
-      else if (SortByName == "By RightType") {
-        if (a.RightType.emailAddress.name < b.RightType.emailAddress.name) { return -1; }
-        if (a.RightType.emailAddress.name > b.RightType.emailAddress.name) { return 1; }
-        return 0;
-      }
-      else if (SortByName == "By Date") {
-        if (a.sentDateTime > b.sentDateTime) { return -1; }
-        if (a.sentDateTime < b.sentDateTime) { return 1; }
-        return 0;
-      }
-    })
-    //console.log(APIDataSort);
-    this.AppendFilterandSortingHTML(APIDataSort);
+  private async exportfile(): Promise<void> {
+    var htmltable = document.getElementById('data');
+    var html = htmltable.outerHTML;
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
   }
 
 
 
 
-   
- 
- 
+
+
+
+  // private forselectedSociety() {   $("#society").change(function() {   
+  //     var selectedSociety = $('#society option:selected', this).val();    
+  //     console.log(selectedSociety)});
+  // }
+
+
+
+  // private FilterAPIData() {
+  //     let filterSociety = $("#subject-having").val();
+  //     let filterRightType = $("#righttype").val();
+  //    // let filterSource = $("#source").val();
+  //     // let filterGrant = $("#grant").val();
+
+  //     this.APIDataFilter = this.APIDataForFilterSort;
+
+  //     if (filterSociety != "" || filterRightType != "") {
+  //         this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
+  //         let sub = el.subject.toUpperCase();
+  //         let RightType = el.RightType.emailAddress.name.toUpperCase();
+  //         return sub.includes(filterSociety.toUpperCase()) && RightType.includes(filterRightType.toUpperCase())
+  //       });
+  //     }
+  //     if (filterSociety == "Having Attachments") {
+  //         this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+  //         return el.hasAttachments === true;
+  //       })
+  //     }
+  //     else if (filterSociety == "without Attachments") {
+  //         this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+  //         return el.hasAttachments === false;
+  //       })
+  //     } 
+  //     this.AppendFilterandSortingHTML(this.APIDataFilter);
+  //      IsFilterApplied = true;
+  // }
+
+  // private async SortAPIData(SortByName) {
+  //   let APIDataSort;
+  //   if (IsFilterApplied) {
+  //     APIDataSort = this.APIDataFilter
+  //   }
+  //   APIDataSort = this.APIDataForFilterSort;
+  //   APIDataSort.sort(function (a, b) {
+  //     if (SocietyMaster == "By Subject") {
+  //       if (a.subject < b.subject) { return -1; }
+  //       if (a.subject > b.subject) { return 1; }
+  //       return 0;
+  //     }
+  //     else if (SortByName == "By RightType") {
+  //       if (a.RightType.emailAddress.name < b.RightType.emailAddress.name) { return -1; }
+  //       if (a.RightType.emailAddress.name > b.RightType.emailAddress.name) { return 1; }
+  //       return 0;
+  //     }
+  //     else if (SortByName == "By Date") {
+  //       if (a.sentDateTime > b.sentDateTime) { return -1; }
+  //       if (a.sentDateTime < b.sentDateTime) { return 1; }
+  //       return 0;
+  //     }
+  //   })
+  //   //console.log(APIDataSort);
+  //   this.AppendFilterandSortingHTML(APIDataSort);
+  // }
 
 
 
@@ -464,68 +456,75 @@ private FilterAPIData() {
 
 
 
-//  declare global {
-//     interface Navigator {
-//       msSaveOrOpenBlob: (blobOrBase64: Blob | string, filename: string) => void
-//     }
-//   }
-//  private exportfile()
-//  {
-
-//     var downloadLink;
-//     var dataType = 'application/vnd.ms-excel';
-//     var tableSelect = document.getElementById("data");
-//     var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-    
-    
-//     // Create download link element
-//     downloadLink = document.createElement("a");
-    
-//     document.body.appendChild(downloadLink);
- 
-//     if (navigator.msSaveOrOpenBlob){
-//         var blob = new Blob(['\ufeff', tableHTML], {
-//             type: dataType
-//         });
-//         //navigator.msSaveOrOpenBlob ( blob, filename);
-//     }else{
-//         // Create a link to the file
-//         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-    
-        
-//         //triggering the function
-//         downloadLink.click();
-//    }
-//}
 
 
 
 
 
-    protected get dataVersion(): Version {
-        return Version.parse("1.0");
-    }
 
-    protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-        return {
-            pages: [
-                {
-                    header: {
-                        description: strings.PropertyPaneDescription,
-                    },
-                    groups: [
-                        {
-                            groupName: strings.BasicGroupName,
-                            groupFields: [
-                                PropertyPaneTextField("description", {
-                                    label: strings.DescriptionFieldLabel,
-                                }),
-                            ],
-                        },
-                    ],
-                },
-            ],
-        };
-    }
+
+  //  declare global {
+  //     interface Navigator {
+  //       msSaveOrOpenBlob: (blobOrBase64: Blob | string, filename: string) => void
+  //     }
+  //   }
+  //  private exportfile()
+  //  {
+
+  //     var downloadLink;
+  //     var dataType = 'application/vnd.ms-excel';
+  //     var tableSelect = document.getElementById("data");
+  //     var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+
+  //     // Create download link element
+  //     downloadLink = document.createElement("a");
+
+  //     document.body.appendChild(downloadLink);
+
+  //     if (navigator.msSaveOrOpenBlob){
+  //         var blob = new Blob(['\ufeff', tableHTML], {
+  //             type: dataType
+  //         });
+  //         //navigator.msSaveOrOpenBlob ( blob, filename);
+  //     }else{
+  //         // Create a link to the file
+  //         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+
+  //         //triggering the function
+  //         downloadLink.click();
+  //    }
+  //}
+
+
+
+
+
+  protected get dataVersion(): Version {
+    return Version.parse("1.0");
+  }
+
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    return {
+      pages: [
+        {
+          header: {
+            description: strings.PropertyPaneDescription,
+          },
+          groups: [
+            {
+              groupName: strings.BasicGroupName,
+              groupFields: [
+                PropertyPaneTextField("description", {
+                  label: strings.DescriptionFieldLabel,
+                }),
+              ],
+            },
+          ],
+        },
+      ],
+    };
+  }
 }
 

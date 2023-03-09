@@ -316,7 +316,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                       <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#inclusionlist${i}">
                           <i class="fa fa-plus"></i>
                       </a>
-                  </div>
+                  </div> 
               </div>
           </td>
           <td>
