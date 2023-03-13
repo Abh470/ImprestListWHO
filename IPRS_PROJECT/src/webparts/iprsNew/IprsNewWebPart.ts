@@ -390,7 +390,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   <!-- Modal content-->
   <div class="modal-content reciprocal-custom-modal">
     <div class="modal-header">
-       <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>
+       <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
       <h4 class="modal-title">Add Inclusions</h4>
     </div>
     <div class="modal-body" id="inclusionID${i}" class="inclusion-Modal-body">
@@ -420,7 +420,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $(`#InclusionDisplayID${i}`).val(arrayinclusion)
           console.log(arrayinclusion, arrayinclusionName)
         });
-      }
+      } 
 
       {
         this.modalHTMLExclusion += ` <div id="exclusionlist${i}" class="modal fade" role="dialog">
@@ -429,7 +429,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   <!-- Modal content-->
   <div class="modal-content reciprocal-custom-modal">
     <div class="modal-header">
-    <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">&#10060;</span></button>  
+    <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>  
       <h4 class="modal-title">Add Exclusions</h4>
     </div>
     <div class="modal-body" id="exclusionID${i}">

@@ -19,6 +19,9 @@ require("../../webparts/iprsDashboard/assets/assets/css/padding.css");
 require("../../webparts/iprsDashboard/assets/assets/css/styles.css");
 require("../../webparts/CommonAssets/Style.css");
 require("../../webparts/CommonAssets/Common.js");
+//require("../../webparts/iprsDashboard/assets/assets/font-awesome/css/font-awesome.min.css");
+require("../../webparts/iprsDashboard/assets/assets/js/jquery.multiselect.js");
+require("../../webparts/iprsDashboard/assets/assets/css/jquery.multiselect.css");
 const ADDUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/plus-icon.png');
 const filterUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/export-icon.png');
@@ -32,23 +35,29 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   // private _isDarkTheme: boolean = false;
   // private _environmentMessage: string = "";
 
-  protected onInit(): Promise<void> { 
+  protected onInit(): Promise<void> {  
     sp.setup(this.context as any);
     return super.onInit();
   }
 
   public APIDataFilter: any[];
   public APIDataForFilterSort: any[];
-  //const IsFilterApplied: any[];
+  public modalHTMLDetails = ``;
+  public modalHTMLFilter = ``;
+  //const IsFilterApplied : any[]; 
 
   public async render(): Promise<void> {
-    SPComponentLoader.loadCss(
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    );
-    SPComponentLoader.loadCss(
-      "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    );
+    SPComponentLoader.loadCss("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+    SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
+    SPComponentLoader.loadCss("https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css");
+    SPComponentLoader.loadScript("https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js");
+    //SPComponentLoader.loadScript("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js");
+    //SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js");
+
+
+
     this.domElement.innerHTML = `
+    <div class="lds-dual-ring-box"> <div class="lds-dual-ring"></div> </div>
 <div class="container-fluid">
     <div class="custom-panel">
         <div class="panel-head">
@@ -69,19 +78,11 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-new-panel-col-1">
                     <div class="dashboard-deta-btn-panel d-flex">
                         <div class="dropdown dashboard-table-btn">
-                            <button class="btn dropdown-toggle" type="button" onclick="window.location.href='add.html'">
+                            <button class="btn dropdown-toggle" type="button" id="addnew">
                                 <img class="dashboard-icon-info mr2" src="${ADDUploaded}" alt="plus">
                                 <span>Add</span>
                             </button>
                         </div>
-<!--
-                        <div class="dropdown dashboard-table-btn">
-                            <button class="btn dropdown-toggle" type="button" onclick="window.location.href='add.html'">
-                                <img class="dashboard-icon-info mr2" src="assets/images/edit-property-icon.png" alt="plus">
-                                <span>Modify</span>
-                            </button>
-                        </div>
--->
                         <div class="dropdown dashboard-table-btn" data-toggle="modal" data-target="#dashboard-filter">
                             <button class="btn dropdown-toggle" type="button">
                               <img class="dashboard-icon-info mr2" src="${filterUploaded}" alt="filter">
@@ -95,81 +96,52 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
                             </button>
                         </div>
                         <div class="dropdown dashboard-table-btn">
-                            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                        
+                            <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="sortId">
                               <img class="dashboard-icon-info mr2" src="${SortUploaded}" alt="sort">
                               <span>Sort</span>
                               <img class="dashboard-icon-info ml2" src="${ExpandArrowUploaded}" alt="expand arrow">
+                              <select class="form-control">
+                              <option value="">Society</option>
+                              <option value="">Right</option>
+                              <option value="">Source</option>
+                              <option value="">Grant</option>
+                              </select>
                             </button>
-                            <ul class="dropdown-menu dropdown-color-menu-icon">
-                              <li>
-                                <a href="#">
-                                  <span>Society</span>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <span>Right</span>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <span>Source</span>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <span>Grant</span>
-                                </a>
-                              </li>
-                            </ul>
+                            
                         </div>
                     </div>
                     <div class="form-group custom-form-group dashboard-search-box">
-                        <input class="form-control" type="text" name="" placeholder="Search">
+                        <input class="form-control" type="text" id="searchInput" name="" placeholder="Search">
                     </div>
                 </div>
             </div>
             <div class="row mt5">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="table-responsive reciprocal-table skill-set-table scrollbar-panel">
-                        <table class="table mb0 custom-table" id="data">
+                        <table class="table mb0 custom-table" id="tableId">
+                        <thead>
+        <tr>
+            <th class="w-10-th">Society</th>
+            <th class="w-10-th">Right</th>
+            <th class="w-15-th">Source</th>
+            <th class="w-10-th">Grant</th>
+            <th class="w-5-th">Valid From</th>
+            <th class="w-5-th">Valid Till</th>
+            <th class="w-5-th">Action</th>
+        </tr>
+    </thead>
+    <tbody id="data">
+    </tbody>
                             
                             
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="mt10">
-                    <div class="row">
-                      <div class="col-sm-7 col-xs-12">
-                        <ul class="pagination custom-pagination">
-                          <li><a href="#"><i class="fa fa-angle-double-left"></i></a>
-                          </li>
-                          <li><a href="#"><i class="fa fa-angle-left"></i></a>
-                          </li>
-                          <li class="active"><a href="#">1</a></li>
-                          <li><a href="#">2</a></li>
-                          <li><a href="#">...</a></li>
-                          <li><a href="#">5</a></li>
-                          <li><a href="#"><i class="fa fa-angle-right"></i></a>
-                          </li>
-                          <li><a href="#"><i class="fa fa-angle-double-right"></i></a>
-                          </li>
-                        </ul>
-
-                      </div>
-                      <div class="col-sm-5 col-xs-12">
-                        <div class="dms-table-total-items">
-                          <label class="total-items">Showing 10 out of 25 Items |</label>
-                        <a class="view-all-card-link" href="#">View all</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
     </div>
     </div>
 </div>
-
 
 
 
@@ -242,27 +214,39 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
 
   </div>
 </div>
-
-<div id="detail-modal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    </div>
-
-
-
+<div id ="modal-list-collection-details">
 </div>
-`;
-    this.fetchfromIPRS();
-    this.fetchfromSocietyMaster();
-    this.fetchfromRightTypeMaster();
-    this.fetchfromSourceMaster();
-    this.fetchfromGrantMaster();
-    //  this.FilterAPIData();
-    this.domElement.querySelector('#exportid').addEventListener('click', () => {
-      this.exportfile();
-    })
+`
+   this._bindEvent();
 
-  }
+}
+
+private async _bindEvent() {
+  this.fetchfromSocietyMaster();
+  //this.societymultiselect();
+  this.fetchfromRightTypeMaster();
+  this.fetchfromSourceMaster();
+  this.fetchfromGrantMaster();
+  await this.fetchfromIPRS();
+  $(".lds-dual-ring").hide();
+  //this.FilterAPIData();
+  //this.SortAPIData();
+  this.domElement.querySelector('#exportid').addEventListener('click', () => {
+    this.exportfile();
+  });
+  this.searchfunction();
+
+
+  // this.domElement.querySelector('#addnew').addEventListener('click', () => {
+  //   window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSAddForm.aspx?mode=New`
+
+  // });
+
+  this.domElement.querySelector('#addnew').addEventListener('click', () => {
+    window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSAddForm.aspx?mode=New`
+  });
+  
+}
 
   //fetchfromsocietymaster
   private async fetchfromSocietyMaster(): Promise<void> {
@@ -279,7 +263,24 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     }
 
     document.getElementById("society").innerHTML = fetch;
+    $(function () {
+      ($('#society') as any).multiselect({
+        columns: 1,
+        selectAllText: false,
+        placeholder: 'Society Name',
+        search: true,
+        searchOptions: {
+          'default': 'Search'
+        },
+        selectAll: true,
+      });
+
+    });
+
   }
+
+  //societymultiselect
+
 
 
   //fetchfromRightTypeMaster
@@ -306,7 +307,7 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   private async fetchfromSourceMaster(): Promise<void> {
     const items: any[] = await sp.web.lists
       .getByTitle("SourceMaster")
-      .items.get(); 
+      .items.get();
     console.log(items.length);
 
     var fetch = ``
@@ -332,7 +333,11 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
       console.log(items[i].Title)
     }
     document.getElementById("grant").innerHTML = fetch;
+
   }
+
+
+
 
 
 
@@ -340,39 +345,203 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   //fetchfromIPRS
   private async fetchfromIPRS(): Promise<void> {
     const items = await sp.web.lists.getByTitle("IPRS")
-      .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,*")
-      .expand("Society,RightType,Source,Grant").get();
+      .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Editor/Title,Editor/Id,*")
+      .expand("Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").get();
     console.log(items);
 
-    let table =
-      `<thead>
-        <tr>
-            <th class="w-10-th">Society</th>
-            <th class="w-10-th">Right</th>
-            <th class="w-15-th">Source</th>
-            <th class="w-10-th">Grant</th>
-            <th class="w-5-th">Valid From</th>
-            <th class="w-5-th">Valid Till</th>
-            <th class="w-5-th">Action</th>
-        </tr>
-    </thead>`
+
+    let table = ``
 
     for (let i = 0; i < items.length; i++) {
+
+      let CreatedByMail = ''
+      await sp.web.siteUsers.getById(items[i].AuthorId).get()
+        .then(user => {
+          console.log('Email ID: ', user.Email);
+          CreatedByMail = user.Email;
+        });
+
+      let ModifiedByMail = ''
+      await sp.web.siteUsers.getById(items[i].EditorId).get()
+        .then(user => {
+          console.log('Email ID: ', user.Email);
+          ModifiedByMail = user.Email;
+        });
+
       table += `
-<tbody>
-<td>${items[i].Society.Title}</td>
-<td>${items[i].RightType.Title}</td>
-<td>${items[i].Source.Title}</td>
-<td>${items[i].Grant.Title}</td>
-<td>${items[i].ValidFrom}</td>
-<td>${items[i].ValidTill}</td>
-<td> <div class="reciprocal-action-btn-box">
-<a href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal">Details</a>
-</div></td>
-</tbody>
+      <tr>     
+            <td>${items[i].Society.Title}</td>
+            <td>${items[i].RightType.Title}</td>
+            <td>${items[i].Source.Title}</td>
+            <td>${items[i].Grant.Title}</td>
+            <td>${items[i].ValidFrom}</td>
+            <td>${items[i].ValidTill}</td>
+            <td> 
+            <div class="reciprocal-action-btn-box">
+            <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal${i}">Details</a>
+            </div>
+            </td>
+      </tr>
 `
-      document.getElementById('data').innerHTML = table;
+
+      {
+        this.modalHTMLDetails += `<div id="detail-modal${i}" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content reciprocal-custom-modal">
+      <div class="modal-header">
+        <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
+        <h4 class="modal-title">Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row mt10">
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Society:</label>
+                    <p>${items[i].Society.Title}</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Right Type:</label>
+                    <p>${items[i].RightType.Title}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Source:</label>
+                    <p>${items[i].Source.Title}</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Grant:</label>
+                    <p>${items[i].Grant.Title}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Inclusion:</label>
+                    <p>${items[i].Inclusion.map((val: any) => {
+          return (val.Title)
+        })}</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Exclusion:</label>
+                    <p>${items[i].Exclusion.map((val: any) => {
+          return (val.Title)
+        })}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Valid From:</label>
+                    <p>${items[i].ValidFrom}</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Valid To:</label>
+                    <p>${items[i].ValidTill}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-sm-12 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Remarks:</label>
+                    <p>${items[i].Remarks}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Created By:</label>
+                    <div class="reciprocal-user-card-panel">
+                        <div class="reciprocal-user-card-img">
+                            <img src="assets/images/img-21.jpg" alt="user">
+                        </div>
+                        <div class="reciprocal-user-card-info">
+                            <div class="reciprocal-user-card-name ellipsis-1">
+                            ${items[i].Author.Title}
+                            </div>
+                            <div class="reciprocal-user-card-email ellipsis-1">
+                            ${CreatedByMail}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Created On:</label>
+                    <p>${items[i].Created}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Modified By:</label>
+                    <div class="reciprocal-user-card-panel">
+                        <div class="reciprocal-user-card-img">
+                            <img src="assets/images/1.png" alt="user">
+                        </div>
+                        <div class="reciprocal-user-card-info">
+                            <div class="reciprocal-user-card-name ellipsis-1">
+                            ${items[i].Editor.Title}
+                            </div>
+                            <div class="reciprocal-user-card-email ellipsis-1">
+                            ${ModifiedByMail}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="form-group custom-form-group">
+                    <label>Modified On:</label>
+                    <p>${items[i].Modified}</p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>`
+
+      }
+
+
+
+
+
+      document.getElementById('modal-list-collection-details').innerHTML = this.modalHTMLDetails;
     }
+    document.getElementById('data').innerHTML = table;
+    ($("#tableId") as any).DataTable({
+      items: 100,
+      itemsOnPage: 10,
+      cssStyle: 'light-theme',
+      scrollY: '500px',
+      scrollX: true,
+      sScrollXInner: "100%",
+      //bFilter: false
+    });
   }
 
   private async exportfile(): Promise<void> {
@@ -380,6 +549,7 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     var html = htmltable.outerHTML;
     window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
   }
+
 
 
 
@@ -420,10 +590,10 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   //       })
   //     } 
   //     this.AppendFilterandSortingHTML(this.APIDataFilter);
-  //      IsFilterApplied = true;
+  //      const IsFilterApplied = true;
   // }
 
-  // private async SortAPIData(SortByName) {
+  // private async SortAPIData(SortByName: string) {
   //   let APIDataSort;
   //   if (IsFilterApplied) {
   //     APIDataSort = this.APIDataFilter
@@ -454,51 +624,17 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
 
 
 
+  private searchfunction() {
 
+    $("#searchInput").on("keyup", function () {
+      var value: any = $(this).val().toString().toLowerCase();
+      $("#data tr").filter(function (): any {
+        $(this).toggle($(this).text()
+          .toLowerCase().indexOf(value) > -1)
+      });
+    });
 
-
-
-
-
-
-
-
-  //  declare global {
-  //     interface Navigator {
-  //       msSaveOrOpenBlob: (blobOrBase64: Blob | string, filename: string) => void
-  //     }
-  //   }
-  //  private exportfile()
-  //  {
-
-  //     var downloadLink;
-  //     var dataType = 'application/vnd.ms-excel';
-  //     var tableSelect = document.getElementById("data");
-  //     var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-
-
-  //     // Create download link element
-  //     downloadLink = document.createElement("a");
-
-  //     document.body.appendChild(downloadLink);
-
-  //     if (navigator.msSaveOrOpenBlob){
-  //         var blob = new Blob(['\ufeff', tableHTML], {
-  //             type: dataType
-  //         });
-  //         //navigator.msSaveOrOpenBlob ( blob, filename);
-  //     }else{
-  //         // Create a link to the file
-  //         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-
-
-  //         //triggering the function
-  //         downloadLink.click();
-  //    }
-  //}
-
-
-
+  }
 
 
   protected get dataVersion(): Version {
