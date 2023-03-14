@@ -11,7 +11,7 @@ import { sp } from "@pnp/sp/presets/all";
 //import { sp, Web } from "@pnp/sp/presets/all"
 //import styles from './IprsDashboardWebPart.module.scss';
 import * as strings from "IprsDashboardWebPartStrings";
-import { SPComponentLoader } from "@microsoft/sp-loader";
+import { SPComponentLoader } from "@microsoft/sp-loader"; 
 import "jquery";
 import * as moment from "moment";
 import * as _ from "lodash";
@@ -24,6 +24,8 @@ require("../../webparts/CommonAssets/Common.js");
 //require("../../webparts/iprsDashboard/assets/assets/font-awesome/css/font-awesome.min.css");
 require("../../webparts/iprsDashboard/assets/assets/js/jquery.multiselect.js");
 require("../../webparts/iprsDashboard/assets/assets/css/jquery.multiselect.css");
+
+require("../../webparts/CommonAssets/ExcelJs/jquery.table2excel.js");
 const ADDUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/plus-icon.png');
 const filterUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/export-icon.png');
@@ -53,9 +55,8 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
     SPComponentLoader.loadCss("https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css");
     SPComponentLoader.loadScript("https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js");
-    //SPComponentLoader.loadScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js");
-    //SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js");
-
+    //SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+    //SPComponentLoader.loadScript("src/jquery.table2excel.js");
 
 
     this.domElement.innerHTML = `
@@ -147,11 +148,11 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
             <th class="w-10-th">Grant</th>
             <th class="w-5-th">Valid From</th>
             <th class="w-5-th">Valid Till</th>
-            <th class="w-5-th">Action</th>
+            <th class="w-5-th noExl" >Action</th>
         </tr>
     </thead>
     <tbody id="data">
-    </tbody>
+  </tbody>  
                             
                             
                         </table>
@@ -236,22 +237,23 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
 <div id ="modal-list-collection-details">
 </div>
 `
-    
+
     this.fetchfromSocietyMaster();
     //this.societymultiselect();
     this.fetchfromRightTypeMaster();
     this.fetchfromSourceMaster();
     this.fetchfromGrantMaster();
-    this.fetchfromIPRS("").then(()=>{
+    this.fetchfromIPRS("").then(() => {
       $(".lds-dual-ring").hide();
     })
-   
+
     //this.SortAPIData();
     this.domElement.querySelector('#exportid').addEventListener('click', () => {
       this.exportfile();
     });
 
     this.domElement.querySelector('#filterbutton').addEventListener('click', () => {
+      $(".lds-dual-ring").show();
       this.FilterAPIData();
     });
     //this.searchfunction();
@@ -375,36 +377,37 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
       var items: any;
       if (this.IsFilterApplied == true) {
         items = itemByFilter;
-  
+
       }
       else {
         items = await sp.web.lists.getByTitle("IPRS")
           .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Editor/Title,Editor/Id,*")
-          .expand("Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").orderBy("Created",false).getAll();
+          .expand("Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").getAll();
+        //orderBy("Created",false)
         console.log(items);
         this.APIDataForFilterSort = items;
-  
+
       }
-  
-  
+
+
       let table = ``
-  
+
       for (let i = 0; i < items.length; i++) {
-  
+
         let CreatedByMail = ''
         await sp.web.siteUsers.getById(items[i].AuthorId).get()
           .then(user => {
             //console.log('Email ID: ', user.Email);
             CreatedByMail = user.Email;
           });
-  
+
         let ModifiedByMail = ''
         await sp.web.siteUsers.getById(items[i].EditorId).get()
           .then(user => {
             //console.log('Email ID: ', user.Email);
             ModifiedByMail = user.Email;
           });
-  
+
         table += `
    <tr>     
   <td>${items[i].Society.Title}</td>
@@ -413,14 +416,14 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   <td>${items[i].Grant.Title}</td>
   <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
   <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
-  <td> 
+  <td class="noExl"> 
   <div class="reciprocal-action-btn-box">
   <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal${i}">Details</a>
   </div>
   </td>
   </tr>
   `
-  
+
         {
           this.modalHTMLDetails += `<div id="detail-modal${i}" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -560,13 +563,13 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
   
     </div>
   </div>`
-  
+
         }
-  
-  
-  
-  
-  
+
+
+
+
+
         //document.getElementById('modal-list-collection-details').innerHTML = this.modalHTMLDetails;
         $("#modal-list-collection-details").html(this.modalHTMLDetails)
       }
@@ -574,12 +577,12 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
       //$("#data").empty();
       ($("#tableId") as any).DataTable().destroy();
       $("#data").html(table);
-      
-  
-  
+
+
+
       //if (this.IsFilterApplied == false) {
-      //   ($("#tableId") as any).DataTable().destroy();
-       setTimeout(() => {
+
+      setTimeout(() => {
         ($("#tableId") as any).DataTable({
           items: 100,
           itemsOnPage: 10,
@@ -587,24 +590,51 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
           scrollY: '500px',
           scrollX: true,
           sScrollXInner: "100%",
-          //bFilter: false  
+          "aoColumns": [
+            { "bSortable": true },
+            {"bSortable": true},
+            {"bSortable": true},
+            {"bSortable": true},  
+            {"bSortable": true},
+            {"bSortable": true}, 
+            {"bSortable": false}
+        ]
         });
-        
-       }, 5000); 
+
+      }, 100);
       resolve();
     })
-    
+
 
   }
 
   //}
 
   private async exportfile(): Promise<void> {
-    var htmltable = document.getElementById('tableId');
-    var html = htmltable.outerHTML;
-    window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html));
-  }
 
+
+    ($("#tableId") as any).table2excel({
+
+      // exclude CSS class
+
+      exclude: ".noExl",
+
+      name: "Worksheet Name",
+
+      filename: "IPRS",//do not include extension
+
+      fileext: ".xls", // file extension
+
+      exclude_img: true,
+
+      exclude_links: true,
+      exclude_inputs: true
+
+
+    });
+
+
+  }
 
 
 
@@ -625,27 +655,28 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     let filterSource = $("#source").val();
     let filterGrant = $("#grant").val();
     let filterValidFrom: any = $("#Fromdatefilter").val();
+    filterValidFrom = moment(filterValidFrom).format("YYYY-MM-DD");
     filterValidFrom = new Date(filterValidFrom).getTime();
 
     let filterValidTill: any = $("#Todatefilter").val();
+    filterValidTill = moment(filterValidTill).format("YYYY-MM-DD");
     filterValidTill = new Date(filterValidTill).getTime();
 
     this.APIDataFilter = this.APIDataForFilterSort;
 
     if (filterSociety.length > 0 || filterRightType != "" || filterSource != "" || filterGrant != "" || filterValidFrom != "" || filterValidTill != "") {
       this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
-        let Societyfilter: any[] = []
-        Societyfilter.push(el.SocietyId);
-        let RightTypefilter = el.RightTypeId;
-        let Sourcefilter = el.SourceId;
-        let Grantfilter = el.GrantId;
-        let ValidFromfilterlist = new Date(el.ValidFrom).getTime();
-        let ValidTillfilterlist = new Date(el.ValidTill).getTime();
+        let Societyfilterlist: string[] = []
+        Societyfilterlist.push(el.SocietyId);
+        let RightTypefilterlist = el.RightTypeId;
+        let Sourcefilterlist = el.SourceId;
+        let Grantfilterlist = el.GrantId;
+        let ValidFromfilterlist = new Date(moment(el.ValidFrom).format("YYYY-MM-DD")).getTime();
+        let ValidTillfilterlist = new Date(moment(el.ValidTill).format("YYYY-MM-DD")).getTime();
 
         //return Societyfilter.some(r=> filterSociety.indexOf(r) >= 0) && RightTypefilter == (filterRightType) && Sourcefilter == (filterSource) && Grantfilter == (filterGrant)
-        return RightTypefilter == filterRightType && Sourcefilter == filterSource && Grantfilter == filterGrant
-         //&&( filterValidFrom <= ValidFromfilterlist && ValidTillfilterlist <= filterValidTill )
-         &&( filterValidFrom <= ValidFromfilterlist) && (ValidTillfilterlist <= filterValidTill)
+        return filterSociety.some(r => Societyfilterlist.toString().includes(r)) && RightTypefilterlist == filterRightType && Sourcefilterlist == filterSource && Grantfilterlist == filterGrant && filterValidFrom <= ValidFromfilterlist && ValidTillfilterlist <= filterValidTill
+        //&&( (filterValidFrom >= ValidFromfilterlist) && (ValidTillfilterlist <= filterValidTill) )
       });
     }
     // if (filterSociety == "Having Attachments") {
@@ -657,9 +688,12 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     //     this.APIDataFilter = this.APIDataFilter.filter(function (el) {
     //     return el.hasAttachments === false;
     //   })
-    // } _.intersection(Societyfilter, filterSociety) &&
+    // } _.intersection(Societyfilter, filterSociety) 
     this.IsFilterApplied = true;
-    this.fetchfromIPRS(this.APIDataFilter);
+    this.fetchfromIPRS(this.APIDataFilter).then(() => {
+      $(".lds-dual-ring").hide();
+    })
+
 
   }
 
