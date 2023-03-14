@@ -11,7 +11,7 @@ import { sp } from "@pnp/sp/presets/all";
 //import { sp, Web } from "@pnp/sp/presets/all"
 //import styles from './IprsDashboardWebPart.module.scss';
 import * as strings from "IprsDashboardWebPartStrings";
-import { SPComponentLoader } from "@microsoft/sp-loader";
+import { SPComponentLoader } from "@microsoft/sp-loader"; 
 import "jquery";
 import * as moment from "moment";
 import * as _ from "lodash";

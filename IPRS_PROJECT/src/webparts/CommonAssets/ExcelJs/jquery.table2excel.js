@@ -21,7 +21,7 @@
         preserveColors: false
     };
 
-    // The actual plugin constructor
+    // The actual plugin constructor 
     function Plugin ( element, options ) {
             this.element = element;
             // jQuery has an extend method which merges the contents of two or
