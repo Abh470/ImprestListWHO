@@ -45,6 +45,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public InclusionMaster: any[];
   public ExclusionMaster: any[];
   public TestGit:string[];
+  public TestGITBYMAYUR :any[];
   public TestGit3:any[];
   public table =
     `<thead>
