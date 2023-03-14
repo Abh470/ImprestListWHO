@@ -251,9 +251,9 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
       this.exportfile();
     });
 
-    // this.domElement.querySelector('#filterbutton').addEventListener('click', () => {
-    //   this.FilterAPIData();
-    // });
+    this.domElement.querySelector('#filterbutton').addEventListener('click', () => {
+      this.FilterAPIData();
+    });
     //this.searchfunction();
 
 
@@ -572,13 +572,14 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
       }
       //document.getElementById('data').innerHTML = table;
       //$("#data").empty();
+      ($("#tableId") as any).DataTable().destroy();
       $("#data").html(table);
       
   
   
       //if (this.IsFilterApplied == false) {
       //   ($("#tableId") as any).DataTable().destroy();
-      //  setTimeout(() => {
+       setTimeout(() => {
         ($("#tableId") as any).DataTable({
           items: 100,
           itemsOnPage: 10,
@@ -589,7 +590,7 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
           //bFilter: false  
         });
         
-      //  }, 5000); 
+       }, 5000); 
       resolve();
     })
     
@@ -643,7 +644,8 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
 
         //return Societyfilter.some(r=> filterSociety.indexOf(r) >= 0) && RightTypefilter == (filterRightType) && Sourcefilter == (filterSource) && Grantfilter == (filterGrant)
         return RightTypefilter == filterRightType && Sourcefilter == filterSource && Grantfilter == filterGrant
-         &&( filterValidFrom <= ValidFromfilterlist && ValidTillfilterlist <= filterValidTill )
+         //&&( filterValidFrom <= ValidFromfilterlist && ValidTillfilterlist <= filterValidTill )
+         &&( filterValidFrom <= ValidFromfilterlist) && (ValidTillfilterlist <= filterValidTill)
       });
     }
     // if (filterSociety == "Having Attachments") {
