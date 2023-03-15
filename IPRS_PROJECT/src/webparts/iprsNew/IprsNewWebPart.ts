@@ -79,6 +79,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         </div>
         <div class="panel-body">
             <div class="row mt25">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="form-group custom-form-group">
+                        <label>Country:</label>
+                        <select class="form-control" id="countrymaster">
+                        </select>
+                    </div>
+            </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Society:</label>
@@ -124,6 +131,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   }
 
   private async _bindEvents() {
+    await this.fetchfromcountrymaster()
     await this.fetchfromsocietymaster()
     await this.righttypemaster()
     await this.fetchfromgrantmaster()
@@ -132,6 +140,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     await this.fetchthetable()
     this.forselectedoptionSociety()
     this.forselectedoptionRightType()
+    this.forselectedoptionCountry()
 
 
     this.domElement.querySelector('#btnsubmit').addEventListener('click', () => {
@@ -154,6 +163,25 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   }
 
+//fetch from countrymaster
+
+  private async fetchfromcountrymaster(): Promise<void> {
+
+    const items: any[] = await sp.web.lists.getByTitle("CountryMaster").items.get();
+    console.log(items.length);
+
+    let events = `<option value=''>--Select--</option>`
+
+    for (let i = 0; i < items.length; i++) {
+
+      events += `<option value='${items[i].ID}'> ${items[i].Title} </option>`
+      console.log(items[i].Title)
+
+    }
+
+    document.getElementById('countrymaster').innerHTML = events;
+
+  }
 
 
   //fetchfromsocietymasterlist
@@ -194,6 +222,22 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     document.getElementById('righttypemaster').innerHTML = events;
   }
 
+//forselectedoptionCountry
+  private forselectedoptionCountry() {
+    var scope = this
+    $("#countrymaster").change(function () {
+
+      var selectedCountry = $('option:selected', this).val();
+      var selectedSociety = $("#societymaster").val();
+      var selectedRightType = $("#righttypemaster").val();
+      
+      console.log(selectedCountry)
+      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType)
+    });
+
+  }
+
+
 
   //forselectedoptionSociety
   private forselectedoptionSociety() {
@@ -201,8 +245,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     $("#societymaster").change(function () {
       var selectedSociety = $('option:selected', this).val();
       var selectedRightType = $("#righttypemaster").val();
+      var selectedCountry = $("#countrymaster").val();
       console.log(selectedSociety)
-      scope.fetchfromIPRS(selectedSociety, selectedRightType)
+      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType)
     });
 
   }
@@ -214,8 +259,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     $("#righttypemaster").change(function () {
       var selectedRightType = $('option:selected', this).val();
       var selectedSociety = $("#societymaster").val();
+      var selectedCountry = $("#countrymaster").val();
       console.log(selectedRightType)
-      scope.fetchfromIPRS(selectedSociety, selectedRightType)
+      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType)
     });
 
   }
@@ -361,30 +407,30 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
 </tr>
 `
-      $(document).on('click', `#newrow${i}`, async function (this) {
-        let answer = window.prompt("Do you want to add New Record", "Confirm");
-        if (answer != null) {
-          $(this).closest('tr').find("input,textarea").val("");
-          $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
-          $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
-          $(this).closest('tr').find("select.grant-data").val("");
-          //$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
-          $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
-          $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
+$(document).on('click', `#newrow${i}`, async function (this) {
+  let answer = window.confirm("Do you want to add New Record?");
+  if (answer == true) {
+    $(this).closest('tr').find("input,textarea").val("");
+    $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
+    $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
+    $(this).closest('tr').find("select.grant-data").val("");
+    //$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
+    $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
+    $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
 
-          $(`#IsRecord-Edit-New${i}`).text("New");
-        }
+    $(`#IsRecord-Edit-New${i}`).text("New");
+  }
 
-      })
-      $(document).on('click', `#edit${i}`, async function (this) {
-        let answer = window.prompt("Do you want to Edit this Record", "Confirm");
-        if (answer != null) {
-          $(`#IsRecord-Edit-New${i}`).text("Edit");
-          $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
-          $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
-        }
+})
+$(document).on('click', `#edit${i}`, async function (this) {
+  let answer = window.confirm("Do you want to Edit this Record?");
+  if (answer == true) {
+    $(`#IsRecord-Edit-New${i}`).text("Edit");
+    $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
+    $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
+  }
 
-      })
+})
       {
         this.modalHTMLInclusion += `<div id="inclusionlist${i}" class="modal fade" role="dialog">
 <div class="modal-dialog">
@@ -469,7 +515,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   }
 
 
-  private async fetchfromIPRS(societyid: any, rightTypeid: any): Promise<void> {
+  private async fetchfromIPRS(countryid: any, societyid: any, rightTypeid: any): Promise<void> {
     // const items: any[] = await sp.web.lists.getByTitle("IPRS").items.filter(`RightTypeId eq '${rightTypeid}' and SocietyId eq '${societyid}'`)
     //   .get();
     // console.log(items)
@@ -486,7 +532,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     const item: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("*, RightType/Title,Society/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title")
       .expand("RightType,Society,Source,Grant,Inclusion,Exclusion")
-      .filter(`RightType eq '${rightTypeid}' and Society eq '${societyid}'`).orderBy("Created", false)
+      .filter(`RightType eq '${rightTypeid}' and Society eq '${societyid}' and Country eq '${countryid}'`).orderBy("Created", false)
       .get();
     // item.sort(function (a: any, b: any): number {
     //   if (a.ValidFrom > b.ValidFrom) { return -1; }

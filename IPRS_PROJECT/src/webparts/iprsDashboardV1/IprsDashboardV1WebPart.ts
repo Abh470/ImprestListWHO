@@ -1,43 +1,40 @@
-import { Version } from "@microsoft/sp-core-library";
+import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField,
-} from "@microsoft/sp-property-pane";
-import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
+  PropertyPaneTextField
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 //import { IReadonlyTheme } from '@microsoft/sp-component-base';
 //import { escape } from '@microsoft/sp-lodash-subset';
 import { sp } from "@pnp/sp/presets/all";
+import { SPComponentLoader } from "@microsoft/sp-loader";
 //import * as pnp from 'sp-pnp-js';
 //import { sp, Web } from "@pnp/sp/presets/all"
-//import styles from './IprsDashboardWebPart.module.scss';
-import * as strings from "IprsDashboardWebPartStrings";
-import { SPComponentLoader } from "@microsoft/sp-loader";
 import "jquery";
 import * as moment from "moment";
 import * as _ from "lodash";
 
 require("bootstrap");
-require("../../webparts/iprsDashboard/assets/assets/css/padding.css");
-require("../../webparts/iprsDashboard/assets/assets/css/styles.css");
+require("../../webparts/iprsDashboardV1/assets/assets/css/padding.css");
+require("../../webparts/iprsDashboardV1/assets/assets/css/styles.css");
 require("../../webparts/CommonAssets/Style.css");
 require("../../webparts/CommonAssets/Common.js");
 //require("../../webparts/iprsDashboard/assets/assets/font-awesome/css/font-awesome.min.css");
-require("../../webparts/iprsDashboard/assets/assets/js/jquery.multiselect.js");
-require("../../webparts/iprsDashboard/assets/assets/css/jquery.multiselect.css");
+require("../../webparts/iprsDashboardV1/assets/assets/js/jquery.multiselect.js");
+require("../../webparts/iprsDashboardV1/assets/assets/css/jquery.multiselect.css");
 
 require("../../webparts/CommonAssets/ExcelJs/jquery.table2excel.js");
-const ADDUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/plus-icon.png');
-const filterUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/filter-icon.png');
-const ExportUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/export-icon.png');
-//const SortUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/sort-icon.png');
-//const ExpandArrowUploaded: any = require('../../webparts/iprsDashboard/assets/assets/images/expand-arrow-icon.png');
-export interface IIprsDashboardWebPartProps {
+const ADDUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/plus-icon.png');
+const filterUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/filter-icon.png');
+const ExportUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/export-icon.png');
+
+import * as strings from 'IprsDashboardV1WebPartStrings';
+
+export interface IIprsDashboardV1WebPartProps {
   description: string;
 }
 
-export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDashboardWebPartProps> {
-  // private _isDarkTheme: boolean = false;
-  // private _environmentMessage: string = "";
+export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsDashboardV1WebPartProps> {
 
   protected onInit(): Promise<void> {
     sp.setup(this.context as any);
@@ -739,52 +736,8 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
 
   }
 
-  // private async SortAPIData(SortByName: string) {
-  //   let APIDataSort;
-  //   if (IsFilterApplied) {
-  //     APIDataSort = this.APIDataFilter
-  //   }
-  //   APIDataSort = this.APIDataForFilterSort;
-  //   APIDataSort.sort(function (a, b) {
-  //     if (SocietyMaster == "By Subject") {
-  //       if (a.subject < b.subject) { return -1; }
-  //       if (a.subject > b.subject) { return 1; }
-  //       return 0;
-  //     }
-  //     else if (SortByName == "By RightType") {
-  //       if (a.RightType.emailAddress.name < b.RightType.emailAddress.name) { return -1; }
-  //       if (a.RightType.emailAddress.name > b.RightType.emailAddress.name) { return 1; }
-  //       return 0;
-  //     }
-  //     else if (SortByName == "By Date") {
-  //       if (a.sentDateTime > b.sentDateTime) { return -1; }
-  //       if (a.sentDateTime < b.sentDateTime) { return 1; }
-  //       return 0;
-  //     }
-  //   })
-  //   //console.log(APIDataSort);
-  //   this.AppendFilterandSortingHTML(APIDataSort);
-  // }
-
-
-
-
-
-  // private searchfunction() {
-
-  //   $("#searchInput").on("keyup", function () {
-  //     var value: any = $(this).val().toString().toLowerCase();
-  //     $("#data tr").filter(function (): any {
-  //       $(this).toggle($(this).text()
-  //         .toLowerCase().indexOf(value) > -1)
-  //     });
-  //   });
-
-  // }
-
-
   protected get dataVersion(): Version {
-    return Version.parse("1.0");
+    return Version.parse('1.0');
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -792,33 +745,20 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription,
+            description: strings.PropertyPaneDescription
           },
           groups: [
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField("description", {
-                  label: strings.DescriptionFieldLabel,
-                }),
-              ],
-            },
-          ],
-        },
-      ],
+                PropertyPaneTextField('description', {
+                  label: strings.DescriptionFieldLabel
+                })
+              ]
+            }
+          ]
+        }
+      ]
     };
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
