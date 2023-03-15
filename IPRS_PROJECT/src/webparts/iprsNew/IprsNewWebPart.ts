@@ -233,7 +233,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedRightType = $("#righttypemaster").val();
       
       console.log(selectedCountry)
-      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType)
+      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType) 
     });
 
   }

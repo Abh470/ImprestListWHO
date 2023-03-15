@@ -27,7 +27,7 @@
       "dom",
       "es2015.collection",
       "es2015.promise",
-      "ES2017"
+      "ES2017" 
     ]
   },
   "include": [

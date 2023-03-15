@@ -293,19 +293,19 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     }
 
     document.getElementById("society").innerHTML = fetch;
-    $(function () {
-      ($('#society') as any).multiselect({
-        columns: 1,
-        selectAllText: false,
-        placeholder: 'Select Your Options',
-        search: true,
-        searchOptions: {
-          'default': 'Search'
-        },
-        selectAll: true,
-      });
+    // $(function () {
+    //   ($('#society') as any).multiselect({
+    //     columns: 1,
+    //     selectAllText: false,
+    //     placeholder: 'Select Your Options',
+    //     search: true,
+    //     searchOptions: {
+    //       'default': 'Search'
+    //     },
+    //     selectAll: true,
+    //   });
 
-    });
+    // });
 
   }
 
@@ -315,7 +315,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   //fetchfromRightTypeMaster
 
-  private async fetchfromRightTypeMaster(): Promise<void> {
+  private async fetchfromRightTypeMaster(): Promise<void> { 
     const items: any[] = await sp.web.lists
       .getByTitle("RightTypeMaster")
       .items.get();
