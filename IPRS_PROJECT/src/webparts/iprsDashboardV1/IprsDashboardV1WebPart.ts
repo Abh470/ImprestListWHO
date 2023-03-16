@@ -45,6 +45,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public APIDataForFilterSort: any[];
   public modalHTMLDetails = ``;
   public modalHTMLFilter = ``;
+  public modalHTMLHistory = ``;
   public IsFilterApplied: boolean = false;
 
 
@@ -237,6 +238,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 </div>
 <div id ="modal-list-collection-details">
 </div>
+<div id ="modal-list-collection-history">
+</div>
 `
 
     this.fetchfromSocietyMaster();
@@ -315,7 +318,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   //fetchfromRightTypeMaster
 
-  private async fetchfromRightTypeMaster(): Promise<void> { 
+  private async fetchfromRightTypeMaster(): Promise<void> {
     const items: any[] = await sp.web.lists
       .getByTitle("RightTypeMaster")
       .items.get();
@@ -420,162 +423,28 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
   <td class="noExl"> 
   <div class="reciprocal-action-btn-box">
-  <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal${i}">Details</a>
+  <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i}">Details</a>
+  <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#history-modal${i}" id="history${i}">History</a>
+  </div>
   </div>
   </td>
   </tr>
   `
 
-        {
-          this.modalHTMLDetails += `<div id="detail-modal${i}" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-  
-      <!-- Modal content-->
-      <div class="modal-content reciprocal-custom-modal">
-        <div class="modal-header">
-          <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
-          <h4 class="modal-title">Details</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row mt10">
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Society:</label>
-                      <p>${items[i].Society.Title}</p> 
-                  </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Right Type:</label>
-                      <p>${items[i].RightType.Title}</p>
-                  </div>
-              </div>
-          </div>
-          <div class="row mt10">
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Source:</label>
-                      <p>${items[i].Source.Title}</p>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Grant:</label>
-                      <p>${items[i].Grant.Title}</p>
-                  </div>
-              </div>
-          </div>
-          <div class="row mt10">
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Inclusion:</label>
-                      <p>${items[i].Inclusion.map((val: any) => {
-            return (val.Title)
-          })}</p>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Exclusion:</label>
-                      <p>${items[i].Exclusion.map((val: any) => {
-            return (val.Title)
-          })}</p>
-                  </div>
-              </div>
-          </div>
-          <div class="row mt10">
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Valid From:</label>
-                      <p>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</p>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Valid To:</label>
-                      <p>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</p>
-                  </div>
-              </div>
-          </div>
-          <div class="row mt10">
-              <div class="col-sm-12 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Remarks:</label>
-                      <p>${items[i].Remarks}</p>
-                  </div>
-              </div>
-          </div>
-          <div class="row mt10">
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Created By:</label>
-                      <div class="reciprocal-user-card-panel">
-                      ${ /*<div class="reciprocal-user-card-img"> 
-                              
-                          </div>*/''}
-                          <div class="reciprocal-user-card-info">
-                              <div class="reciprocal-user-card-name ellipsis-1">
-                              ${items[i].Author.Title}
-                              </div>
-                              <div class="reciprocal-user-card-email ellipsis-1">
-                              ${items[i].Author.EMail}
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Created On:</label>
-                      <p>${moment(items[i].Created).format('YYYY-MMM-DD')}</p>
-                  </div>
-              </div>
-          </div>
-          <div class="row mt10">
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Modified By:</label>
-                      <div class="reciprocal-user-card-panel">
-                      ${ /* Backtik comment
-                        <div class="reciprocal-user-card-img">
-                              
-                          </div>*/''}
-                          <div class="reciprocal-user-card-info">
-                              <div class="reciprocal-user-card-name ellipsis-1">
-                              ${items[i].Editor.Title}
-                              </div>
-                              <div class="reciprocal-user-card-email ellipsis-1">
-                              ${items[i].Editor.EMail}
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-sm-6 col-xs-12">
-                  <div class="form-group custom-form-group">
-                      <label>Modified On:</label>
-                      <p>${moment(items[i].Modified).format('YYYY-MMM-DD')}</p>
-                  </div>
-              </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-  
-    </div>
-  </div>`
+        $(document).on('click', '#detail' + i, async (): Promise<any> => {
+          var Dmodalid = i;
+          var DId = items[i].ID;
+
+          this.fetchforDetails(DId, Dmodalid);
+        });
+
+        $(document).on('click', '#history' + i, async (): Promise<any> => {
+          var Hmodalid = i;
+
+          this.fetchforhistory(Hmodalid);
+        });
 
 
-        }
-
-
-
-
-
-        //document.getElementById('modal-list-collection-details').innerHTML = this.modalHTMLDetails;
-        $("#modal-list-collection-details").html(this.modalHTMLDetails)
       }
       //document.getElementById('data').innerHTML = table;
       //$("#data").empty();
@@ -619,6 +488,236 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   }
 
   //}
+
+
+  private async fetchforDetails(DetailitemID: any, DetailmodalID: any): Promise<void> {
+
+
+    const items = await sp.web.lists.getByTitle("IPRS")
+      .items.getById(DetailitemID).select("Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
+      .expand("Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").get();
+    console.log(items.length);
+    console.log(items);
+    {
+
+      this.modalHTMLDetails += `<div id="detail-modal${DetailmodalID}" class="modal fade" role="dialog">
+<div class="modal-dialog modal-lg">
+
+  <!-- Modal content-->
+  <div class="modal-content reciprocal-custom-modal">
+    <div class="modal-header">
+      <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
+      <h4 class="modal-title">Details</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row mt10">
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Society:</label>
+                  <p>${items.Society.Title}</p> 
+              </div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Right Type:</label>
+                  <p>${items.RightType.Title}</p>
+              </div>
+          </div>
+      </div>
+      <div class="row mt10">
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Source:</label>
+                  <p>${items.Source.Title}</p>
+              </div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Grant:</label>
+                  <p>${items.Grant.Title}</p>
+              </div>
+          </div>
+      </div>
+      <div class="row mt10">
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Inclusion:</label>
+                  <p>${items.Inclusion.map((val: any) => {
+        return (val.Title)
+      })}</p>
+              </div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Exclusion:</label>
+                  <p>${items.Exclusion.map((val: any) => {
+        return (val.Title)
+      })}</p>
+              </div>
+          </div>
+      </div>
+      <div class="row mt10">
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Valid From:</label>
+                  <p>${moment(items.ValidFrom).format('YYYY-MMM-DD')}</p>
+              </div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Valid To:</label>
+                  <p>${moment(items.ValidTill).format('YYYY-MMM-DD')}</p>
+              </div>
+          </div>
+      </div>
+      <div class="row mt10">
+          <div class="col-sm-12 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Remarks:</label>
+                  <p>${items.Remarks}</p>
+              </div>
+          </div>
+      </div>
+      <div class="row mt10">
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Created By:</label>
+                  <div class="reciprocal-user-card-panel">
+                  ${ /*<div class="reciprocal-user-card-img"> 
+                          
+                      </div>*/''}
+                      <div class="reciprocal-user-card-info">
+                          <div class="reciprocal-user-card-name ellipsis-1">
+                          ${items.Author.Title}
+                          </div>
+                          <div class="reciprocal-user-card-email ellipsis-1">
+                          ${items.Author.EMail}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Created On:</label>
+                  <p>${moment(items.Created).format('YYYY-MMM-DD')}</p>
+              </div>
+          </div>
+      </div>
+      <div class="row mt10">
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Modified By:</label>
+                  <div class="reciprocal-user-card-panel">
+                  ${ /* Backtik comment
+                    <div class="reciprocal-user-card-img">
+                          
+                      </div>*/''}
+                      <div class="reciprocal-user-card-info">
+                          <div class="reciprocal-user-card-name ellipsis-1">
+                          ${items.Editor.Title}
+                          </div>
+                          <div class="reciprocal-user-card-email ellipsis-1">
+                          ${items.Editor.EMail}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-6 col-xs-12">
+              <div class="form-group custom-form-group">
+                  <label>Modified On:</label>
+                  <p>${moment(items.Modified).format('YYYY-MMM-DD')}</p>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+
+</div>
+</div>`
+
+
+    }
+    $("#modal-list-collection-details").html(this.modalHTMLDetails)
+  }
+
+
+
+  private async fetchforhistory(HistorymodalID: any): Promise<void> {
+
+    const items = await sp.web.lists.getByTitle("IPRS")
+      .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
+      .expand("Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").get();
+    console.log(items.length);
+    console.log(items);
+
+    {
+      this.modalHTMLHistory += `<div id="detail-modal${HistorymodalID}" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+  
+          <!-- Modal content-->
+          <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                  <button type="button" class="close close-round" data-dismiss="modal"><span
+                          class="close-icon">×</span></button>
+                  <h4 class="modal-title">History</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="row mt5">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="table-responsive reciprocal-table skill-set-table scrollbar-panel">
+                              <table class="table mb0 custom-table" id="historytableID">
+                                  <thead>
+                                      <tr>
+                                          <th class="w-10-th">Society</th>
+                                          <th class="w-10-th">Right</th>
+                                          <th class="w-15-th">Source</th>
+                                          <th class="w-10-th">Grant</th>
+                                          <th class="w-5-th">Valid From</th>
+                                          <th class="w-5-th">Valid Till</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="historytablebody">
+                                      
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+  
+      </div>
+  </div>
+        `
+    }
+    $("#modal-list-collection-history").html(this.modalHTMLHistory) 
+
+    let historytable = ``
+
+for (let i = 0; i < items.length; i++) {
+  
+  historytable +=`
+  <tr>
+  <td>${items[i].Society.Title}</td>
+  <td>${items[i].RightType.Title}</td>
+  <td>${items[i].Source.Title}</td>
+  <td>${items[i].Grant.Title}</td>
+  <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
+  <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
+  </tr>`
+}
+$("#historytablebody").html(historytable);
+}
+
+
 
   private async exportfile(): Promise<void> {
 
@@ -701,7 +800,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     }
     else {
 
-      if (filterSociety.length > 0 && filterRightType != null && filterSource != null && filterGrant != null && filterValidFrom != "" &&filterValidTill != "") {
+      if (filterSociety.length > 0 && filterRightType != null && filterSource != null && filterGrant != null && filterValidFrom != "" && filterValidTill != "") {
         this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
           let Societyfilterlist: string[] = []
           Societyfilterlist.push(el.SocietyId);
