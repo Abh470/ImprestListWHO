@@ -44,9 +44,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public GrantMaster: any[];
   public InclusionMaster: any[];
   public ExclusionMaster: any[];
-  public TestGit:string[];
-  public TestGITBYMAYUR :any[];
-  public TestGit3:any[];
+  public TestGit: string[];
+  public TestGITBYMAYUR: any[];
+  public TestGit3: any[];
   public table =
     `<thead>
     <tr>
@@ -133,7 +133,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   private async _bindEvents() {
     await this.fetchfromcountrymaster()
-    await this.fetchfromsocietymaster()
+    //await this.fetchfromsocietymaster()
     await this.righttypemaster()
     await this.fetchfromgrantmaster()
     await this.fetchfrominclusionmaster()
@@ -164,7 +164,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   }
 
-//fetch from countrymaster
+  //fetch from countrymaster
 
   private async fetchfromcountrymaster(): Promise<void> {
 
@@ -186,9 +186,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
 
   //fetchfromsocietymasterlist
-  private async fetchfromsocietymaster(): Promise<void> {
+  private async fetchfromsocietymaster(CountryId: any): Promise<void> {
 
-    const items: any[] = await sp.web.lists.getByTitle("SocietyMaster").items.get();
+    const items: any[] = await sp.web.lists.getByTitle("SocietyMaster").items.filter(`Country eq '${CountryId}'`).get();
     console.log(items.length);
 
     let events = `<option value=''>--Select--</option>`
@@ -223,7 +223,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     document.getElementById('righttypemaster').innerHTML = events;
   }
 
-//forselectedoptionCountry
+  //forselectedoptionCountry
   private forselectedoptionCountry() {
     var scope = this
     $("#countrymaster").change(function () {
@@ -231,12 +231,14 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedCountry = $('option:selected', this).val();
       var selectedSociety = $("#societymaster").val();
       var selectedRightType = $("#righttypemaster").val();
-      
+
       console.log(selectedCountry)
-      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType) 
+      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+      scope.fetchfromsocietymaster(selectedCountry);
     });
 
   }
+
 
 
 
@@ -248,7 +250,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedRightType = $("#righttypemaster").val();
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedSociety)
-      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType)
+      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
     });
 
   }
@@ -262,7 +264,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedSociety = $("#societymaster").val();
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedRightType)
-      scope.fetchfromIPRS(selectedCountry,selectedSociety, selectedRightType)
+      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
     });
 
   }
@@ -311,14 +313,16 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     for (let i = 0; i < this.InclusionMaster.length; i++) {
 
       this.InclusionMasterHTML += `<div class="checkbox">
-    <label><input type="checkbox" name="type" value="${this.InclusionMaster[i].ID}">${this.InclusionMaster[i].Title}</label>
- 
-    </div>`;
+         <label><input type="checkbox" name="type" value="${this.InclusionMaster[i].ID}">${this.InclusionMaster[i].Title}</label>
+      </div>
+    `;
 
       //console.log(this.InclusionMaster[i].Title)
 
-
     }
+    this.InclusionMasterHTML += `<div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
+      <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
+    </div>`;
     //document.getElementsByClassName('inclusion-Modal-body').innerHTML = InclusionMasterHTML;
 
 
@@ -334,6 +338,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
 
     }
+    this.ExclusionMasterHTML += `<div class="form-group custom-form-group wpx-250 Add-Custom-Field-Exclusion-DIV">
+      <input type="text" class="form-control Add-Custom-Field-Exclusion" name="" placeholder="custom text field">
+    </div>`;
     //document.getElementById('exclusionID').innerHTML = ExclusionMasterHTML;
 
 
@@ -360,6 +367,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                   <div class="form-group custom-form-group mb0 w-100">
                       <input type="text" class="form-control InclusionName-data" name="InclusionDisplayName" id="InclusionDisplayName${i}" value="" disabled readonly>
                       <input type="hidden" class="form-control InclusionName-Id" name="InclusionDisplayName" id="InclusionDisplayID${i}" value="" readonly>
+                      <input type="hidden" class="form-control InclusionCustomField-Id" name="InclusionCustomFieldDisplayName" id="InclusionCustomFieldDisplayName${i}" value="" disabled readonly>
                   </div>
                   <div class="project-edit-lock-btn-box ml5">
                       <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#inclusionlist${i}">
@@ -373,6 +381,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                   <div class="form-group custom-form-group mb0 w-100">
                   <input type="text" class="form-control ExclusionName-data" name="ExclusionDisplayName" id="ExclusionDisplayName${i}" value="" disabled readonly>
                   <input type="hidden" class="form-control ExclusionName-Id" name="ExclusionDisplayName" id="ExclusionDisplayID${i}" value="" disabled readonly>
+                  <input type="hidden" class="form-control ExclusionCustomField-Id" name="ExclusionCustomFieldDisplayName" id="ExclusionCustomFieldDisplayName${i}" value="" disabled readonly>
                   </div>
                   <div class="project-edit-lock-btn-box ml5">
                       <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#exclusionlist${i}" >
@@ -408,30 +417,31 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
 </tr>
 `
-$(document).on('click', `#newrow${i}`, async function (this) {
-  let answer = window.confirm("Do you want to add New Record?");
-  if (answer == true) {
-    $(this).closest('tr').find("input,textarea").val("");
-    $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
-    $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
-    $(this).closest('tr').find("select.grant-data").val("");
-    //$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
-    $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
-    $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
+      $(document).on('click', `#newrow${i}`, async function (this) {
+        let answer = window.confirm("Do you want to add New Record?");
+        if (answer == true) {
+          $(this).closest('tr').find("input,textarea").val("");
+          $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
+          $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
+          $(this).closest('tr').find("select.grant-data").val("");
+          //$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
+          $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
+          $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
 
-    $(`#IsRecord-Edit-New${i}`).text("New");
-  }
+          $(`#IsRecord-Edit-New${i}`).text("New");
+        }
 
-})
-$(document).on('click', `#edit${i}`, async function (this) {
-  let answer = window.confirm("Do you want to Edit this Record?");
-  if (answer == true) {
-    $(`#IsRecord-Edit-New${i}`).text("Edit");
-    $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
-    $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
-  }
+      })
+      //var scope = this;
+      $(document).on('click', `#edit${i}`, async function (this) {
+        let answer = window.confirm("Do you want to Edit this Record?");
+        if (answer == true) {
+          $(`#IsRecord-Edit-New${i}`).text("Edit");
+          $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
+          $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
+        }
 
-})
+      })
       {
         this.modalHTMLInclusion += `<div id="inclusionlist${i}" class="modal fade" role="dialog">
 <div class="modal-dialog">
@@ -468,8 +478,10 @@ $(document).on('click', `#edit${i}`, async function (this) {
           $(`#InclusionDisplayName${i}`).val(arrayinclusionName)
           $(`#InclusionDisplayID${i}`).val(arrayinclusion)
           console.log(arrayinclusion, arrayinclusionName)
+          let CustomFieldNameInclusion =$(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val() 
+          $(`#InclusionCustomFieldDisplayName${i}`).val(CustomFieldNameInclusion);
         });
-      } 
+      }
 
       {
         this.modalHTMLExclusion += ` <div id="exclusionlist${i}" class="modal fade" role="dialog">
@@ -494,14 +506,18 @@ $(document).on('click', `#edit${i}`, async function (this) {
 
           var arrayexclusion: any[] = [];
           var arrayexclusionName: any[] = [];
+      
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
             arrayexclusionName.push($(this).closest("label").text())
             arrayexclusion.push($(this).val());
 
-            $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
-            $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
+            
           });
-          console.log(arrayexclusion, arrayexclusionName)
+          $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
+            $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
+          let CustomFieldNameExclusion =$(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val() 
+          $(`#ExclusionCustomFieldDisplayName${i}`).val(CustomFieldNameExclusion);
+          console.log(arrayexclusion, arrayexclusionName) 
         })
       }
 
@@ -570,11 +586,14 @@ $(document).on('click', `#edit${i}`, async function (this) {
 
 
           });
+          $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion); 
+          $("#InclusionCustomFieldDisplayName" + i).val(val.CustomInclusion);
           $("#InclusionDisplayName" + i).val(InclusionName);
           $("#InclusionDisplayID" + i).val(val.InclusionId);
           $(`#Remark${i}`).val(val.Remarks);
           const select: any = document.querySelector(`#grant-ddl${i}`);
           select.value = val.GrantId;
+
           let FromDT = moment(val.ValidFrom).format("YYYY-MM-DD");
           $(`#from-date${i}`).val(FromDT);
           let ToDT = moment(val.ValidTill).format("YYYY-MM-DD");
@@ -592,6 +611,8 @@ $(document).on('click', `#edit${i}`, async function (this) {
               }
             });
           })
+          $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val(val.CustomExclusion);
+          $("#ExclusionCustomFieldDisplayName" + i).val(val.CustomExclusion);
           $("#ExclusionDisplayName" + i).val(ExclusionName);
           $("#ExclusionDisplayID" + i).val(val.ExclusionId);
         }
@@ -629,7 +650,9 @@ $(document).on('click', `#edit${i}`, async function (this) {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
         var inclusionID: any = $(this).find("input.InclusionName-Id").val();
+        var CustomFieldInclusionText: any = $(this).find("input.InclusionCustomField-Id").val();
         var exclusionID: any = $(this).find("input.ExclusionName-Id").val();
+        var CustomFieldExclusionText: any = $(this).find("input.ExclusionCustomField-Id").val();
         var validFrom: any = $(this).find("input.from-date-data").val();
         var validTo: any = $(this).find("input.to-date-data").val();
         var Remark: any = $(this).find("textarea.remark-data").val();
@@ -651,7 +674,9 @@ $(document).on('click', `#edit${i}`, async function (this) {
             ValidTill: validTo,
             Remarks: Remark,
             SocietyId: societyid,
-            RightTypeId: rightTypeid
+            RightTypeId: rightTypeid,
+            CustomInclusion: CustomFieldInclusionText,
+            CustomExclusion:CustomFieldExclusionText
           }).then(() => {
             console.log("Line Item updated of id" + IPRSId);
             if (loopCount == $("#data tr.table-row-data").length) {
@@ -672,7 +697,9 @@ $(document).on('click', `#edit${i}`, async function (this) {
             ValidTill: validTo,
             Remarks: Remark,
             SocietyId: societyid,
-            RightTypeId: rightTypeid
+            RightTypeId: rightTypeid,
+            CustomInclusion: CustomFieldInclusionText,
+            CustomExclusion:CustomFieldExclusionText
           }).then(() => {
             console.log(" New Line Item submitted ");
             if (loopCount == $("#data tr.table-row-data").length) {
@@ -698,6 +725,16 @@ $(document).on('click', `#edit${i}`, async function (this) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
+
+
+  // private async AddCustomFieldToInclusionMaster(CustomField: any) {
+  //   sp.web.lists.getByTitle("InclusionMaster").items.add({
+  //     Title: CustomField
+  //   })
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  // }
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');

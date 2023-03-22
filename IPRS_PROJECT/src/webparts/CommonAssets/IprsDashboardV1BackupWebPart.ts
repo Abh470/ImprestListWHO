@@ -145,7 +145,6 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                         <table class="table mb0 custom-table" id="tableId">
                         <thead>
         <tr>
-            <th class="w-10-th">Country</th>
             <th class="w-10-th">Society</th>
             <th class="w-10-th">Right</th>
             <th class="w-15-th">Source</th>
@@ -306,7 +305,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     const items: any[] = await sp.web.lists.getByTitle("CountryMaster").items.get();
     console.log(items.length);
 
-    let events = `<option value="" selected>All</option>`;
+    let events = `<option value=""disabled selected>--select--</option>`;
     //let events = ``;
 
     for (let i = 0; i < items.length; i++) {
@@ -344,7 +343,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .items.filter(`Country eq '${CountryId}'`).get();
     console.log(items);
 
-    var fetch = '<option value="" selected>All</option>'
+    var fetch = '<option value=""disabled selected>--select--</option>'
     //var fetch = ''
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
@@ -391,7 +390,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .items.get();
     console.log(items);
 
-    var fetch = `<option value="" selected>All</option>`
+    var fetch = `<option value="" selected>All-RightType</option>`
 
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
@@ -453,11 +452,11 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       else {
 
         items = await sp.web.lists.getByTitle("IPRS")
-          .items.select("Country/Title,Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
-          .expand("Country,Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").getAll();
+          .items.select("Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
+          .expand("Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").getAll();
         //orderBy("Created",false)
         console.log(items);
-        this.APIDataForFilterSort = items; 
+        this.APIDataForFilterSort = items;
 
       }
 
@@ -483,8 +482,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         //   });
 
         table += `
-   <tr> 
-  <td>${items[i].Country.Title}</td>    
+   <tr>     
   <td>${items[i].Society.Title}</td>
   <td>${items[i].RightType.Title}</td>
   <td>${items[i].Source.Title}</td>
@@ -532,7 +530,6 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         scrollX: true,
         sScrollXInner: "100%",
         "aoColumns": [
-          { "bSortable": true },
           { "bSortable": true },
           { "bSortable": true },
           { "bSortable": true },
@@ -722,8 +719,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   private async fetchforhistory(CountryHistoryID: any, SocietyHistoryID: any, SourceHistoryID: any, HistorymodalID: any): Promise<void> {
 
     const items = await sp.web.lists.getByTitle("IPRS")
-      .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and Source eq '${SourceHistoryID}'`).select("Country/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
-      .expand("Country,Source,Grant,Inclusion,Exclusion").orderBy("Created", false).get();
+      .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and Source eq '${SourceHistoryID}'`).select("Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
+      .expand("Source,Grant,Inclusion,Exclusion").orderBy("Created", false).get();
     console.log(items.length);
     console.log(items);
 
@@ -886,8 +883,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     }
 
     const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
-      .select("*,Country/Title,RightType/Title,Society/Title,Source/Title,Grant/Title")
-      .expand("Country,RightType,Society,Source,Grant")
+      .select("*, RightType/Title,Society/Title,Source/Title,Grant/Title")
+      .expand("RightType,Society,Source,Grant")
       .filter(`${filter}`).orderBy("Created", false)
       .get();
     console.log(IPRSItemOnFilterClick);
@@ -934,7 +931,6 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     $("#Right-Icon").text($("#righttype option:selected").text());
 
     this.APIDataFilter = this.APIDataForFilterSort;
-
 
     if (filterSociety != '' && Country != '') {
       this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
