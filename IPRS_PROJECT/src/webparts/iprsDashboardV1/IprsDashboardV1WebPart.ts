@@ -306,7 +306,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     const items: any[] = await sp.web.lists.getByTitle("CountryMaster").items.get();
     console.log(items.length);
 
-    let events = `<option value="" selected>All</option>`;
+    let events = `<option value="" selected disabled>Select</option>
+                       <option value="">Select All</option>`;
     //let events = ``;
 
     for (let i = 0; i < items.length; i++) {
@@ -339,12 +340,17 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   //fetchfromsocietymaster
   private async fetchfromSocietyMaster(CountryId: any): Promise<void> {
+    let Filter= "";
+    if(CountryId != ""){
+      Filter =`Country eq '${CountryId}'`
+      
+    }
     const items: any[] = await sp.web.lists
       .getByTitle("SocietyMaster")
-      .items.filter(`Country eq '${CountryId}'`).get();
+      .items.filter(Filter).get();
     console.log(items);
 
-    var fetch = '<option value="" selected>All</option>'
+    var fetch = '<option value="" selected>Select All</option>'
     //var fetch = ''
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
@@ -391,7 +397,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .items.get();
     console.log(items);
 
-    var fetch = `<option value="" selected>All</option>`
+    var fetch = `<option value="" selected>Select All</option>`
 
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
@@ -427,7 +433,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .items.get();
     console.log(items.length);
 
-    var fetch = `<option value="" selected> All </option>`
+    var fetch = `<option value="" selected> Select All </option>`
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
       console.log(items[i].Title)
@@ -450,16 +456,16 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         items = itemByFilter;
 
       }
-      else {
+      // else {
 
-        items = await sp.web.lists.getByTitle("IPRS")
-          .items.select("Country/Title,Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
-          .expand("Country,Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").getAll();
-        //orderBy("Created",false)
-        console.log(items);
-        this.APIDataForFilterSort = items; 
+      //   items = await sp.web.lists.getByTitle("IPRS")
+      //     .items.select("Country/Title,Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
+      //     .expand("Country,Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").getAll();
+      //   //orderBy("Created",false)
+      //   console.log(items);
+      //   this.APIDataForFilterSort = items; 
 
-      }
+      // }
 
 
       let table = ``
@@ -853,15 +859,16 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     $("#Society-Icon").text($("#society option:selected").text());
     $("#Right-Icon").text($("#righttype option:selected").text());
     let filter = '';
-    if (filterCountry == null) {
-      alert("Please select the Country")
-      return;
-    }
-    else if(filterSociety == null){
-      alert("Please select the Country")
-      return;
-    }
-    else {
+    // if (filterCountry == null) {
+    //   alert("Please select the Country")
+    //   return;
+    // }
+    // else if(filterSociety == null){
+    //   alert("Please select the Country")
+    //   return;
+    // }
+    // else {
+  
       if (filterCountry != "") {
         filter += `Country eq '${filterCountry}'`;
       }
@@ -883,32 +890,59 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       if (filterValidTill != "") {
         filter += `and ValidTill le '${filterValidTill}'`;
       }
-    }
 
+// }
     const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("*,Country/Title,RightType/Title,Society/Title,Source/Title,Grant/Title")
       .expand("Country,RightType,Society,Source,Grant")
       .filter(`${filter}`).orderBy("Created", false)
-      .get();
+      .getAll();
     console.log(IPRSItemOnFilterClick);
-    let distinctArr: any[] = [];
-    let isInArr: boolean = false;
-    IPRSItemOnFilterClick.forEach((val, ind) => {
-      isInArr = false;
-      try {
-        for (let i = 0; i < distinctArr.length; i++) {
-          if (val.SourceId == distinctArr[i].SourceId) {
-            isInArr = true;
-          }
-        }
-      } catch { }
-      if (isInArr == false) {
-        distinctArr.push(val);
+    //let distinctArr: any[] = [];
+    //let isInArr: boolean = false;
+    // IPRSItemOnFilterClick.forEach((val, ind) => {
+    //   isInArr = false;
+    //   try {
+    //     for (let i = 0; i < distinctArr.length; i++) {
+    //       if (val.SourceId == distinctArr[i].SourceId) {
+    //         isInArr = true;
+    //       }
+    //     }
+    //   } catch { }
+    //   if (isInArr == false) {
+    //     distinctArr.push(val);
+    //   }
+    // })
+    //console.log("distinctArr" + distinctArr)
+    var groups = _.groupBy(IPRSItemOnFilterClick, function(value){
+      return value.CountryId + "#" + value.SocietyId + "#" + value.RightTypeId +"#" +value.SourceId;
+  });
+  console.log(groups);
+  let latestSourceArray = [];
+  for (var key in groups) {
+    var obj = groups[key];
+    for (let i = 0; i < obj.length; i++) { 
+      if(obj.length > 1){
+        var element = obj[obj.length-1];
+        latestSourceArray.push(element);
+        break;
       }
-    })
-    console.log("distinctArr" + distinctArr)
+      else
+      {
+        var element = obj[i];
+        latestSourceArray.push(element);
+        break;
+      }
+      
+       
+    }
+   
+    // ...
+}
+console.log(latestSourceArray);
+
     this.IsFilterApplied = true;
-    this.fetchfromIPRS(distinctArr).then(() => {
+    this.fetchfromIPRS(latestSourceArray).then(() => {
       $(".lds-dual-ring").hide();
       
     })
