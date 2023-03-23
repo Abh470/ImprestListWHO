@@ -567,8 +567,11 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         $(document).one('click', `#history${i + uniqueid}`, async (): Promise<any> => {
           var Hmodalid = i;
           var SourceHistoryid = items[i].SourceId;
+          var CountryHistoryID = items[i].CountryId;
+          var SocietyHistoryID = items[i].SocietyId;
+          var RightTypeHistoryID = items[i].RightTypeId; 
 
-          this.fetchforhistory(this.CountryIdApplyFilter, this.SocietyIdApplyFilter, SourceHistoryid, Hmodalid);
+          this.fetchforhistory(Hmodalid,CountryHistoryID,SocietyHistoryID,RightTypeHistoryID,SourceHistoryid);
         });
 
       }
@@ -778,10 +781,10 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
 
 
-  private async fetchforhistory(CountryHistoryID: any, SocietyHistoryID: any, SourceHistoryID: any, HistorymodalID: any): Promise<void> {
+  private async fetchforhistory(HistorymodalID: any,CountryHistoryID: any, SocietyHistoryID: any,RightTypeHistoryID: any, SourceHistoryID: any, ): Promise<void> {
 
     const items = await sp.web.lists.getByTitle("IPRS")
-      .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and Source eq '${SourceHistoryID}'`).select("Country/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
+      .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and RightType eq '${RightTypeHistoryID}'and Source eq '${SourceHistoryID}'`).select("Country/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
       .expand("Country,Source,Grant,Inclusion,Exclusion").orderBy("Created", false).get();
     console.log(items.length);
     console.log(items);
