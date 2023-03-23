@@ -338,7 +338,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     var scope = this
     $("#country").on("change", function () {
 
-      var selectedCountry = $('option:selected', this).val();
+      //var selectedCountry = $('option:selected', this).val();
+      var selectedCountry = $("#country").val()
+
       //var selectedSociety = $("#societymaster").val();
       //var selectedRightType = $("#righttypemaster").val();
 
@@ -353,8 +355,17 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   //fetchfromsocietymaster
   private async fetchfromSocietyMaster(CountryId: any): Promise<void> {
     let Filter = "";
-    if (CountryId != "") {
-      Filter = `Country eq '${CountryId}'`
+    // if (CountryId != "") {
+    //   Filter = `Country eq '${CountryId}'`
+
+    // }
+    for (let i = 0; i < CountryId.length; i++) {
+      const id = CountryId[i];
+      Filter += `Country eq '${id}'`;
+
+      if (i != CountryId.length - 1) {
+        Filter += ' or ';
+      }
 
     }
     const items: any[] = await sp.web.lists
@@ -383,6 +394,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       });
 
     });
+    ($('#society') as any).multiselect('reload');
 
 
   }
@@ -422,7 +434,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .items.get();
     console.log(items);
 
-    var fetch = `<option value="" selected>Select All</option>`
+    var fetch = ``
 
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
@@ -443,7 +455,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       });
 
     });
-    
+
   }
 
 
@@ -528,22 +540,22 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         //   });
 
         table += `
-   <tr> 
-  <td>${items[i].Country.Title}</td>    
-  <td>${items[i].Society.Title}</td>
-  <td>${items[i].RightType.Title}</td>
-  <td>${items[i].Source.Title}</td>
-  <td>${items[i].Grant.Title}</td>
-  <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
-  <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
-  <td class="noExl"> 
-  <div class="reciprocal-action-btn-box">
-  <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">Details</a>
-  <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#history-modal${i}" id="history${i + uniqueid}">History</a>
-  </div>
-  </td>
-  </tr>
-  `
+                  <tr> 
+                    <td>${items[i].Country.Title}</td>    
+                    <td>${items[i].Society.Title}</td>
+                    <td>${items[i].RightType.Title}</td>
+                    <td>${items[i].Source.Title}</td>
+                    <td>${items[i].Grant.Title}</td>
+                    <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
+                    <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
+                    <td class="noExl"> 
+                    <div class="reciprocal-action-btn-box">
+                    <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">Details</a>
+                    <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#history-modal${i}" id="history${i + uniqueid}">History</a>
+                    </div>
+                    </td>
+                  </tr>
+                  `
 
         $(document).one('click', `#detail${i + uniqueid}`, async (): Promise<any> => {
           var Dmodalid = i;
@@ -570,33 +582,33 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       //if (this.IsFilterApplied == false) {
 
       ($("#tableId") as any).DataTable(
-      //   {
-      //   items: 100,
-      //   itemsOnPage: 10,
-      //   cssStyle: 'light-theme',
-      //   scrollY: '500px',
-      //   scrollX: true,
-      //   sScrollXInner: "100%",
-      //   "aoColumns": [
-      //     { "bSortable": true },
-      //     { "bSortable": true },
-      //     { "bSortable": true },
-      //     { "bSortable": true },
-      //     { "bSortable": true },
-      //     { "bSortable": true },
-      //     { "bSortable": true },
-      //     { "bSortable": false }
-      //   ],
-      //   "sDom": '<"top"f>rt<"bottom"pli>',
-      //   "columnDefs": [
-      //     {
-      //       "targets": [0, -1], //first column / numbering column
-      //       "orderable": false, //set not orderable
-      //     },
-      //   ],
-      //   "lengthMenu": [[10, 50, 100, 250], [10, 50, 100, 250]],
-      //   "order": [[3, "asc"]]
-      // }
+        //   {
+        //   items: 100,
+        //   itemsOnPage: 10,
+        //   cssStyle: 'light-theme',
+        //   scrollY: '500px',
+        //   scrollX: true,
+        //   sScrollXInner: "100%",
+        //   "aoColumns": [
+        //     { "bSortable": true },
+        //     { "bSortable": true },
+        //     { "bSortable": true },
+        //     { "bSortable": true },
+        //     { "bSortable": true },
+        //     { "bSortable": true },
+        //     { "bSortable": true },
+        //     { "bSortable": false }
+        //   ],
+        //   "sDom": '<"top"f>rt<"bottom"pli>',
+        //   "columnDefs": [
+        //     {
+        //       "targets": [0, -1], //first column / numbering column
+        //       "orderable": false, //set not orderable
+        //     },
+        //   ],
+        //   "lengthMenu": [[10, 50, 100, 250], [10, 50, 100, 250]],
+        //   "order": [[3, "asc"]]
+        // }
       );
       resolve();
     })
@@ -900,50 +912,86 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     $("#Society-Icon").text($("#society option:selected").text());
     $("#Right-Icon").text($("#righttype option:selected").text());
     let filter = '';
-    // if (filterCountry == null) {
-    //   alert("Please select the Country")
-    //   return;
-    // }
-    // else if(filterSociety == null){
-    //   alert("Please select the Country")
-    //   return;
-    // }
+    let countryFilter = '';
+    let societyFilter = '';
+    let rightTypeFilter = '';
+    if (filterCountry.length == 0) {
+      alert("Please select the Country")
+      return;
+    }
+    else if(filterSociety.length == 0){
+      alert("Please select the Society")
+      return;
+    }
+    else if(rightTypeFilter.length == 0){
+      alert("Please select the RightType")
+      return;
+    }
     // else {
 
-    if (filterCountry != "") {
-      for (let i = 0; i < filterCountry.length; i++) {
-        if(filterCountry.length > 1){
-          filter += ' or '
-        }
-        const countryId = filterCountry[i];
-          filter += `Country eq '${countryId}'`;
+    // if (filterCountry != "") {
+    for (let i = 0; i < filterCountry.length; i++) {
+      const id = filterCountry[i];
+      countryFilter += `Country eq '${id}'`;
+
+      if (i != filterCountry.length - 1) {
+        countryFilter += ' or ';
       }
-      
+ 
     }
-    if (filterRightType != '') {
-      filter += ` and RightType eq '${filterRightType}'`;
+    for (let i = 0; i < filterSociety.length; i++) {
+      const id = filterSociety[i];
+      /////add "and" for first time
+      // if (i == 0) {
+      //   societyFilter += ' and ';
+      // }
+      societyFilter += `Society eq '${id}'`;
+
+      ////add "or" till last second time
+      if (i != filterSociety.length - 1) {
+        societyFilter += ' or ';
+      }
+
     }
-    if (filterSociety != '') {
-      filter += ` and Society eq '${filterSociety}'`;
+    for (let i = 0; i < filterRightType.length; i++) {
+      const id = filterRightType[i];
+      // if (i == 0) {
+      //   rightTypeFilter += ' and ';
+      // }
+      rightTypeFilter += `RightType eq '${id}'`;
+
+      if (i != filterRightType.length - 1) {
+        rightTypeFilter += ' or ';
+      }
+
     }
+
+    //}
+    // if (filterRightType != '') {
+    //   filter += ` and RightType eq '${filterRightType}'`;
+    // }
+    // if (filterSociety != '') {
+    //   filter += ` and Society eq '${filterSociety}'`;
+    // }
     if (filterGrant != "") {
-      filter += ` and Grant eq '${filterGrant}'`;
+      filter += ` and (Grant eq '${filterGrant}')`;
     }
     if (filterSource != "") {
-      filter += ` and Source eq '${filterSource}'`;
+      filter += ` and (Source eq '${filterSource}')`;
     }
     if (filterValidFrom != "") {
-      filter += ` and ValidFrom ge '${filterValidFrom}'`;
+      filter += ` and (ValidFrom ge '${filterValidFrom}')`;
     }
     if (filterValidTill != "") {
-      filter += `and ValidTill le '${filterValidTill}'`;
+      filter += `and (ValidTill le '${filterValidTill}')`;
     }
+    console.log(filter)
 
     // }
     const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("*,Country/Title,RightType/Title,Society/Title,Source/Title,Grant/Title")
       .expand("Country,RightType,Society,Source,Grant")
-      .filter(`${filter}`).orderBy("Created", false)
+      .filter(`(${countryFilter}) and (${societyFilter}) and (${rightTypeFilter})${filter}`).orderBy("Created", false)
       .getAll();
     console.log(IPRSItemOnFilterClick);
     //let distinctArr: any[] = [];
