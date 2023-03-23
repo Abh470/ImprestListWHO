@@ -203,6 +203,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
             <div class="col-sm-4 col-xs-12">
                 <div class="form-group custom-form-group">
                     <label>Right Type:</label>
+                    <span style="color:red;" class="MandSign">*</span>
                     <select id="righttype" name="right_basic[]" multiple="multiple" class="form-control">
 
                     </select>
@@ -569,8 +570,11 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         $(document).one('click', `#history${i + uniqueid}`, async (): Promise<any> => {
           var Hmodalid = i;
           var SourceHistoryid = items[i].SourceId;
+          var CountryHistoryid = items[i].CountryId;
+          var SocietyHistoryid = items[i].SocietyId;
+          var RightTypeHistoryid = items[i].RightTypeId;
 
-          this.fetchforhistory(this.CountryIdApplyFilter, this.SocietyIdApplyFilter, SourceHistoryid, Hmodalid);
+          this.fetchforhistory(Hmodalid,CountryHistoryid, SocietyHistoryid, RightTypeHistoryid, SourceHistoryid);
         });
 
       }
@@ -780,10 +784,10 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
 
 
-  private async fetchforhistory(CountryHistoryID: any, SocietyHistoryID: any, SourceHistoryID: any, HistorymodalID: any): Promise<void> {
+  private async fetchforhistory(HistorymodalID:any,CountryHistoryID:any, SocietyHistoryID:any, RightTypeHistoryid:any, SourceHistoryID:any): Promise<void> {
 
     const items = await sp.web.lists.getByTitle("IPRS")
-      .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and Source eq '${SourceHistoryID}'`).select("Country/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
+      .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and RightType eq '${RightTypeHistoryid}' and Source eq '${SourceHistoryID}'`).select("Country/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
       .expand("Country,Source,Grant,Inclusion,Exclusion").orderBy("Created", false).get();
     console.log(items.length);
     console.log(items);
