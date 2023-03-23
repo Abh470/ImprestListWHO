@@ -911,13 +911,13 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     $("#Country-Icon").text($("#country option:selected").text());
     $("#Society-Icon").text($("#society option:selected").text());
     $("#Right-Icon").text($("#righttype option:selected").text());
-    let filter = '';
+    let filter = ''; 
     let countryFilter = '';
     let societyFilter = '';
     let rightTypeFilter = '';
     if (filterCountry.length == 0) {
       alert("Please select the Country")
-      return;
+      return; 
     }
     else if(filterSociety.length == 0){
       alert("Please select the Society")
