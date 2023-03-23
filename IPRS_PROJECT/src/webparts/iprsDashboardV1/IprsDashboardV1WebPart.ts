@@ -24,6 +24,8 @@ require("../../webparts/iprsDashboardV1/assets/assets/js/jquery.multiselect.js")
 require("../../webparts/iprsDashboardV1/assets/assets/css/jquery.multiselect.css");
 
 require("../../webparts/CommonAssets/ExcelJs/jquery.table2excel.js");
+// require("../../webparts/CommonAssets/row-merge-bundle.min.js");
+
 const ADDUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/plus-icon.png');
 const filterUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/export-icon.png');
@@ -911,10 +913,6 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     $("#Country-Icon").text($("#country option:selected").text());
     $("#Society-Icon").text($("#society option:selected").text());
     $("#Right-Icon").text($("#righttype option:selected").text());
-    let filter = ''; 
-    let countryFilter = '';
-    let societyFilter = '';
-    let rightTypeFilter = '';
     if (filterCountry.length == 0) {
       alert("Please select the Country")
       return; 
@@ -923,10 +921,14 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       alert("Please select the Society")
       return;
     }
-    else if(rightTypeFilter.length == 0){
+    else if(filterRightType.length == 0){
       alert("Please select the RightType")
       return;
     }
+    let filter = ''; 
+    let countryFilter = '';
+    let societyFilter = '';
+    let rightTypeFilter = '';
     // else {
 
     // if (filterCountry != "") {
@@ -991,7 +993,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("*,Country/Title,RightType/Title,Society/Title,Source/Title,Grant/Title")
       .expand("Country,RightType,Society,Source,Grant")
-      .filter(`(${countryFilter}) and (${societyFilter}) and (${rightTypeFilter})${filter}`).orderBy("Created", false)
+      .filter(`(${countryFilter}) and (${societyFilter}) and (${rightTypeFilter})${filter}`)
+      .orderBy("Created", false)
       .getAll();
     console.log(IPRSItemOnFilterClick);
     //let distinctArr: any[] = [];
