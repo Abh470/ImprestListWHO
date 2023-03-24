@@ -879,3 +879,177 @@
 
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+`<div id="detail-modal${DetailmodalID}" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content reciprocal-custom-modal">
+        <div class="modal-header">
+          <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>
+          <h4 class="modal-title">Details</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row mt10">
+                <div class="col-sm-6 col-xs-12">
+                    <div class="form-group custom-form-group">
+                        <label>Country:</label>
+                        <p>${items.Country.Title}</p> 
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <div class="form-group custom-form-group">
+                        <label>City:</label>
+                        <p>${items.City.Title}</p>
+                    </div>
+                </div>
+            </div>
+          <div class="row mt10">
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Society:</label>
+                      <p>${items.Society.Title}</p> 
+                  </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Right Type:</label>
+                      <p>${items.RightType.Title}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row mt10">
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Source:</label>
+                      <p>${items.Source.Title}</p>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Grant:</label>
+                      <p>${items.Grant.Title}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row mt10">
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Inclusion:</label>
+                      <p>${items.Inclusion.map((val: any) => {
+            return (val.Title)
+          })}</p>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Exclusion:</label>
+                      <p>${items.Inclusion.map((val: any) => {
+            return (val.Title)
+          })}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row mt10">
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Valid From:</label>
+                      <p>${moment(items.ValidFrom).format('YYYY-MMM-DD')}</p>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Valid To:</label>
+                      <p>${moment(items.ValidTill).format('YYYY-MMM-DD')}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row mt10">
+              <div class="col-sm-12 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Remarks:</label>
+                      <p>${items.Remarks}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row mt10">
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Created By:</label>
+                      <div class="reciprocal-user-card-panel">
+                      ${ /*<div class="reciprocal-user-card-img"> 
+                              
+                          </div>*/''}
+                          <div class="reciprocal-user-card-info">
+                              <div class="reciprocal-user-card-name ellipsis-1">
+                              ${items.Author.Title}
+                              </div>
+                              <div class="reciprocal-user-card-email ellipsis-1">
+                              ${items.Author.EMail}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Created On:</label>
+                      <p>${moment(items.Created).format('YYYY-MMM-DD')}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="row mt10">
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Modified By:</label>
+                      <div class="reciprocal-user-card-panel">
+                      ${ /* Backtik comment
+                        <div class="reciprocal-user-card-img">
+                              
+                          </div>*/''}
+                          <div class="reciprocal-user-card-info">
+                              <div class="reciprocal-user-card-name ellipsis-1">
+                              ${items.Editor.Title}
+                              </div>
+                              <div class="reciprocal-user-card-email ellipsis-1">
+                              ${items.Editor.EMail}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6 col-xs-12">
+                  <div class="form-group custom-form-group">
+                      <label>Modified On:</label>
+                      <p>${moment(items.Modified).format('YYYY-MMM-DD')}</p>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    
+    </div>
+    </div>`
+    

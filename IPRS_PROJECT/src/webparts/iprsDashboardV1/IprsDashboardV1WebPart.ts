@@ -640,8 +640,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
 
     const items = await sp.web.lists.getByTitle("IPRS")
-      .items.getById(DetailitemID).select("Country/Title,City/Title,Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
-      .expand("Country,City,Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").get();
+      .items.getById(DetailitemID).select("Country/Title,Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
+      .expand("Country,Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").get();
       var SocietyIdIPRS = items.SocietyId;
     console.log(items.length);
     console.log(items);

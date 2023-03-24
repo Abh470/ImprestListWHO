@@ -171,7 +171,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     const items: any[] = await sp.web.lists.getByTitle("CountryMaster").items.get();
     console.log(items.length);
 
-    let events = `<option value=''>--Select--</option>`
+    let events = `<option value='' disabled selected >--Select--</option>`
 
     for (let i = 0; i < items.length; i++) {
 
@@ -191,7 +191,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     const items: any[] = await sp.web.lists.getByTitle("SocietyMaster").items.filter(`Country eq '${CountryId}'`).get();
     console.log(items.length);
 
-    let events = `<option value=''>--Select--</option>`
+    let events = `<option value='' disabled selected >--Select--</option>`
 
     for (let i = 0; i < items.length; i++) {
 
@@ -211,7 +211,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     const items: any[] = await sp.web.lists.getByTitle("RightTypeMaster").items.get();
     console.log(items.length);
 
-    let events = `<option value=''>--Select--</option>`
+    let events = `<option value='' disabled selected >--Select--</option>`
 
     for (let i = 0; i < items.length; i++) {
 
@@ -407,10 +407,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
           <td>
               <div class="reciprocal-action-btn-box">
-                  <a type="button" href="#" class="custom-edit-btn mr15" id="edit${i}" disabled>
+                  <a type="button" href="#" class="custom-edit-btn mr15" id="edit${i}">
                       <i class="fa fa-pencil"></i>
                   </a>
-                  <a type="button" href="#" class="custom-edit-btn" id="newrow${i}" disabled>
+                  <a type="button" href="#" class="custom-edit-btn" id="newrow${i}">
                       <i class="fa fa-plus"></i>
                   </a>
               </div>
@@ -663,18 +663,19 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         exclusionID = exclusionID.split(",");
         var societyid: any = $("#societymaster").val();
         var rightTypeid: any = $("#righttypemaster").val();
+        var countryid: any = $("#countrymaster").val();
 
         if (IsAddOrUpdate == "Edit") {
           sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
             GrantId: grant,
-            SourceId: sourceID,
+            //SourceId: sourceID,
             InclusionId: { results: inclusionID },
             ExclusionId: { results: exclusionID },
             ValidFrom: validFrom,
             ValidTill: validTo,
             Remarks: Remark,
-            SocietyId: societyid,
-            RightTypeId: rightTypeid,
+            // SocietyId: societyid,
+            // RightTypeId: rightTypeid,
             CustomInclusion: CustomFieldInclusionText,
             CustomExclusion:CustomFieldExclusionText
           }).then(() => {
@@ -698,6 +699,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             Remarks: Remark,
             SocietyId: societyid,
             RightTypeId: rightTypeid,
+            CountryId: countryid,
             CustomInclusion: CustomFieldInclusionText,
             CustomExclusion:CustomFieldExclusionText
           }).then(() => {
