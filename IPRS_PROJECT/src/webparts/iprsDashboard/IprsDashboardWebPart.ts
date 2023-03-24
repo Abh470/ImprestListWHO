@@ -11,7 +11,7 @@ import { sp } from "@pnp/sp/presets/all";
 //import { sp, Web } from "@pnp/sp/presets/all"
 //import styles from './IprsDashboardWebPart.module.scss';
 import * as strings from "IprsDashboardWebPartStrings";
-import { SPComponentLoader } from "@microsoft/sp-loader"; 
+import { SPComponentLoader } from "@microsoft/sp-loader";
 import "jquery";
 import * as moment from "moment";
 import * as _ from "lodash";
@@ -390,8 +390,19 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
         //orderBy("Created",false)
         console.log(items);
         this.APIDataForFilterSort = items;
+        // let arr: any[] = [];
+        // let arrobj = _.groupBy(this.APIDataForFilterSort, "CountryId");
+        // arr.push(arrobj);
+        // arrobj = _.groupBy(arrobj, "SocietyId");
+        // console.log(arr);
+        var groups = _.groupBy(this.APIDataForFilterSort, function(value){
+          return "CountryId-"+value.CountryId + 'SocietyId-' + value.SocietyId + 'RighttypeId-' + value.RightTypeId +'SourceId-' +value.SourceId;
+      });
+    
+      console.log(groups);
+    }
 
-      }
+        
 
 
       let table = ``
@@ -704,7 +715,7 @@ export default class IprsDashboardWebPart extends BaseClientSideWebPart<IIprsDas
     }
     else {
 
-      if (filterSociety.length > 0 && filterRightType != null && filterSource != null && filterGrant != null && filterValidFrom != "" &&filterValidTill != "") {
+      if (filterSociety.length > 0 && filterRightType != null && filterSource != null && filterGrant != null && filterValidFrom != "" && filterValidTill != "") {
         this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
           let Societyfilterlist: string[] = []
           Societyfilterlist.push(el.SocietyId);
