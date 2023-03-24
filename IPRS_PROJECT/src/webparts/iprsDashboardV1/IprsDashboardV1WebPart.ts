@@ -289,7 +289,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     return new Promise<any>(async (resolve, reject) => {
       const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("Country/Id,RightType/Id,Society/Id")
-      .expand("Country,RightType,Society")
+      .expand("Country,RightType,Society") 
       .getAll();
       console.log(IPRSItemOnFilterClick);
       IPRSItemOnFilterClick.forEach((item)=>{
