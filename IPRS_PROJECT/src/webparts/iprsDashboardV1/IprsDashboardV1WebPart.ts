@@ -52,6 +52,10 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public CountryIdApplyFilter = '';
   public SocietyIdApplyFilter = '';
 
+  public CountrydropdownIPRS:any[]=[];
+  public SocietydropdownIPRS:any[]=[];
+  public RightTypedropdownIPRS:any[]=[];
+
 
   public async render(): Promise<void> {
     SPComponentLoader.loadCss("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
@@ -77,7 +81,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                             <div class="upload-chip" id="Country-Icon"></div>
                             <div class="upload-chip" id="Society-Icon"></div>
                             <div class="upload-chip" id="Right-Icon"></div>
-                            <div class="upload-chip" id="City-Icon"></div>
+                            ${/* <div class="upload-chip" id="City-Icon"></div>*/''}
                         </div>
                     </div> 
                 </div>
@@ -103,37 +107,12 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                               <span>Export</span>
                             </button>
                         </div>
-                        ${/* 
-                             // Backtick Comment    
+                        ${/*  Backtick Comment    
                         <div class="dropdown dashboard-table-btn">
                         
                             <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" id="sortId">
-                              <img class="dashboard-icon-info mr2" src="${SortUploaded}" alt="sort">
-                              <span>Sort</span>
-                              <img class="dashboard-icon-info ml2" src="${ExpandArrowUploaded}" alt="expand arrow">
-                              </button>
-                              <ul class="dropdown-menu dropdown-color-menu-icon">
-                              <li>
-                                <a href="#">
-                                  <span>Society</span>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <span>Right</span>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <span>Source</span>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="#">
-                                  <span>Grant</span>
-                                </a>
-                              </li>
-                            </ul>
+                              
+                             
                         </div> */''}
                     </div>
                     ${/*<div class="form-group custom-form-group dashboard-search-box">
@@ -259,12 +238,15 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
     //this.fetchfromSocietyMaster();
     //this.societymultiselect();
-    this.fetchfromRightTypeMaster();
+    this.fetchDropdownIPRS().then(()=>{
+      this.fetchfromRightTypeMaster();
+      this.fetchfromcountrymaster();
+    })
+    
     this.fetchfromSourceMaster();
     this.fetchfromGrantMaster();
-    this.fetchfromcountrymaster();
     this.forselectedoptionCountry();
-    this.forselectedoptionSociety();
+    //this.forselectedoptionSociety();
 
 
 
@@ -302,10 +284,31 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   }
 
+
+  private async fetchDropdownIPRS():Promise<any> {
+    return new Promise<any>(async (resolve, reject) => {
+      const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
+      .select("Country/Id,RightType/Id,Society/Id")
+      .expand("Country,RightType,Society")
+      .getAll();
+      console.log(IPRSItemOnFilterClick);
+      IPRSItemOnFilterClick.forEach((item)=>{
+        this.CountrydropdownIPRS.push(item.Country.Id);
+        this.SocietydropdownIPRS.push(item.Society.Id);
+        this.RightTypedropdownIPRS.push(item.RightType.Id)
+      })
+      resolve("")
+
+      
+    })
+    
+  }
+
   //fetch from countrymaster
 
   private async fetchfromcountrymaster(): Promise<void> {
-
+  //  const it = await sp.web.lists.getByTitle("IPRS").fields.getByTitle("Country").get();
+  //  console.log(it);
     const items: any[] = await sp.web.lists.getByTitle("CountryMaster").items.get();
     console.log(items.length);
 
@@ -313,11 +316,15 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     //let events = ``;
 
     for (let i = 0; i < items.length; i++) {
-
+      try{
+      if(this.CountrydropdownIPRS.includes(items[i].ID)){
       events += `<option value='${items[i].ID}'> ${items[i].Title} </option>`
-      console.log(items)
+     // console.log(items)
 
     }
+  }
+  catch{}
+  }
 
     document.getElementById('country').innerHTML = events;
     $(function () {
@@ -379,9 +386,11 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     var fetch = ''
     //var fetch = ''
     for (var i = 0; i < items.length; i++) {
+      if(this.SocietydropdownIPRS.includes(items[i].ID)){
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-      console.log(items[i].Title)
+      //console.log(items[i].Title)
     }
+  }
 
     document.getElementById("society").innerHTML = fetch;
     $(function () {
@@ -402,7 +411,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   }
 
-  private forselectedoptionSociety() {
+  public forselectedoptionSociety() {
     //var scope = this
     let Citytitle = ``
     $("#society").on("change", async function () {
@@ -435,13 +444,15 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     const items: any[] = await sp.web.lists
       .getByTitle("RightTypeMaster")
       .items.get();
-    console.log(items);
+   // console.log(items);
 
     var fetch = ``
 
     for (var i = 0; i < items.length; i++) {
-      fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-      console.log(items[i].Title)
+      if(this.RightTypedropdownIPRS.includes(items[i].ID)){
+        fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+      }
+     // console.log(items[i].Title)
     }
 
     document.getElementById("righttype").innerHTML = fetch;
@@ -473,7 +484,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     var fetch = `<option value="" selected> All </option>`
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-      console.log(items[i].Title)
+      //console.log(items[i].Title)
     }
     document.getElementById("source").innerHTML = fetch;
   }
@@ -490,7 +501,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     var fetch = `<option value="" selected> Select All </option>`
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-      console.log(items[i].Title)
+      //console.log(items[i].Title)
     }
     document.getElementById("grant").innerHTML = fetch;
 
@@ -918,15 +929,18 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     $("#Society-Icon").text($("#society option:selected").text());
     $("#Right-Icon").text($("#righttype option:selected").text());
     if (filterCountry.length == 0) {
-      alert("Please select the Country")
+      alert("Please select the Country");
+      $(".lds-dual-ring").hide();
       return; 
     }
     else if(filterSociety.length == 0){
-      alert("Please select the Society")
+      alert("Please select the Society");
+      $(".lds-dual-ring").hide();
       return;
     }
     else if(filterRightType.length == 0){
-      alert("Please select the RightType")
+      alert("Please select the RightType");
+      $(".lds-dual-ring").hide();
       return;
     }
     let filter = ''; 
