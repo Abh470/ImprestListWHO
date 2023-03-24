@@ -82,14 +82,14 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             <div class="row mt25">
             <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
-                        <label>Country:</label>
+                        <label>Country: <span class="text-red">*</span></label>
                         <select class="form-control" id="countrymaster">
                         </select>
                     </div>
             </div>
                 <div class="col-md-3 col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
-                        <label>Society:</label>
+                        <label>Society: <span class="text-red">*</span></label>
                         <select class="form-control" id="societymaster">
                         </select>
                     </div>
@@ -233,8 +233,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedRightType = $("#righttypemaster").val();
 
       console.log(selectedCountry)
+      if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
       scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
-      scope.fetchfromsocietymaster(selectedCountry);
+      $(".add-newrow-btn").css("pointer-events", "auto");
+      }
+       scope.fetchfromsocietymaster(selectedCountry);
     });
 
   }
@@ -250,7 +253,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedRightType = $("#righttypemaster").val();
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedSociety)
-      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+      if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
+        scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+        $(".add-newrow-btn").css("pointer-events", "auto");
+        }
     });
 
   }
@@ -264,7 +270,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedSociety = $("#societymaster").val();
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedRightType)
-      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+      if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
+        scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+        $(".add-newrow-btn").css("pointer-events", "auto");
+        }
     });
 
   }
@@ -407,10 +416,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
           <td>
               <div class="reciprocal-action-btn-box">
-                  <a type="button" href="#" class="custom-edit-btn mr15" id="edit${i}">
+                  <a type="button" href="#" class="custom-edit-btn mr15 disable-anchor-edit-btn" id="edit${i}" style="pointer-events:none">
                       <i class="fa fa-pencil"></i>
                   </a>
-                  <a type="button" href="#" class="custom-edit-btn" id="newrow${i}">
+                  <a type="button" href="#" class="custom-edit-btn add-newrow-btn" id="newrow${i}" style="pointer-events:none">
                       <i class="fa fa-plus"></i>
                   </a>
               </div>
@@ -586,6 +595,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
 
           });
+          $(`#edit${i}`).css("pointer-events", "auto");
           $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion); 
           $("#InclusionCustomFieldDisplayName" + i).val(val.CustomInclusion);
           $("#InclusionDisplayName" + i).val(InclusionName);
