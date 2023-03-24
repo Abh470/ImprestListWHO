@@ -240,7 +240,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     //this.societymultiselect();
     this.fetchDropdownIPRS().then(()=>{
       this.fetchfromRightTypeMaster();
-      this.fetchfromcountrymaster();
+      this.fetchfromcountrymaster(); 
     })
     
     this.fetchfromSourceMaster();
