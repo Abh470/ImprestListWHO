@@ -235,7 +235,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   </div>
 </div>
-<div id ="modal-list-collection-details">
+<div id ="modal-list-collection-details"> 
 </div>
 `
 
@@ -600,7 +600,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
           { "bSortable": true },
           { "bSortable": true },
           { "bSortable": true },
-          { "bSortable": false }
+          { "bSortable": false}
         ],
         "sDom": '<"top"f>rt<"bottom"pli>',
         "columnDefs": [
@@ -639,8 +639,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
       exclude_links: true,
       exclude_inputs: true
-
-
+      
     });
 
 
