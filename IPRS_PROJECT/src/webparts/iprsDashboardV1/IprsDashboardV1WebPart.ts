@@ -616,7 +616,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         //   "order": [[3, "asc"]]
         // }
       );
-      resolve();
+      resolve(); 
     })
 
 
