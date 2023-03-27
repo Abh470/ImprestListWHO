@@ -1092,8 +1092,22 @@ label {
         transform: rotate(360deg);
     }
 }
-
 /* Loader Css End */
+
+/* Datatable Css start*/
+
+/*div.dataTables_wrapper {
+    width: 800px;
+    margin: 0 auto;
+}
+.dataTables_scroll
+{
+    overflow:auto;
+}*/
+
+/* Datatable Css end*/
+
+
 
 /*multiselect css*/
 
