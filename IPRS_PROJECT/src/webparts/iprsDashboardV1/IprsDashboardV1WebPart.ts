@@ -284,7 +284,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   }
 
-
+ 
   private async fetchDropdownIPRS():Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
       const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
@@ -293,9 +293,15 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .getAll();
       console.log(IPRSItemOnFilterClick);
       IPRSItemOnFilterClick.forEach((item)=>{
-        this.CountrydropdownIPRS.push(item.Country.Id);
-        this.SocietydropdownIPRS.push(item.Society.Id);
-        this.RightTypedropdownIPRS.push(item.RightType.Id)
+        if(!this.CountrydropdownIPRS.includes(item.Country.Id)){
+          this.CountrydropdownIPRS.push(item.Country.Id);
+        }
+        if(!this.SocietydropdownIPRS.includes(item.Society.Id)){
+          this.SocietydropdownIPRS.push(item.Society.Id);
+        }
+        if(!this.RightTypedropdownIPRS.includes(item.RightType.Id)){
+          this.RightTypedropdownIPRS.push(item.RightType.Id);
+        }
       })
       resolve("")
 
