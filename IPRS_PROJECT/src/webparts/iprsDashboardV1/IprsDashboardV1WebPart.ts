@@ -599,33 +599,35 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       //if (this.IsFilterApplied == false) {
 
       ($("#tableId") as any).DataTable(
-        //   {
-        //   items: 100,
-        //   itemsOnPage: 10,
-        //   cssStyle: 'light-theme',
-        //   scrollY: '500px',
-        //   scrollX: true,
-        //   sScrollXInner: "100%",
-        //   "aoColumns": [
-        //     { "bSortable": true },
-        //     { "bSortable": true },
-        //     { "bSortable": true },
-        //     { "bSortable": true },
-        //     { "bSortable": true },
-        //     { "bSortable": true },
-        //     { "bSortable": true },
-        //     { "bSortable": false }
-        //   ],
-        //   "sDom": '<"top"f>rt<"bottom"pli>',
-        //   "columnDefs": [
-        //     {
-        //       "targets": [0, -1], //first column / numbering column
-        //       "orderable": false, //set not orderable
-        //     },
-        //   ],
-        //   "lengthMenu": [[10, 50, 100, 250], [10, 50, 100, 250]],
-        //   "order": [[3, "asc"]]
-        // }
+          {
+          // items: 100,
+          // itemsOnPage: 10,
+          // cssStyle: 'light-theme',
+          // scrollY: '500px',
+          // scrollX: true,
+          // sScrollXInner: "100%",
+          "searching": false,
+          "aoColumns": [ 
+            { "bSortable": false },
+            { "bSortable": false },
+            { "bSortable": false },
+            { "bSortable": false },
+            { "bSortable": false },
+            { "bSortable": false },
+            { "bSortable": false },
+            { "bSortable": false }
+          ],
+          "sDom": '<"top"f>rt<"bottom"pli>',
+          // "columnDefs": [
+          //   {
+          //     "targets": [0, -1], //first column / numbering column
+          //     "orderable": false, //set not orderable
+          //   },
+          // ],
+          'columnDefs': [{ 'orderable': false, 'targets': 0 }],
+          // "lengthMenu": [[10, 50, 100, 250], [10, 50, 100, 250]],
+          // "order": [[3, "asc"]]
+        }
       );
       resolve(); 
     })
@@ -884,6 +886,34 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         `
     }
     $("#modal-list-collection-history").append(this.modalHTMLHistory);
+    ($("#historytableID") as any).DataTable(
+      {
+      // items: 100,
+      // itemsOnPage: 10,
+      // cssStyle: 'light-theme',
+      // scrollY: '500px',
+      // scrollX: true,
+      // sScrollXInner: "100%",
+      "searching": false,
+      "aoColumns": [ 
+        { "bSortable": false },
+        { "bSortable": false },
+        { "bSortable": false },
+        { "bSortable": false },
+        { "bSortable": false },
+        { "bSortable": false },
+      ],
+      "sDom": '<"top"f>rt<"bottom"pli>',
+      // "columnDefs": [
+      //   {
+      //     "targets": [0, -1], //first column / numbering column
+      //     "orderable": false, //set not orderable
+      //   },
+      // ],
+      // "lengthMenu": [[10, 50, 100, 250], [10, 50, 100, 250]],
+      // "order": [[3, "asc"]]
+    }
+  );
 
 
     //$("#historytablebody").html(historytable);
