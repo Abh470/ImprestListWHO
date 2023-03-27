@@ -46,7 +46,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public APIDataFilter: any[];
   public APIDataForFilterSort: any[];
   public modalHTMLDetails = ``;
-  public modalHTMLFilter = ``;
+  public modalHTMLFilter = ``; 
   public modalHTMLHistory = ``;
   public IsFilterApplied: boolean = false;
   public CountryIdApplyFilter = '';
