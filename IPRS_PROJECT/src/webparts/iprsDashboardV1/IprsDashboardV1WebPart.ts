@@ -20,7 +20,7 @@ require("../../webparts/iprsDashboardV1/assets/assets/css/styles.css");
 require("../../webparts/CommonAssets/Style.css");
 require("../../webparts/CommonAssets/Common.js");
 //require("../../webparts/iprsDashboard/assets/assets/font-awesome/css/font-awesome.min.css");
-require("../../webparts/iprsDashboardV1/assets/assets/js/jquery.multiselect.js");
+require("../../webparts/iprsDashboardV1/assets/assets/js/jquery.multiselect.js"); 
 require("../../webparts/iprsDashboardV1/assets/assets/css/jquery.multiselect.css");
 
 require("../../webparts/CommonAssets/ExcelJs/jquery.table2excel.js");
