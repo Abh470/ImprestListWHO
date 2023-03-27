@@ -619,7 +619,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
           //   { "bSortable": false }, 
           //   { "bSortable": false },
           //   { "bSortable": false }, 
-          //   { "bSortable": false },
+          //   { "bSortable": false }, 
           //   { "bSortable": false },
           //   { "bSortable": false },
           //   { "bSortable": false }
