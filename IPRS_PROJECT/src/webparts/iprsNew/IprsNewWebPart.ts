@@ -147,6 +147,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     this.domElement.querySelector('#btnsubmit').addEventListener('click', () => {
       this.AddDataToIPRSList().then(() => {
         alert("Form has been submitted successfully.")
+        window.location.reload();
       });
 
     })
@@ -195,7 +196,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
     for (let i = 0; i < items.length; i++) {
 
-      events += `<option value='${items[i].ID}'> ${items[i].Title} </option>`
+      events += `<option value='${items[i].ID}'> ${items[i].Title} - (${items[i].Code})</option>`
       console.log(items[i].Title)
 
     }
@@ -547,11 +548,14 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     // console.log(items)
     ////Clearing input fields
     $("select.grant-data").val("");
+    $("select.grant-data").prop('disabled', true);
     $("textarea").val("");
+    $("textarea").prop('disabled', true);
     //$("input").val();
     $("input.InclusionName-data").val("");
     $("input.ExclusionName-data").val("");
     $("input[type=date]").val("");
+    $("input[type=date]").prop('disabled', true);
     $("input[type=checkbox]").prop("checked", false);
     $("input[type=hidden]").val("");
     $(".disable-anchor-tag").css("pointer-events", "none");
@@ -674,7 +678,12 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         var societyid: any = $("#societymaster").val();
         var rightTypeid: any = $("#righttypemaster").val();
         var countryid: any = $("#countrymaster").val();
-
+        if (inclusionID == ""){
+          inclusionID = [];
+        }
+        if (exclusionID == ""){
+          exclusionID = [];
+        }
         if (IsAddOrUpdate == "Edit") {
           sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
             GrantId: grant,

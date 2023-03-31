@@ -233,7 +233,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn custom-btn mr-8" data-dismiss="modal" id="filterbutton" >Apply</button>
+        <button class="btn custom-btn mr-8" id="filterbutton" >Apply</button>
         <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -785,7 +785,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
 
     const items = await sp.web.lists.getByTitle("IPRS")
-      .items.getById(DetailitemID).select("Country/Title,Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
+      .items.getById(DetailitemID).select("Country/Title,Society/Title,Society/Code,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
       .expand("Country,Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").get();
     var SocietyIdIPRS = items.SocietyId;
     console.log(items.length);
@@ -827,7 +827,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Society:</label>
-                        <p>${items.Society.Title}</p> 
+                        <p>${items.Society.Title} - (${items.Society.Code})</p> 
                     </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
@@ -878,7 +878,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
-                        <label>Valid To:</label>
+                        <label>Valid Till:</label>
                         <p>${moment(items.ValidTill).format('YYYY-MMM-DD')}</p>
                     </div>
                 </div>
@@ -1274,6 +1274,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     this.IsFilterApplied = true;
     this.fetchfromIPRS(latestSourceArray).then(() => {
       $(".lds-dual-ring").hide();
+      ($("#dashboard-filter") as any).modal("hide");
 
     })
 
