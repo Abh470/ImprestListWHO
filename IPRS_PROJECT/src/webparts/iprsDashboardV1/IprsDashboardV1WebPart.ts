@@ -20,7 +20,7 @@ require("../../webparts/iprsDashboardV1/assets/assets/css/styles.css");
 require("../../webparts/CommonAssets/Style.css");
 require("../../webparts/CommonAssets/Common.js");
 //require("../../webparts/iprsDashboard/assets/assets/font-awesome/css/font-awesome.min.css");
-require("../../webparts/iprsDashboardV1/assets/assets/js/jquery.multiselect.js"); 
+require("../../webparts/iprsDashboardV1/assets/assets/js/jquery.multiselect.js");
 require("../../webparts/iprsDashboardV1/assets/assets/css/jquery.multiselect.css");
 
 require("../../webparts/CommonAssets/ExcelJs/jquery.table2excel.js");
@@ -46,7 +46,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public APIDataFilter: any[];
   public APIDataForFilterSort: any[];
   public modalHTMLDetails = ``;
-  public modalHTMLFilter = ``; 
+  public modalHTMLFilter = ``;
   public modalHTMLHistory = ``;
   public IsFilterApplied: boolean = false;
   public CountryIdApplyFilter = '';
@@ -613,25 +613,29 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
           "searching": false,
           // scrollY: '200px',
           // scrollCollapse: true,
+
+         // scrollY: '500px',
+        //scrollX: true,
+        //sScrollXInner: "100%",
           
           // "aoColumns": [
           //   { "bSortable": true },
-          //   { "bSortable": false }, 
           //   { "bSortable": false },
-          //   { "bSortable": false }, 
-          //   { "bSortable": false }, 
+          //   { "bSortable": false },
+          //   { "bSortable": false },
+          //   { "bSortable": false },
           //   { "bSortable": false },
           //   { "bSortable": false },
           //   { "bSortable": false }
           // ],
 
-          //"sDom": '<"top"f>rt<"bottom"pli>',
+          "sDom": '<"top"f>rt<"bottom"pli>',
           "initComplete": function () {
             $("#tableId").wrap("<div style='overflow:auto; width:100%; position:relative;'></div>");
           },
         }
       );
-      resolve();
+      resolve();  
     })
 
 
@@ -722,7 +726,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Exclusion:</label>
-                        <p>${items.Inclusion.map((val: any) => {
+                        <p>${items.Exclusion.map((val: any) => {
         return (val.Title)
       })}</p>
                     </div>
