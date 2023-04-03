@@ -1057,35 +1057,35 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         `
     }
     $("#modal-list-collection-history").append(this.modalHTMLHistory);
-    ($(`#historytableID${HistorymodalID}`) as any).DataTable().destroy();
-    ($(`#historytableID${HistorymodalID}`) as any).DataTable(
-      {
-        // items: 100,
-        // itemsOnPage: 10,
-        // cssStyle: 'light-theme',
-        // scrollY: '500px',
-        // scrollX: true,
-        // sScrollXInner: "100%",
-        "searching": false,
-        //"ordering": false,
-        "aoColumns": [
-          { "bSortable": true },
-          { "bSortable": false },
-          { "bSortable": false },
-          { "bSortable": false },
-          { "bSortable": false },
-          { "bSortable": false },
-        ],
-        "sDom": '<"top"f>rt<"bottom"pli>',
-        // "columnDefs": [ 
-        //   { "orderable": false, "targets": [-1,0,1,2,3,4] }, 
-        //  ],
+    // ($(`#historytableID${HistorymodalID}`) as any).DataTable().destroy();
+    // ($(`#historytableID${HistorymodalID}`) as any).DataTable(
+    //   {
+    //     // items: 100,
+    //     // itemsOnPage: 10,
+    //     // cssStyle: 'light-theme',
+    //     // scrollY: '500px',
+    //     // scrollX: true,
+    //     // sScrollXInner: "100%",
+    //     "searching": false,
+    //     //"ordering": false,
+    //     "aoColumns": [
+    //       { "bSortable": true },
+    //       { "bSortable": false },
+    //       { "bSortable": false },
+    //       { "bSortable": false },
+    //       { "bSortable": false },
+    //       { "bSortable": false },
+    //     ],
+    //     "sDom": '<"top"f>rt<"bottom"pli>',
+    //     // "columnDefs": [ 
+    //     //   { "orderable": false, "targets": [-1,0,1,2,3,4] }, 
+    //     //  ],
 
-        // ],
-        // "lengthMenu": [[10, 50, 100, 250], [10, 50, 100, 250]],
-        // "order": [[3, "asc"]]
-      }
-    );
+    //     // ],
+    //     // "lengthMenu": [[10, 50, 100, 250], [10, 50, 100, 250]],
+    //     // "order": [[3, "asc"]]
+    //   }
+    // );
 
 
     //$("#historytablebody").html(historytable);
