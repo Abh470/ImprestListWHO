@@ -540,7 +540,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     <div class="modal-footer">
       <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-exclusion${i}">Add</button>
     </div>
-  </div>
+  </div> 
 </div>
 </div>`
         $(document).on('click', `#Add-btn-modal-exclusion${i}`, async function (this) {
