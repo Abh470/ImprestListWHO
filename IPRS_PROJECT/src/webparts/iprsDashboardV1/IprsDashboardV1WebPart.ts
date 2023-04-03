@@ -138,15 +138,17 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                         <table class="table mb0 custom-table" id="tableId" ">
                         <thead>
         <tr>
-            <th class="w-10-th">Country</th> 
+            <th class="w-10-th">Country</th>
+            <th hidden>City</th> 
             <th class="w-10-th">Society</th>
             <th class="w-10-th">Right</th>
             <th class="w-15-th">Source</th>
             <th class="w-10-th">Grant</th>
             <th class="w-5-th">Valid From</th>
             <th class="w-5-th">Valid Till</th>
-            <th hidden>Inclusion </th>
-            <th hidden>Exclusion </th>
+            <th hidden>Inclusion</th>
+            <th hidden>Exclusion</th>
+            <th hidden>Remarks</th>
             <th class="w-5-th noExl" >Action</th>
         </tr>
     </thead>
@@ -703,10 +705,10 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
         table += `
                   <tr> 
-                  ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''}  
-                  ${(societyCount > 0) ? `<td rowspan="${societyCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Society.Title}</td>` : ''}
+                  ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''}
+                  <td hidden>${items[i].City.Title}</td>  
+                  ${(societyCount > 0) ? `<td rowspan="${societyCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Society.Title}- (${items[i].Society.Code})</td>` : ''}
                   ${(rightCount > 0) ? `<td rowspan="${rightCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].RightType.Title}</td>` : ''}
-                    
                     <td>${items[i].Source.Title}</td>
                     <td>${items[i].Grant.Title}</td>
                     <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
@@ -715,8 +717,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                       return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title);
                     })}</td>
                     <td hidden>${items[i].Exclusion.map((val: any) => {
-                      return ((val.Title == "CustomField") ? items[i].CustomExclusion : val.Title);
+                      return ((val.Title == "CustomField") ? items[i].CustomExclusion : val.Title); 
                     })}</td>
+                    <td hidden>${items[i].Remarks}</td>
                     <td class="noExl"> 
                     <div class="reciprocal-action-btn-box">
                     <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">
@@ -1229,8 +1232,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
     // }
     const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
-      .select("*,Country/Title,RightType/Title,Society/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title")
-      .expand("Country,RightType,Society,Source,Grant,Inclusion,Exclusion")
+      .select("*,Country/Title,RightType/Title,Society/Title,Society/Code,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,City/Title")
+      .expand("Country,RightType,Society,Source,Grant,Inclusion,Exclusion,City")
       .filter(`(${countryFilter}) and (${societyFilter}) and (${rightTypeFilter})${filter}`)
       .orderBy("Created", false)
       .getAll();
