@@ -527,14 +527,14 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>  
       <h4 class="modal-title">Add Exclusions</h4>
     </div>
-    <div class="modal-body" id="exclusionID${i}"> 
+    <div class="modal-body" id="exclusionID${i}">  
     ${this.ExclusionMaster.map((items)=>{
       return ( (items.SourceId.includes(this.Sourceitems[i].Id)) ?`<div class="checkbox">
           <label><input type="checkbox" name="type" value="${items.ID}">${items.Title}</label>
         </div>` : '')
      }).join('')}
-     <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
-       <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
+     <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Exclusion-DIV">
+      <input type="text" class="form-control Add-Custom-Field-Exclusion" name="" placeholder="custom text field">
      </div>
     </div>
     <div class="modal-footer">

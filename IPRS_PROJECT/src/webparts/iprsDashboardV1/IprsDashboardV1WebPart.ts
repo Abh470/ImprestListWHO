@@ -703,7 +703,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
 
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
-        table += `
+        table += ` 
                   <tr> 
                   ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''}
                   <td hidden>${items[i].City.Title}</td>  
