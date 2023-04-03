@@ -35,7 +35,15 @@ import * as strings from 'IprsDashboardV1WebPartStrings';
 export interface IIprsDashboardV1WebPartProps {
   description: string;
 }
-
+export interface ISociety {
+  country: string;
+  society: string;
+}
+export interface IRightType {
+  country: string;
+  society: string;
+  rightType:string
+}
 export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsDashboardV1WebPartProps> {
 
   protected onInit(): Promise<void> {
@@ -185,7 +193,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="form-group custom-form-group">
                     <label>Right Type:</label>
                     <span style="color:red;" class="MandSign">*</span>
-                    <select id="righttype" name="right_basic[]" multiple="multiple" class="form-control">
+                    <select id="righttype" name="right_basic[]" class="form-control">
 
                     </select>
                 </div>
@@ -225,7 +233,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn custom-btn mr-8" data-dismiss="modal" id="filterbutton" >Apply</button>
+        <button class="btn custom-btn mr-8" id="filterbutton" >Apply</button>
         <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -241,7 +249,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     //this.fetchfromSocietyMaster();
     //this.societymultiselect();
     this.fetchDropdownIPRS().then(() => {
-      this.fetchfromRightTypeMaster();
+      //this.fetchfromRightTypeMaster();
       this.fetchfromcountrymaster();
     })
 
@@ -300,9 +308,6 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         }
         if (!this.SocietydropdownIPRS.includes(item.Society.Id)) {
           this.SocietydropdownIPRS.push(item.Society.Id);
-        }
-        if (!this.RightTypedropdownIPRS.includes(item.RightType.Id)) {
-          this.RightTypedropdownIPRS.push(item.RightType.Id);
         }
       })
       resolve("")
@@ -367,6 +372,17 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       scope.fetchfromSocietyMaster(selectedCountry);
     });
 
+    $("#society").on("change", function () {
+
+      //var selectedCountry = $('option:selected', this).val();
+      var selectedCountry = $("#country").val();
+      var selectedSociety = $("#society").val();
+
+      console.log(selectedCountry)
+      //scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+      scope.fetchfromRightTypeMaster(selectedCountry, selectedSociety);
+    });
+
   }
 
 
@@ -420,27 +436,27 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   }
 
-  public forselectedoptionSociety() {
-    //var scope = this
-    let Citytitle = ``
-    $("#society").on("change", async function () {
+  // private forselectedoptionSociety() {
+  //   //var scope = this
+  //   let Citytitle = ``
+  //   $("#society").on("change", async function () {
 
-      var selectedSociety = $('option:selected', this).val();
-      var selectedCountry = $("#country").val();
-      //var selectedRightType = $("#righttypemaster").val();
+  //     var selectedSociety = $('option:selected', this).val();
+  //     var selectedCountry = $("#country").val();
+  //     //var selectedRightType = $("#righttypemaster").val();
 
-      console.log(selectedSociety)
-      const items: any = await sp.web.lists
-        .getByTitle("SocietyMaster")
-        .items.filter(`Country eq '${selectedCountry}' and ID eq '${selectedSociety}'`).select("City/Title,*").expand("City").get();
-      console.log(items);
-      Citytitle = `${items[0].City.Title}`
-      console.log(Citytitle);
-      $("#City-Icon").text(Citytitle);
+  //     console.log(selectedSociety)
+  //     const items: any = await sp.web.lists
+  //       .getByTitle("SocietyMaster")
+  //       .items.filter(`Country eq '${selectedCountry}' and ID eq '${selectedSociety}'`).select("City/Title,*").expand("City").get();
+  //     console.log(items);
+  //     Citytitle = `${items[0].City.Title}`
+  //     console.log(Citytitle);
+  //     $("#City-Icon").text(Citytitle);
 
-    });
+  //   });
 
-  }
+  // }
 
 
 
@@ -449,21 +465,53 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
   //fetchfromRightTypeMaster
 
-  private async fetchfromRightTypeMaster(): Promise<void> {
-    const items: any[] = await sp.web.lists
-      .getByTitle("RightTypeMaster")
-      .items.get();
-    // console.log(items);
+  private async fetchfromRightTypeMaster(countryid: any, societyid: any): Promise<void> {
+    // const items: any[] = await sp.web.lists
+    //   .getByTitle("RightTypeMaster")
+    //   .items.get();
+    var countryFilter = '';
+    var societyFilter = '';
+    for (let i = 0; i < countryid.length; i++) {
+      const id = countryid[i];
+      countryFilter += `Country eq '${id}'`;
+
+      if (i != countryid.length - 1) {
+        countryFilter += ' or ';
+      }
+
+    }
+    for (let i = 0; i < societyid.length; i++) {
+      const id = societyid[i];
+      /////add "and" for first time
+      // if (i == 0) {
+      //   societyFilter += ' and ';
+      // }
+      societyFilter += `Society eq '${id}'`;
+
+      ////add "or" till last second time
+      if (i != societyid.length - 1) {
+        societyFilter += ' or ';
+      }
+
+    }
+    const IPRSRightType: any[] = await sp.web.lists
+      .getByTitle("IPRS")
+      .items.filter(`(${countryFilter}) and (${societyFilter})`).select("RightType/Id,RightType/Title")
+      .expand("RightType").get();
+    console.log(IPRSRightType);
+    this.RightTypedropdownIPRS = IPRSRightType.filter((obj, index) => {
+      return index === IPRSRightType.findIndex(o => obj.RightType.Id === o.RightType.Id && obj.RightType.Title === o.RightType.Title);
+    });
 
     var fetch = ``
 
-    for (var i = 0; i < items.length; i++) {
-      if (this.RightTypedropdownIPRS.includes(items[i].ID)) {
-        fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
-      }
+    for (var i = 0; i < this.RightTypedropdownIPRS.length; i++) {
+      fetch += `<option value= ${this.RightTypedropdownIPRS[i].RightType.Id}> ${this.RightTypedropdownIPRS[i].RightType.Title} </option>`;
+
       // console.log(items[i].Title)
     }
 
+    $("#righttype").attr("multiple", true as any);
     document.getElementById("righttype").innerHTML = fetch;
     $(function () {
       ($('#righttype') as any).multiselect({
@@ -478,6 +526,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       });
 
     });
+    ($('#righttype') as any).multiselect('reload');
 
   }
 
@@ -544,37 +593,128 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
       let table = ``
       var uniqueid: number = Date.now();
+      //var countryCount:number[]= [];
+      var country: any[] = [];
+      var societyArr: any[] = [];
+      var rightTypeArr:any[]=[];
 
+      for (let indx = 0; indx < items.length; indx++) {
+        if (!country.includes(items[indx].Country.Title)) {
+          country.push(items[indx].Country.Title);
+        }
+      }
+      for (let i = 0; i < country.length; i++) {
+        for (let indx = 0; indx < items.length; indx++) {
+          if (country[i] == items[indx].Country.Title) {
+            if (!societyArr.includes(items[indx].Society.Title)) {
+              var obj: IRightType = {
+                country: items[indx].Country.Title,
+                society: items[indx].Society.Title,                
+                rightType: items[indx].RightType.Title
+                
+              };
+              societyArr.push(obj);
+
+            }
+
+          }
+        }
+      }
+      /*for (let i = 0; i < country.length; i++) {
+        for (let indx = 0; indx < societyArr.length; indx++) {
+          if (country[i] == societyArr[indx].country) {
+            for (let j = 0; j < items.length; j++) {
+             if(societyArr[indx].society==items[j].Society.Title)
+             {   
+              if (!rightTypeArr.includes(items[j].RightType.Title)) {
+                var obj2: IRightType = {
+                  country: items[j].Country.Title,
+                  society: items[j].Society.Title,
+                  rightType: items[j].RightType.Title
+                };
+                rightTypeArr.push(obj2);
+
+              }
+             }
+            }
+            
+
+          }
+        }
+      }*/
+      console.log(rightTypeArr);
+      var country1: any[] = [];
+      var society1: any[] = [];
+      var rightType1: any[]=[];
+     // var socityCnt=0;
+      var rightCnt=0;
       for (let i = 0; i < items.length; i++) {
+        var countryCount = 0;
+        var societyCount = 0;
+        var rightCount=0;
+        if (!country1.includes(items[i].Country.Title)) {
+          country1.push(items[i].Country.Title);
+          for (let j = 0; j < societyArr.length; j++) {
+            if (societyArr[j].country == items[i].Country.Title) {
+              countryCount++;
+            }
 
-        // let CreatedByMail = ''
-        // sp.web.siteUsers.getById(items[i].AuthorId).get()
-        //   .then(user => {
-        //     //console.log('Email ID: ', user.Email);
-        //     CreatedByMail = user.Email;
 
-        //   });
+          }
 
-        // let ModifiedByMail = ''
-        // sp.web.siteUsers.getById(items[i].EditorId).get()
-        //   .then(user => {
-        //     //console.log('Email ID: ', user.Email);
-        //     ModifiedByMail = user.Email;
-        //   });
+        }
+        if (countryCount > 0) {
+          societyCount = 0;
+          society1 = [];
+        //  socityCnt=0;
 
+        }
+        if (!society1.includes(items[i].Society.Title)) {
+          society1.push(items[i].Society.Title);
+          for (let j = 0; j < societyArr.length; j++) {
+            if (societyArr[j].society == items[i].Society.Title) {
+              societyCount++;
+            } 
+          }
+        //  socityCnt=societyCount;
+        }
+
+        if (societyCount > 0 || rightCnt<=0) {
+          rightCount = 0;
+          rightType1 = [];
+          rightCnt=0;
+        }
+        if (!rightType1.includes(items[i].RightType.Title)) {
+          rightType1.push(items[i].RightType.Title);
+          for (let j = 0; j < societyArr.length; j++) {
+            if (societyArr[j].rightType == items[i].RightType.Title && societyArr[j].society == items[i].Society.Title) {
+              rightCount++;
+            }
+          }
+          rightCnt=rightCount;
+        }else{ 
+          rightCnt=rightCnt-1;
+        }
+  
+
+
+        //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
         table += `
                   <tr> 
-                    <td>${items[i].Country.Title}</td>    
-                    <td>${items[i].Society.Title}</td>
-                    <td>${items[i].RightType.Title}</td>
+                  ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''}  
+                  ${(societyCount > 0) ? `<td rowspan="${societyCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Society.Title}</td>` : ''}
+                  ${(rightCount > 0) ? `<td rowspan="${rightCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].RightType.Title}</td>` : ''}
+                    
                     <td>${items[i].Source.Title}</td>
                     <td>${items[i].Grant.Title}</td>
                     <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
                     <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
                     <td class="noExl"> 
                     <div class="reciprocal-action-btn-box">
-                    <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">Details</a>
-                    <a type="button" href="#" class="btn custom-btn custom-btn-two" data-toggle="modal" data-target="#history-modal${i}" id="history${i + uniqueid}">History</a>
+                    <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">
+                    <i class="fa fa-info"></i></a>
+                    <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#history-modal${i}" id="history${i + uniqueid}">
+                    <i class="fa fa-history"></i></a>
                     </div>
                     </td>
                   </tr>
@@ -600,42 +740,39 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       }
       //document.getElementById('data').innerHTML = table;
       //$("#data").empty();
-      ($("#tableId") as any).DataTable().destroy();
+
+      // ($("#tableId") as any).DataTable().destroy();
       $("#data").html(table);
 
 
 
       //if (this.IsFilterApplied == false) {
 
-      ($("#tableId") as any).DataTable(
-        {
-          
-          "searching": false,
-          // scrollY: '200px',
-          // scrollCollapse: true,
+      // ($("#tableId") as any).DataTable(
+      //   {
 
-         // scrollY: '500px',
-        //scrollX: true,
-        //sScrollXInner: "100%",
-          
-          // "aoColumns": [
-          //   { "bSortable": true },
-          //   { "bSortable": false },
-          //   { "bSortable": false },
-          //   { "bSortable": false },
-          //   { "bSortable": false },
-          //   { "bSortable": false },
-          //   { "bSortable": false },
-          //   { "bSortable": false }
-          // ],
+      //     "searching": false,
+      //     // scrollY: '200px',
+      //     // scrollCollapse: true,
 
-          "sDom": '<"top"f>rt<"bottom"pli>',
-          "initComplete": function () {
-            $("#tableId").wrap("<div style='overflow:auto; width:100%; position:relative;'></div>");
-          },
-        }
-      );
-      resolve();  
+      //     // "aoColumns": [
+      //     //   { "bSortable": true },
+      //     //   { "bSortable": false }, 
+      //     //   { "bSortable": false },
+      //     //   { "bSortable": false }, 
+      //     //   { "bSortable": false }, 
+      //     //   { "bSortable": false },
+      //     //   { "bSortable": false },
+      //     //   { "bSortable": false }
+      //     // ],
+
+      //     //"sDom": '<"top"f>rt<"bottom"pli>',
+      //     "initComplete": function () {
+      //       $("#tableId").wrap("<div style='overflow:auto; width:100%; position:relative;'></div>");
+      //     },
+      //   }
+      // );
+      resolve();
     })
 
 
@@ -648,7 +785,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
 
     const items = await sp.web.lists.getByTitle("IPRS")
-      .items.getById(DetailitemID).select("Country/Title,Society/Title,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
+      .items.getById(DetailitemID).select("Country/Title,Society/Title,Society/Code,RightType/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,Author/Title,Author/Id,Author/EMail,Editor/Title,Editor/Id,Editor/EMail,*")
       .expand("Country,Society,RightType,Source,Grant,Inclusion,Exclusion,Author,Editor").get();
     var SocietyIdIPRS = items.SocietyId;
     console.log(items.length);
@@ -690,7 +827,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Society:</label>
-                        <p>${items.Society.Title}</p> 
+                        <p>${items.Society.Title} - (${items.Society.Code})</p> 
                     </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
@@ -718,7 +855,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Inclusion:</label>
-                        <p>${items.Inclusion.map((val: any) => {
+                        <p>${items.Exclusion.map((val: any) => {
         return (val.Title)
       })}</p>
                     </div>
@@ -726,7 +863,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Exclusion:</label>
-                        <p>${items.Exclusion.map((val: any) => {
+                        <p>${items.Inclusion.map((val: any) => {
         return (val.Title)
       })}</p>
                     </div>
@@ -741,7 +878,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
-                        <label>Valid To:</label>
+                        <label>Valid Till:</label>
                         <p>${moment(items.ValidTill).format('YYYY-MMM-DD')}</p>
                     </div>
                 </div>
@@ -983,9 +1120,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
     let filterValidTill: any = $("#Todatefilter").val();
 
-    $("#Country-Icon").text($("#country option:selected").text());
-    $("#Society-Icon").text($("#society option:selected").text());
-    $("#Right-Icon").text($("#righttype option:selected").text());
+    $("#Country-Icon").text($("#country option:selected").text().replaceAll("  " , ","));
+    $("#Society-Icon").text($("#society option:selected").text().replaceAll("  " , ","));
+    $("#Right-Icon").text($("#righttype option:selected").text().replaceAll("  " , ","));
     if (filterCountry.length == 0) {
       alert("Please select the Country");
       $(".lds-dual-ring").hide();
@@ -1090,35 +1227,54 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     // })
     //console.log("distinctArr" + distinctArr)
     var groups = _.groupBy(IPRSItemOnFilterClick, function (value) {
-      return value.CountryId + `${value.SocietyId}` + `${value.RightTypeId}` + `${value.SourceId}`;
+      return value.Country.Title + value.Society.Title + value.RightType.Title + value.Source.Title;
     });
     console.log(groups);
-    let latestSourceArray = [];
-    for (var key in groups) {
-      var obj = groups[key];
-      for (let i = 0; i < obj.length; i++) {
-        if (obj.length > 1) {
-          var element = obj[obj.length - 1];
-          latestSourceArray.push(element);
-          break;
-        }
-        else {
-          var element = obj[i];
-          latestSourceArray.push(element);
-          break;
-        }
+    let latestSourceArray: any[] = [];
+   
 
-
+    Object.values(groups).forEach(val => {
+      //console.log(val);
+      if (val.length > 1) {
+        var element = val[val.length - 1];
+        latestSourceArray.push(element);
+        //break;
+      }
+      else {
+        var element = val[0];
+        latestSourceArray.push(element);
+        //break;
       }
 
-      // ...
-    }
+    });
+    latestSourceArray=_.sortBy(latestSourceArray, [(Country) => Country.CountryId, (Country)=>Country.SocietyId, (Country)=>Country.RightTypeId ])
+    console.log(latestSourceArray);
+    // for (var key in groups) {
+    //   var obj = key;//groups[key];
+    //   //for (let i = 0; i < obj.length; i++) {
+    //     if (obj.length > 1) {
+    //       var element = obj[obj.length - 1];
+    //       latestSourceArray.push(element);
+    //       //break;
+    //     }
+    //     else {
+    //       var element = obj[0];
+    //       latestSourceArray.push(element);
+    //       //break;
+    //     }
+
+
+    //}
+
+    // ...
+    // }
     // latestSourceArray = Object.values(groups)
     // console.log(latestSourceArray);
 
     this.IsFilterApplied = true;
     this.fetchfromIPRS(latestSourceArray).then(() => {
       $(".lds-dual-ring").hide();
+      ($("#dashboard-filter") as any).modal("hide");
 
     })
 
