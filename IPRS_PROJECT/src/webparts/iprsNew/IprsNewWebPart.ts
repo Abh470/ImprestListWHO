@@ -403,8 +403,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                   </div> 
               </div>
           </td>
-          <td>
-              <div class="inner-field-flex-section">
+          <td> 
+              <div class="inner-field-flex-section"> 
                   <div class="form-group custom-form-group mb0 w-100">
                   <input type="text" class="form-control ExclusionName-data" name="ExclusionDisplayName" id="ExclusionDisplayName${i}" value="" disabled readonly>
                   <input type="hidden" class="form-control ExclusionName-Id" name="ExclusionDisplayName" id="ExclusionDisplayID${i}" value="" disabled readonly>

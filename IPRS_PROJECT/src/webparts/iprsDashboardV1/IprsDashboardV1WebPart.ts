@@ -138,9 +138,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                         <table class="table mb0 custom-table" id="tableId" ">
                         <thead>
         <tr>
-            <th class="w-10-th">Country</th>
-            <th hidden>City</th> 
+            <th class="w-10-th">Country</th> 
             <th class="w-10-th">Society</th>
+            <th hidden>City</th>
             <th class="w-10-th">Right</th>
             <th class="w-15-th">Source</th>
             <th class="w-10-th">Grant</th>
@@ -705,9 +705,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
         table += `
                   <tr> 
-                  ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''}
-                  <td hidden>${items[i].City.Title}</td>  
+                  ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''} 
                   ${(societyCount > 0) ? `<td rowspan="${societyCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Society.Title}- (${items[i].Society.Code})</td>` : ''}
+                  <td hidden>${items[i].City.Title}</td> 
                   ${(rightCount > 0) ? `<td rowspan="${rightCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].RightType.Title}</td>` : ''}
                     <td>${items[i].Source.Title}</td>
                     <td>${items[i].Grant.Title}</td>
