@@ -47,6 +47,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public TestGit: string[];
   public TestGITBYMAYUR: any[];
   public TestGit3: any[];
+  public SelectedCity : any;
   public table =
     `<thead>
     <tr>
@@ -239,7 +240,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
       console.log(selectedCountry)
       if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
-      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType);
+      scope.fetchCityId(selectedCountry,selectedSociety);
       $(".add-newrow-btn").css("pointer-events", "auto");
       }
        scope.fetchfromsocietymaster(selectedCountry);
@@ -259,12 +261,15 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedSociety)
       if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
-        scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+        scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType);
+        scope.fetchCityId(selectedCountry,selectedSociety);
         $(".add-newrow-btn").css("pointer-events", "auto");
         }
     });
 
   }
+
+  
 
 
   //forselectedoptionRightType
@@ -276,11 +281,18 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedRightType)
       if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
-        scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType)
+        scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType);
+        scope.fetchCityId(selectedCountry,selectedSociety);
         $(".add-newrow-btn").css("pointer-events", "auto");
         }
     });
 
+  }
+
+  private async fetchCityId(CountryId :any, SocietyId:any ):Promise<any> {
+   let items =   await sp.web.lists.getByTitle("SocietyMaster").items.filter(`Country eq '${CountryId}' and ID eq '${SocietyId}'`).get();
+   let Cityid =items[0].CityId
+    this.SelectedCity = Cityid;
   }
 
 
@@ -324,37 +336,38 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
     //InclusionMasterHTML
 
-    for (let i = 0; i < this.InclusionMaster.length; i++) {
+    // for (let i = 0; i < this.InclusionMaster.length; i++) {
 
-      this.InclusionMasterHTML += `<div class="checkbox">
-         <label><input type="checkbox" name="type" value="${this.InclusionMaster[i].ID}">${this.InclusionMaster[i].Title}</label>
-      </div>
-    `;
+    //   this.InclusionMasterHTML += `<div class="checkbox">
+    //      <label><input type="checkbox" name="type" value="${this.InclusionMaster[i].ID}">${this.InclusionMaster[i].Title}</label>
+    //   </div>
+    // `;
 
-      //console.log(this.InclusionMaster[i].Title)
+    //   //console.log(this.InclusionMaster[i].Title)
 
-    }
-    this.InclusionMasterHTML += `<div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
-      <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
-    </div>`;
+    // }
+    // this.InclusionMasterHTML += `<div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
+    //   <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
+    // </div>`;
     //document.getElementsByClassName('inclusion-Modal-body').innerHTML = InclusionMasterHTML;
 
 
     //ExclusionMasterHTML
 
-    for (let i = 0; i < this.ExclusionMaster.length; i++) {
+    // for (let i = 0; i < this.ExclusionMaster.length; i++) {
 
-      this.ExclusionMasterHTML += `<div class="checkbox">
-     <label><input type="checkbox" name="type" value="${this.ExclusionMaster[i].ID}">${this.ExclusionMaster[i].Title}</label>
+    //   this.ExclusionMasterHTML += `<div class="checkbox">
+    //  <label><input type="checkbox" name="type" value="${this.ExclusionMaster[i].ID}">${this.ExclusionMaster[i].Title}</label>
   
-     </div>`;
-      //console.log(this.ExclusionMaster[i].Title)
+    //  </div>`;
+    //   //console.log(this.ExclusionMaster[i].Title)
 
 
-    }
-    this.ExclusionMasterHTML += `<div class="form-group custom-form-group wpx-250 Add-Custom-Field-Exclusion-DIV">
-      <input type="text" class="form-control Add-Custom-Field-Exclusion" name="" placeholder="custom text field">
-    </div>`;
+    // }
+    // this.ExclusionMasterHTML += `<div class="form-group custom-form-group wpx-250 Add-Custom-Field-Exclusion-DIV">
+    //   <input type="text" class="form-control Add-Custom-Field-Exclusion" name="" placeholder="custom text field">
+    // </div>`;
+
     //document.getElementById('exclusionID').innerHTML = ExclusionMasterHTML;
 
 
@@ -467,7 +480,14 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       <h4 class="modal-title">Add Inclusions</h4>
     </div>
     <div class="modal-body" id="inclusionID${i}" class="inclusion-Modal-body">
-      ${this.InclusionMasterHTML}
+      ${this.InclusionMaster.map((items)=>{
+       return ( (items.SourceId.includes(this.Sourceitems[i].Id)) ?`<div class="checkbox">
+           <label><input type="checkbox" name="type" value="${items.ID}">${items.Title}</label>
+         </div>` : '')
+      }).join('')}
+      <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
+       <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
+     </div>
     </div>
     <div class="modal-footer">
       <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-inclusion${i}">Add</button>
@@ -507,8 +527,15 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>  
       <h4 class="modal-title">Add Exclusions</h4>
     </div>
-    <div class="modal-body" id="exclusionID${i}">
-     ${this.ExclusionMasterHTML}
+    <div class="modal-body" id="exclusionID${i}"> 
+    ${this.ExclusionMaster.map((items)=>{
+      return ( (items.SourceId.includes(this.Sourceitems[i].Id)) ?`<div class="checkbox">
+          <label><input type="checkbox" name="type" value="${items.ID}">${items.Title}</label>
+        </div>` : '')
+     }).join('')}
+     <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
+       <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
+     </div>
     </div>
     <div class="modal-footer">
       <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-exclusion${i}">Add</button>
@@ -679,6 +706,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   private AddDataToIPRSList(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       let loopCount: number = 0;
+      var CityId :any = this.SelectedCity;
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -715,7 +743,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             // SocietyId: societyid,
             // RightTypeId: rightTypeid,
             CustomInclusion: CustomFieldInclusionText,
-            CustomExclusion:CustomFieldExclusionText
+            CustomExclusion:CustomFieldExclusionText,
+            CityId:CityId
           }).then(() => {
             console.log("Line Item updated of id" + IPRSId);
             if (loopCount == $("#data tr.table-row-data").length) {
@@ -723,7 +752,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             }
           })
             .catch((err) => {
-              console.log("error" + err)
+              console.log("error" + err) 
             })
         }
         else if (IsAddOrUpdate == "New") {
@@ -738,6 +767,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             SocietyId: societyid,
             RightTypeId: rightTypeid,
             CountryId: countryid,
+            CityId:CityId,
             CustomInclusion: CustomFieldInclusionText,
             CustomExclusion:CustomFieldExclusionText
           }).then(() => {
