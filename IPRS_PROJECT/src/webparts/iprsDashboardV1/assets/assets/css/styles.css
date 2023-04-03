@@ -629,7 +629,7 @@ label {
 }
 .skill-set-table .custom-table,
 .required-skill-set-table .custom-table {
-    min-width: 900px;
+    min-width: 850px;
 }
 .project-edit-lock-btn-box {
     text-align: center;

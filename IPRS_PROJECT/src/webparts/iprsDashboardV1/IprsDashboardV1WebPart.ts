@@ -990,7 +990,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     const items = await sp.web.lists.getByTitle("IPRS")
       .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and RightType eq '${RightTypeHistoryid}' and Source eq '${SourceHistoryID}'`).select("Country/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
       .expand("Country,Source,Grant,Inclusion,Exclusion").orderBy("Created", false).get();
-    console.log(items.length);
+    console.log(items.length); 
     console.log(items);
 
     let historytable = ``;
@@ -999,7 +999,6 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
       historytable += ` 
       <tr>
-      <td>${items[i].Source.Title}</td>
       <td>${items[i].Grant.Title}</td>
       <td>${items[i].Inclusion.map((val: any) => {
         return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
@@ -1009,6 +1008,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       })}</td>
       <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
       <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
+      ${/* <td>${moment(items[i].Created).format('YYYY-MMM-DD')}</td>*/''}
       </tr>`
     }
 
@@ -1022,7 +1022,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
               <div class="modal-header">
                   <button type="button" class="close close-round" data-dismiss="modal"><span
                           class="close-icon">×</span></button>
-                  <h4 class="modal-title">History</h4>
+                  <h4 class="modal-title">${items[0].Source.Title}</h4>
               </div>
               <div class="modal-body">
                   <div class="row mt5">
@@ -1031,12 +1031,12 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                               <table class="table mb0 custom-table" id="historytableID${HistorymodalID}">
                                   <thead>
                                       <tr>
-                                          <th class="w-10-th">Source</th>
                                           <th class="w-10-th">Grant</th>
-                                          <th class="w-15-th">Inclusion</th>
+                                          <th class="w-10-th">Inclusion</th>
                                           <th class="w-10-th">Exclusion</th>
                                           <th class="w-5-th">Valid From</th>
                                           <th class="w-5-th">Valid Till</th>
+                                          ${/* <th class="w-5-th">Created On</th>*/''}
                                       </tr>
                                   </thead>
                                   <tbody>
