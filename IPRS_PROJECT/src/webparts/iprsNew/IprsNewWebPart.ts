@@ -116,10 +116,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             <div class="mt20 text-center">
                 <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="btnsubmit">Submit</button>
                 <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx" type="button" class="btn custom-btn-two-cancel wpx-90">Close</a>
-<<<<<<< HEAD
                 <button type="button" data-dismiss="modal" class="btn btn-info mr5 wpx-90" id="cancel-btn">Cancel</button>
-=======
->>>>>>> 05b9c69424fa598ceb45dcf6e1eae71849654469
             </div>
 
         </div>
