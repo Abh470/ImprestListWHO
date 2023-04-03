@@ -115,7 +115,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
             <div class="mt20 text-center">
                 <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="btnsubmit">Submit</button>
-                <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx" type="button" class="btn custom-btn-two-cancel wpx-90">Cancel</a>
+                <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx" type="button" class="btn custom-btn-two-cancel wpx-90">Close</a>
+                <button type="button" data-dismiss="modal" class="btn btn-info mr5 wpx-90" id="cancel-btn">Cancel</button>
             </div>
 
         </div>
@@ -150,6 +151,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         window.location.reload();
       });
 
+    })
+    this.domElement.querySelector('#cancel-btn').addEventListener('click', () => {
+        window.location.reload();
     })
     //var IsNewForm = this.getParameterByName("mode");
     // if (IsNewForm == "Edit") {
@@ -412,12 +416,12 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
           <td>
               <div class="form-group custom-form-group mb0">
-                  <textarea class="form-control resize-none remark-data" rows="3" id="Remark${i}" placeholder="type here" disabled></textarea>
+                  <textarea class="form-control resize-none remark-data" rows="3" id="Remark${i}" placeholder="type here" disabled maxlength="150"></textarea>
               </div>
           </td>
           <td>
               <div class="reciprocal-action-btn-box">
-                  <a type="button" href="#" class="custom-edit-btn mr15 disable-anchor-edit-btn" id="edit${i}" style="pointer-events:none">
+                  <a type="button" href="#" class="custom-edit-btn mr15 disable-anchor-edit-btn Edit-row-disable" id="edit${i}" style="pointer-events:none">
                       <i class="fa fa-pencil"></i>
                   </a>
                   <a type="button" href="#" class="custom-edit-btn add-newrow-btn" id="newrow${i}" style="pointer-events:none">
@@ -478,8 +482,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
           var arrayinclusion: any[] = [];
           var arrayinclusionName: any[] = [];
+          var CustomFieldNameInclusion:any = $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(); 
           $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
-            arrayinclusionName.push($(this).closest("label").text())
+            arrayinclusionName.push($(this).closest("label").text().replace("CustomField",CustomFieldNameInclusion))
             arrayinclusion.push($(this).val());
 
 
@@ -488,7 +493,6 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $(`#InclusionDisplayName${i}`).val(arrayinclusionName)
           $(`#InclusionDisplayID${i}`).val(arrayinclusion)
           console.log(arrayinclusion, arrayinclusionName)
-          let CustomFieldNameInclusion =$(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val() 
           $(`#InclusionCustomFieldDisplayName${i}`).val(CustomFieldNameInclusion);
         });
       }
@@ -516,16 +520,16 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
           var arrayexclusion: any[] = [];
           var arrayexclusionName: any[] = [];
-      
+          var CustomFieldNameExclusion:any = $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val();
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
-            arrayexclusionName.push($(this).closest("label").text())
+            arrayexclusionName.push($(this).closest("label").text().replace("CustomField",CustomFieldNameExclusion))
             arrayexclusion.push($(this).val());
 
             
           });
           $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
             $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
-          let CustomFieldNameExclusion =$(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val() 
+
           $(`#ExclusionCustomFieldDisplayName${i}`).val(CustomFieldNameExclusion);
           console.log(arrayexclusion, arrayexclusionName) 
         })
@@ -559,6 +563,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     $("input[type=checkbox]").prop("checked", false);
     $("input[type=hidden]").val("");
     $(".disable-anchor-tag").css("pointer-events", "none");
+    $("span.IPRSId").text("");
+    $("span.AddOrUpdate").text("");
+    $("a.Edit-row-disable").css("pointer-events", "none");
     const item: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("*, RightType/Title,Society/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title")
       .expand("RightType,Society,Source,Grant,Inclusion,Exclusion")
@@ -602,7 +609,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $(`#edit${i}`).css("pointer-events", "auto");
           $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion); 
           $("#InclusionCustomFieldDisplayName" + i).val(val.CustomInclusion);
-          $("#InclusionDisplayName" + i).val(InclusionName);
+          let index = InclusionName.indexOf("CustomField");
+          var NewInclusionName = InclusionName;
+          if( index != -1){
+             InclusionName[index] = val.CustomInclusion;
+             NewInclusionName =  InclusionName;
+          }
+          $("#InclusionDisplayName" + i).val(NewInclusionName);
           $("#InclusionDisplayID" + i).val(val.InclusionId);
           $(`#Remark${i}`).val(val.Remarks);
           const select: any = document.querySelector(`#grant-ddl${i}`);
@@ -627,7 +640,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           })
           $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val(val.CustomExclusion);
           $("#ExclusionCustomFieldDisplayName" + i).val(val.CustomExclusion);
-          $("#ExclusionDisplayName" + i).val(ExclusionName);
+          let indexExclusion = ExclusionName.indexOf("CustomField")
+          var NewExclusionName = ExclusionName;
+          if( indexExclusion != -1){
+            ExclusionName[indexExclusion] = val.CustomExclusion;
+            NewExclusionName = ExclusionName;
+          }
+          $("#ExclusionDisplayName" + i).val(NewExclusionName);
           $("#ExclusionDisplayID" + i).val(val.ExclusionId);
         }
       })

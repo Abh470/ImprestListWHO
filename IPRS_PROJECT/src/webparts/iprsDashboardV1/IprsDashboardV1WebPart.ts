@@ -42,7 +42,7 @@ export interface ISociety {
 export interface IRightType {
   country: string;
   society: string;
-  rightType:string
+  rightType: string
 }
 export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsDashboardV1WebPartProps> {
 
@@ -145,6 +145,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
             <th class="w-10-th">Grant</th>
             <th class="w-5-th">Valid From</th>
             <th class="w-5-th">Valid Till</th>
+            <th hidden>Inclusion </th>
+            <th hidden>Exclusion </th>
             <th class="w-5-th noExl" >Action</th>
         </tr>
     </thead>
@@ -411,7 +413,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     //var fetch = ''
     for (var i = 0; i < items.length; i++) {
       if (this.SocietydropdownIPRS.includes(items[i].ID)) {
-        fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
+        fetch += `<option value= ${items[i].ID}> ${items[i].Title} - (${items[i].Code}) </option>`;
         //console.log(items[i].Title)
       }
     }
@@ -596,7 +598,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       //var countryCount:number[]= [];
       var country: any[] = [];
       var societyArr: any[] = [];
-      var rightTypeArr:any[]=[];
+      var rightTypeArr: any[] = [];
 
       for (let indx = 0; indx < items.length; indx++) {
         if (!country.includes(items[indx].Country.Title)) {
@@ -609,9 +611,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
             if (!societyArr.includes(items[indx].Society.Title)) {
               var obj: IRightType = {
                 country: items[indx].Country.Title,
-                society: items[indx].Society.Title,                
+                society: items[indx].Society.Title,
                 rightType: items[indx].RightType.Title
-                
+
               };
               societyArr.push(obj);
 
@@ -645,13 +647,13 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       console.log(rightTypeArr);
       var country1: any[] = [];
       var society1: any[] = [];
-      var rightType1: any[]=[];
-     // var socityCnt=0;
-      var rightCnt=0;
+      var rightType1: any[] = [];
+      // var socityCnt=0;
+      var rightCnt = 0;
       for (let i = 0; i < items.length; i++) {
         var countryCount = 0;
         var societyCount = 0;
-        var rightCount=0;
+        var rightCount = 0;
         if (!country1.includes(items[i].Country.Title)) {
           country1.push(items[i].Country.Title);
           for (let j = 0; j < societyArr.length; j++) {
@@ -666,7 +668,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         if (countryCount > 0) {
           societyCount = 0;
           society1 = [];
-        //  socityCnt=0;
+          //  socityCnt=0;
 
         }
         if (!society1.includes(items[i].Society.Title)) {
@@ -674,15 +676,15 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
           for (let j = 0; j < societyArr.length; j++) {
             if (societyArr[j].society == items[i].Society.Title) {
               societyCount++;
-            } 
+            }
           }
-        //  socityCnt=societyCount;
+          //  socityCnt=societyCount;
         }
 
-        if (societyCount > 0 || rightCnt<=0) {
+        if (societyCount > 0 || rightCnt <= 0) {
           rightCount = 0;
           rightType1 = [];
-          rightCnt=0;
+          rightCnt = 0;
         }
         if (!rightType1.includes(items[i].RightType.Title)) {
           rightType1.push(items[i].RightType.Title);
@@ -691,11 +693,11 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
               rightCount++;
             }
           }
-          rightCnt=rightCount;
-        }else{ 
-          rightCnt=rightCnt-1;
+          rightCnt = rightCount;
+        } else {
+          rightCnt = rightCnt - 1;
         }
-  
+
 
 
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
@@ -709,6 +711,12 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <td>${items[i].Grant.Title}</td>
                     <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
                     <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
+                    <td hidden>${items[i].Inclusion.map((val: any) => {
+                      return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title);
+                    })}</td>
+                    <td hidden>${items[i].Exclusion.map((val: any) => {
+                      return ((val.Title == "CustomField") ? items[i].CustomExclusion : val.Title);
+                    })}</td>
                     <td class="noExl"> 
                     <div class="reciprocal-action-btn-box">
                     <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">
@@ -795,6 +803,19 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .expand("City").get();
     console.log(Societyitems.length);
     console.log(Societyitems);
+    // let InclusionIndex = items.Inclusion.indexOf("CustomField");
+    // var NewInclusionName = items.Inclusion;
+    // if( InclusionIndex != -1){
+    //   items.Inclusion[InclusionIndex] = items.CustomInclusion;
+    //    NewInclusionName =  items.Inclusion;
+    // }
+
+    // let ExclusionIndex = items.Exclusion.indexOf("CustomField");
+    // var NewExclusionName = items.Exclusion;
+    // if( ExclusionIndex != -1){
+    //   items.Exclusion[ExclusionIndex] = items.CustomExclusion;
+    //    NewExclusionName =  items.Exclusion;
+    // }
 
     {
       this.modalHTMLDetails = "";
@@ -856,15 +877,15 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <div class="form-group custom-form-group">
                         <label>Inclusion:</label>
                         <p>${items.Inclusion.map((val: any) => {
-        return (val.Title)
+        return ((val.Title == "CustomField") ? items.CustomInclusion : val.Title);
       })}</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Exclusion:</label>
-                        <p>${items.Inclusion.map((val: any) => {
-        return (val.Title)
+                        <p>${items.Exclusion.map((val: any) => {
+        return ((val.Title == "CustomField") ? items.CustomExclusion : val.Title);
       })}</p>
                     </div>
                 </div>
@@ -973,12 +994,16 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
     for (let i = 0; i < items.length; i++) {
 
-      historytable += `
+      historytable += ` 
       <tr>
       <td>${items[i].Source.Title}</td>
       <td>${items[i].Grant.Title}</td>
-      <td>${items[i].Inclusion.map((val: any) => { return (val.Title) })}</td>
-      <td>${items[i].Exclusion.map((val: any) => { return (val.Title) })}</td>
+      <td>${items[i].Inclusion.map((val: any) => {
+        return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
+      })}</td>
+      <td>${items[i].Exclusion.map((val: any) => {
+        return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
+      })}</td>
       <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
       <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
       </tr>`
@@ -1120,9 +1145,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
     let filterValidTill: any = $("#Todatefilter").val();
 
-    $("#Country-Icon").text($("#country option:selected").text());
-    $("#Society-Icon").text($("#society option:selected").text());
-    $("#Right-Icon").text($("#righttype option:selected").text());
+    $("#Country-Icon").text($("#country option:selected").text().replaceAll("  ", ","));
+    $("#Society-Icon").text($("#society option:selected").text().replaceAll("  ", ","));
+    $("#Right-Icon").text($("#righttype option:selected").text().replaceAll("  ", ","));
     if (filterCountry.length == 0) {
       alert("Please select the Country");
       $(".lds-dual-ring").hide();
@@ -1204,8 +1229,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
     // }
     const IPRSItemOnFilterClick: any[] = await sp.web.lists.getByTitle("IPRS").items
-      .select("*,Country/Title,RightType/Title,Society/Title,Source/Title,Grant/Title")
-      .expand("Country,RightType,Society,Source,Grant")
+      .select("*,Country/Title,RightType/Title,Society/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title")
+      .expand("Country,RightType,Society,Source,Grant,Inclusion,Exclusion")
       .filter(`(${countryFilter}) and (${societyFilter}) and (${rightTypeFilter})${filter}`)
       .orderBy("Created", false)
       .getAll();
@@ -1231,7 +1256,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     });
     console.log(groups);
     let latestSourceArray: any[] = [];
-   
+
 
     Object.values(groups).forEach(val => {
       //console.log(val);
@@ -1247,7 +1272,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       }
 
     });
-    latestSourceArray=_.sortBy(latestSourceArray, [(Country) => Country.CountryId, (Country)=>Country.SocietyId, (Country)=>Country.RightTypeId ])
+    latestSourceArray = _.sortBy(latestSourceArray, [(Country) => Country.CountryId, (Country) => Country.SocietyId, (Country) => Country.RightTypeId])
     console.log(latestSourceArray);
     // for (var key in groups) {
     //   var obj = key;//groups[key];
