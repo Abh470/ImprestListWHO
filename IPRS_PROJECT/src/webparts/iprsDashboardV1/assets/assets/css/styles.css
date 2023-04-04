@@ -471,6 +471,9 @@ h4 {
 .w-1-th {
     width:1% !important;
 }
+.w-3-th {
+    width:3% !important;
+}
 .w-5-th {
     width:5% !important;
 }
@@ -905,6 +908,26 @@ label {
     font-size: 14px;
     color:#555;
     white-space:pre-wrap;
+}
+
+.reciprocal-status-dots-box {
+    display: flex;
+}
+.reciprocal-green-dot {
+    display: flex;
+    width: 15px;
+    height: 15px;
+    background-color: #008000;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.reciprocal-red-dot {
+    display: flex;
+    width: 15px;
+    height: 15px;
+    background-color: #FF0000;
+    border-radius: 50%;
+    margin-right: 10px;
 }
 
 /* Loader Css Start */

@@ -143,7 +143,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
             <th hidden>City</th>
             <th class="w-10-th">Right</th>
             <th class="w-15-th">Source</th>
-            <th class="w-10-th">Grant</th>
+            <th class="w-7-th">Grant</th>
+            <th class="w-3-th noExl">&nbsp;</th>
             <th class="w-5-th">Valid From</th>
             <th class="w-5-th">Valid Till</th>
             <th hidden>Inclusion</th>
@@ -699,8 +700,19 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         } else {
           rightCnt = rightCnt - 1;
         }
+        let InclusionStatushtml ='';
+        let ExclusionStatushtml = '';
+        if (items[i].Inclusion.length > 0 && items[i].Exclusion.length > 0){
+          InclusionStatushtml += '<span class="reciprocal-green-dot"></span>';
+          ExclusionStatushtml += '<span class="reciprocal-red-dot"></span>';
 
-
+        }
+        else if(items[i].Inclusion.length > 0){
+          InclusionStatushtml += '<span class="reciprocal-green-dot"></span>';
+        }
+        else if(items[i].Exclusion.length > 0){
+          ExclusionStatushtml += '<span class="reciprocal-red-dot"></span>';
+        }
 
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
         table += `  
@@ -711,6 +723,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                   ${(rightCount > 0) ? `<td rowspan="${rightCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].RightType.Title}</td>` : ''}
                     <td>${items[i].Source.Title}</td>
                     <td>${items[i].Grant.Title}</td>
+                    <td class="noExl"><div class="reciprocal-status-dots-box">${InclusionStatushtml + ExclusionStatushtml}</div>
+                     </td>
                     <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
                     <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
                     <td hidden>${items[i].Inclusion.map((val: any) => {
@@ -1023,7 +1037,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                   <button type="button" class="close close-round" data-dismiss="modal"><span
                           class="close-icon">×</span></button>
                   <h4 class="modal-title">${items[0].Source.Title}</h4>
-              </div>
+              </div> 
               <div class="modal-body">
                   <div class="row mt5">
                       <div class="col-md-12 col-sm-12 col-xs-12">
