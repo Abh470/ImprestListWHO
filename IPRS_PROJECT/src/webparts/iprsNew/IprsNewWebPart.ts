@@ -397,7 +397,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                       <input type="hidden" class="form-control InclusionCustomField-Id" name="InclusionCustomFieldDisplayName" id="InclusionCustomFieldDisplayName${i}" value="" disabled readonly>
                   </div>
                   <div class="project-edit-lock-btn-box ml5">
-                      <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#inclusionlist${i}">
+                      <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#inclusionlist${i}" style="pointer-events:none">
                           <i class="fa fa-plus"></i>
                       </a>
                   </div> 
@@ -411,7 +411,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                   <input type="hidden" class="form-control ExclusionCustomField-Id" name="ExclusionCustomFieldDisplayName" id="ExclusionCustomFieldDisplayName${i}" value="" disabled readonly>
                   </div>
                   <div class="project-edit-lock-btn-box ml5">
-                      <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#exclusionlist${i}" >
+                      <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#exclusionlist${i}" style="pointer-events:none">
                           <i class="fa fa-plus"></i>
                       </a>
                   </div>
@@ -454,6 +454,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           //$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
           $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
+          $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val("");
+          $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val("");
 
           $(`#IsRecord-Edit-New${i}`).text("New");
         }
@@ -504,8 +506,14 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           var arrayinclusionName: any[] = [];
           var CustomFieldNameInclusion:any = $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(); 
           $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
-            arrayinclusionName.push($(this).closest("label").text().replace("CustomField",CustomFieldNameInclusion))
-            arrayinclusion.push($(this).val());
+            if($(this).closest("label").text() == "CustomField" && CustomFieldNameInclusion != ""){
+              arrayinclusionName.push($(this).closest("label").text().replace("CustomField",CustomFieldNameInclusion))
+              arrayinclusion.push($(this).val());
+            }
+            else if ($(this).closest("label").text() != "CustomField"){
+              arrayinclusionName.push($(this).closest("label").text())
+              arrayinclusion.push($(this).val());
+            }
 
 
 
@@ -549,9 +557,14 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           var arrayexclusionName: any[] = [];
           var CustomFieldNameExclusion:any = $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val();
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
+            if($(this).closest("label").text() == "CustomField" && CustomFieldNameExclusion != ""){
             arrayexclusionName.push($(this).closest("label").text().replace("CustomField",CustomFieldNameExclusion))
             arrayexclusion.push($(this).val());
-
+            }
+            else if ($(this).closest("label").text() != "CustomField" ){
+              arrayexclusionName.push($(this).closest("label").text())
+              arrayexclusion.push($(this).val());
+            }
             
           });
           $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
@@ -593,6 +606,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     $("span.IPRSId").text("");
     $("span.AddOrUpdate").text("");
     $("a.Edit-row-disable").css("pointer-events", "none");
+    $("input.Add-Custom-Field-Inclusion").val("");
+    $("input.Add-Custom-Field-Exclusion").val("");
     const item: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("*, RightType/Title,Society/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title")
       .expand("RightType,Society,Source,Grant,Inclusion,Exclusion")
@@ -622,7 +637,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     for (let i = 0; i < this.Sourceitems.length; i++) {
       distinctArr.forEach((val, ind) => {
         if (val.SourceId == this.Sourceitems[i].Id) {
+         // let Inclusionhtml ='';
           let InclusionName: any[] = [];
+
           val.Inclusion.forEach((inclus: any) => {
             InclusionName.push(inclus.Title);
             $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").each(function () {
@@ -630,9 +647,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                 $(this).prop("checked", true);
               }
             });
-
-
           });
+         
+
           $(`#edit${i}`).css("pointer-events", "auto");
           $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion); 
           $("#InclusionCustomFieldDisplayName" + i).val(val.CustomInclusion);
