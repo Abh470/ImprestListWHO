@@ -41,6 +41,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   }
 
   //public fetchfromsocietymaster(): any[];
+  public CustomFieldGlobalName: any = "Others";
   public GrantMaster: any[];
   public InclusionMaster: any[];
   public ExclusionMaster: any[];
@@ -372,6 +373,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
 
     //for loop for fetchfortable
+    var scope = this;
     for (let i = 0; i < this.Sourceitems.length; i++) {
       this.table += `
     <tr class="table-row-data">
@@ -447,7 +449,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       $(document).on('click', `#newrow${i}`, async function (this) {
         let answer = window.confirm("Do you want to add New Record?");
         if (answer == true) {
-          $(this).closest('tr').find("input,textarea").val("");
+          $(this).closest('tr').find("input:text,input[type=date].from-date-data,textarea").val("");
           $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
           $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
           $(this).closest('tr').find("select.grant-data").val("");
@@ -484,11 +486,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     <div class="modal-body" id="inclusionID${i}" class="inclusion-Modal-body">
       ${this.InclusionMaster.map((items) => {
           return ((items.SourceId.includes(this.Sourceitems[i].Id)) ? `<div class="checkbox">
-           <label><input type="checkbox" name="type" value="${items.ID}">${items.Title}</label>
+           <label><input type="checkbox" name="type" value="${items.ID}" id="Inclusion-Checkbox${i}">${items.Title}</label>
          </div>` : '')
         }).join('')}
       <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
-       <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
+       <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field" disabled>
      </div>
     </div>
     <div class="modal-footer">
@@ -497,6 +499,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   </div>
 </div>
 </div>`
+
+$(document).on('click', `#Inclusion-Checkbox${i}`, async function (this){
+  if($(this).closest("label").text() == scope.CustomFieldGlobalName){
+    $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled",false)
+  }
+})
+
         $(document).on('click', `#Add-btn-modal-inclusion${i}`, async function (this) {
 
           //  var checkedInclusion :any = '';
@@ -506,11 +515,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           var arrayinclusionName: any[] = [];
           var CustomFieldNameInclusion: any = $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val();
           $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
-            if ($(this).closest("label").text() == "CustomField" && CustomFieldNameInclusion != "") {
-              arrayinclusionName.push($(this).closest("label").text().replace("CustomField", CustomFieldNameInclusion))
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameInclusion != "") {
+              arrayinclusionName.push($(this).closest("label").text().replace(scope.CustomFieldGlobalName, CustomFieldNameInclusion))
               arrayinclusion.push($(this).val());
             }
-            else if ($(this).closest("label").text() != "CustomField") {
+            else if ($(this).closest("label").text() != scope.CustomFieldGlobalName) {
               arrayinclusionName.push($(this).closest("label").text())
               arrayinclusion.push($(this).val());
             }
@@ -538,11 +547,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     <div class="modal-body" id="exclusionID${i}">  
     ${this.ExclusionMaster.map((items) => {
           return ((items.SourceId.includes(this.Sourceitems[i].Id)) ? `<div class="checkbox">
-          <label><input type="checkbox" name="type" value="${items.ID}">${items.Title}</label>
+          <label><input type="checkbox" name="type" value="${items.ID}" id="Exclusion-Checkbox${i}">${items.Title}</label>
         </div>` : '')
         }).join('')}
      <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Exclusion-DIV">
-      <input type="text" class="form-control Add-Custom-Field-Exclusion" name="" placeholder="custom text field">
+      <input type="text" class="form-control Add-Custom-Field-Exclusion" name="" placeholder="custom text field" disabled>
      </div>
     </div>
     <div class="modal-footer">
@@ -551,17 +560,23 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   </div> 
 </div>
 </div>`
+
+$(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
+  if($(this).closest("label").text() == scope.CustomFieldGlobalName){
+    $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled",false)
+  }
+})
         $(document).on('click', `#Add-btn-modal-exclusion${i}`, async function (this) {
 
           var arrayexclusion: any[] = [];
           var arrayexclusionName: any[] = [];
           var CustomFieldNameExclusion: any = $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val();
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
-            if ($(this).closest("label").text() == "CustomField" && CustomFieldNameExclusion != "") {
-              arrayexclusionName.push($(this).closest("label").text().replace("CustomField", CustomFieldNameExclusion))
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameExclusion != "") {
+              arrayexclusionName.push($(this).closest("label").text().replace(scope.CustomFieldGlobalName, CustomFieldNameExclusion))
               arrayexclusion.push($(this).val());
             }
-            else if ($(this).closest("label").text() != "CustomField") {
+            else if ($(this).closest("label").text() != scope.CustomFieldGlobalName) {
               arrayexclusionName.push($(this).closest("label").text())
               arrayexclusion.push($(this).val());
             }
@@ -598,7 +613,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     //$("input").val();
     $("input.InclusionName-data").val("");
     $("input.ExclusionName-data").val("");
-    $("input[type=date]").val("");
+    $("input[type=date].from-date-data").val("");
     $("input[type=date]").prop('disabled', true);
     $("input[type=checkbox]").prop("checked", false);
     $("input[type=hidden]").val("");
@@ -728,7 +743,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var rightTypeid: any = $("#righttypemaster").val();
       var countryid: any = $("#countrymaster").val();
       var scope = this;
-      scope.CheckMandatoryField(countryid, societyid, rightTypeid);
+      scope.CheckMandatoryField(countryid, societyid, rightTypeid,null,null);
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -815,7 +830,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, validFrom: string="", validTo: string=""):Promise<any> {
    return new Promise<any>((resolve, reject) => {
     if (countryid == null) {
-      alert("Please fill Society.");
+      alert("Please fill Country.");
       reject(false);
     }
     else if (societyid == null) {
@@ -823,7 +838,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       reject(false);
     }
     else if (rightTypeid == null) {
-      alert("Please fill Society.");
+      alert("Please fill RightType.");
       reject(false);
     }
     else if (validFrom == "") {
@@ -831,7 +846,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       reject(false);
     }
     else if (validTo == "") {
-      alert("Please fill Valid From.")
+      alert("Please fill Valid To.")
       reject(false);
     }
     else {

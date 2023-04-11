@@ -63,6 +63,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public CountrydropdownIPRS: any[] = [];
   public SocietydropdownIPRS: any[] = [];
   public RightTypedropdownIPRS: any[] = [];
+  public CustomFieldGlobalName: any = "Others"; 
 
 
   public async render(): Promise<void> {
@@ -140,7 +141,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         <tr>
             <th class="w-10-th">Country</th> 
             <th class="w-10-th">Society</th>
-            <th hidden>City</th>
+            <th hidden class="noExl">City</th>
             <th class="w-10-th">Right</th>
             <th class="w-15-th">Source</th>
             <th class="w-7-th">Grant</th>
@@ -604,7 +605,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       var rightTypeArr: any[] = [];
 
       for (let indx = 0; indx < items.length; indx++) {
-        if (!country.includes(items[indx].Country.Title)) {
+        if (!country.includes(items[indx].Country.Title)) { 
           country.push(items[indx].Country.Title);
         }
       }
@@ -719,19 +720,19 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                   <tr> 
                   ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''} 
                   ${(societyCount > 0) ? `<td rowspan="${societyCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Society.Title}- (${items[i].City.Title})</td>` : ''}
-                  <td hidden>${items[i].City.Title}</td> 
+                  <td hidden class="noExl">${items[i].City.Title}</td> 
                   ${(rightCount > 0) ? `<td rowspan="${rightCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].RightType.Title}</td>` : ''}
                     <td>${items[i].Source.Title}</td>
                     <td>${items[i].Grant.Title}</td>
                     <td class="noExl"><div class="reciprocal-status-dots-box">${InclusionStatushtml + ExclusionStatushtml}</div>
                      </td>
-                    <td>${moment(items[i].ValidFrom).format('DD-MMM-YYYY')}</td>
-                    <td>${moment(items[i].ValidTill).format('DD-MMM-YYYY')}</td>
+                    <td>${moment(items[i].ValidFrom).format('DD-MM-YYYY')}</td>
+                    <td>${moment(items[i].ValidTill).format('DD-MM-YYYY')}</td>
                     <td hidden>${items[i].Inclusion.map((val: any) => {
-                      return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title);
+                      return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title);
                     })}</td>
                     <td hidden>${items[i].Exclusion.map((val: any) => {
-                      return ((val.Title == "CustomField") ? items[i].CustomExclusion : val.Title); 
+                      return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomExclusion : val.Title); 
                     })}</td>
                     <td hidden>${items[i].Remarks}</td>
                     <td class="noExl"> 
@@ -894,7 +895,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <div class="form-group custom-form-group">
                         <label>Inclusion:</label>
                         <p>${items.Inclusion.map((val: any) => {
-        return ((val.Title == "CustomField") ? items.CustomInclusion : val.Title);
+        return ((val.Title == this.CustomFieldGlobalName) ? items.CustomInclusion : val.Title);
       })}</p>
                     </div>
                 </div>
@@ -902,7 +903,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <div class="form-group custom-form-group">
                         <label>Exclusion:</label>
                         <p>${items.Exclusion.map((val: any) => {
-        return ((val.Title == "CustomField") ? items.CustomExclusion : val.Title);
+        return ((val.Title == this.CustomFieldGlobalName) ? items.CustomExclusion : val.Title);
       })}</p>
                     </div>
                 </div>
@@ -911,13 +912,13 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Valid From:</label>
-                        <p>${moment(items.ValidFrom).format('DD-MMM-YYYY')}</p>
+                        <p>${moment(items.ValidFrom).format('DD-MM-YYYY')}</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Valid Till:</label>
-                        <p>${moment(items.ValidTill).format('DD-MMM-YYYY')}</p>
+                        <p>${moment(items.ValidTill).format('DD-MM-YYYY')}</p>
                     </div>
                 </div>
             </div>
@@ -951,7 +952,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Created On:</label>
-                        <p>${moment(items.Created).format('DD-MMM-YYYY')}</p>
+                        <p>${moment(items.Created).format('DD-MM-YYYY')}</p>
                     </div>
                 </div>
             </div>
@@ -978,7 +979,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Modified On:</label>
-                        <p>${moment(items.Modified).format('DD-MMM-YYYY')}</p>
+                        <p>${moment(items.Modified).format('DD-MM-YYYY')}</p>
                     </div>
                 </div>
             </div>
@@ -1015,14 +1016,14 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       <tr>
       <td>${items[i].Grant.Title}</td>
       <td>${items[i].Inclusion.map((val: any) => {
-        return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
+        return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title)
       })}</td>
       <td>${items[i].Exclusion.map((val: any) => {
-        return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
+        return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomExclusion : val.Title)
       })}</td>
-      <td>${moment(items[i].ValidFrom).format('DD-MMM-YYYY')}</td>
-      <td>${moment(items[i].ValidTill).format('DD-MMM-YYYY')}</td>
-      ${/* <td>${moment(items[i].Created).format('DD-MMM-YYYY')}</td>*/''}
+      <td>${moment(items[i].ValidFrom).format('DD-MM-YYYY')}</td>
+      <td>${moment(items[i].ValidTill).format('DD-MM-YYYY')}</td>
+      ${/* <td>${moment(items[i].Created).format('DD-MM-YYYY')}</td>*/''}
       </tr>`
     }
 
