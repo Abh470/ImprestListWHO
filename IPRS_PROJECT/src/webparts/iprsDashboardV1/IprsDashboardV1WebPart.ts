@@ -1043,7 +1043,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                   <div class="row mt5">
                       <div class="col-md-12 col-sm-12 col-xs-12">
                           <div class="table-responsive reciprocal-table skill-set-table scrollbar-panel">
-                              <table class="table mb0 custom-table" id="historytableID${HistorymodalID}">
+                              <table class="table mb0 custom-table" id="historytableID${HistorymodalID}"> 
                                   <thead>
                                       <tr>
                                           <th class="w-10-th">Grant</th>

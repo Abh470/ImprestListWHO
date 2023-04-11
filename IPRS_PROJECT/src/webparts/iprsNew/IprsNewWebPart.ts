@@ -561,7 +561,7 @@ $(document).on('click', `#Inclusion-Checkbox${i}`, async function (this){
 </div>
 </div>`
 
-$(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
+$(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){ 
   if($(this).closest("label").text() == scope.CustomFieldGlobalName){
     $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled",false)
   }
