@@ -47,7 +47,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public TestGit: string[];
   public TestGITBYMAYUR: any[];
   public TestGit3: any[];
-  public SelectedCity : any;
+  public SelectedCity: any;
   public table =
     `<thead>
     <tr>
@@ -154,7 +154,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
     })
     this.domElement.querySelector('#cancel-btn').addEventListener('click', () => {
-        window.location.reload();
+      window.location.reload();
     })
     //var IsNewForm = this.getParameterByName("mode");
     // if (IsNewForm == "Edit") {
@@ -239,12 +239,12 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedRightType = $("#righttypemaster").val();
 
       console.log(selectedCountry)
-      if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
-      scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType);
-      scope.fetchCityId(selectedCountry,selectedSociety);
-      $(".add-newrow-btn").css("pointer-events", "auto");
+      if (selectedCountry != null && selectedSociety != null && selectedRightType != null) {
+        scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType);
+        scope.fetchCityId(selectedCountry, selectedSociety);
+        $(".add-newrow-btn").css("pointer-events", "auto");
       }
-       scope.fetchfromsocietymaster(selectedCountry);
+      scope.fetchfromsocietymaster(selectedCountry);
     });
 
   }
@@ -260,16 +260,16 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedRightType = $("#righttypemaster").val();
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedSociety)
-      if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
+      if (selectedCountry != null && selectedSociety != null && selectedRightType != null) {
         scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType);
-        scope.fetchCityId(selectedCountry,selectedSociety);
+        scope.fetchCityId(selectedCountry, selectedSociety);
         $(".add-newrow-btn").css("pointer-events", "auto");
-        }
+      }
     });
 
   }
 
-  
+
 
 
   //forselectedoptionRightType
@@ -280,18 +280,18 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var selectedSociety = $("#societymaster").val();
       var selectedCountry = $("#countrymaster").val();
       console.log(selectedRightType)
-      if(selectedCountry != null && selectedSociety != null && selectedRightType != null){
+      if (selectedCountry != null && selectedSociety != null && selectedRightType != null) {
         scope.fetchfromIPRS(selectedCountry, selectedSociety, selectedRightType);
-        scope.fetchCityId(selectedCountry,selectedSociety);
+        scope.fetchCityId(selectedCountry, selectedSociety);
         $(".add-newrow-btn").css("pointer-events", "auto");
-        }
+      }
     });
 
   }
 
-  private async fetchCityId(CountryId :any, SocietyId:any ):Promise<any> {
-   let items =   await sp.web.lists.getByTitle("SocietyMaster").items.filter(`Country eq '${CountryId}' and ID eq '${SocietyId}'`).get();
-   let Cityid =items[0].CityId
+  private async fetchCityId(CountryId: any, SocietyId: any): Promise<any> {
+    let items = await sp.web.lists.getByTitle("SocietyMaster").items.filter(`Country eq '${CountryId}' and ID eq '${SocietyId}'`).get();
+    let Cityid = items[0].CityId
     this.SelectedCity = Cityid;
   }
 
@@ -358,7 +358,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
     //   this.ExclusionMasterHTML += `<div class="checkbox">
     //  <label><input type="checkbox" name="type" value="${this.ExclusionMaster[i].ID}">${this.ExclusionMaster[i].Title}</label>
-  
+
     //  </div>`;
     //   //console.log(this.ExclusionMaster[i].Title)
 
@@ -424,7 +424,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
           <td>
               <div class="form-group custom-form-group mb0">
-                  <input type="date" class="form-control to-date-data" name="" value="" id="to-date${i}" disabled>
+                  <input type="date" class="form-control to-date-data" name="" value="9999-12-01" id="to-date${i}" disabled>
               </div>
           </td>
           <td>
@@ -482,11 +482,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       <h4 class="modal-title">Add Inclusions</h4>
     </div>
     <div class="modal-body" id="inclusionID${i}" class="inclusion-Modal-body">
-      ${this.InclusionMaster.map((items)=>{
-       return ( (items.SourceId.includes(this.Sourceitems[i].Id)) ?`<div class="checkbox">
+      ${this.InclusionMaster.map((items) => {
+          return ((items.SourceId.includes(this.Sourceitems[i].Id)) ? `<div class="checkbox">
            <label><input type="checkbox" name="type" value="${items.ID}">${items.Title}</label>
          </div>` : '')
-      }).join('')}
+        }).join('')}
       <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
        <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field">
      </div>
@@ -504,13 +504,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
           var arrayinclusion: any[] = [];
           var arrayinclusionName: any[] = [];
-          var CustomFieldNameInclusion:any = $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(); 
+          var CustomFieldNameInclusion: any = $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val();
           $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
-            if($(this).closest("label").text() == "CustomField" && CustomFieldNameInclusion != ""){
-              arrayinclusionName.push($(this).closest("label").text().replace("CustomField",CustomFieldNameInclusion))
+            if ($(this).closest("label").text() == "CustomField" && CustomFieldNameInclusion != "") {
+              arrayinclusionName.push($(this).closest("label").text().replace("CustomField", CustomFieldNameInclusion))
               arrayinclusion.push($(this).val());
             }
-            else if ($(this).closest("label").text() != "CustomField"){
+            else if ($(this).closest("label").text() != "CustomField") {
               arrayinclusionName.push($(this).closest("label").text())
               arrayinclusion.push($(this).val());
             }
@@ -536,11 +536,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       <h4 class="modal-title">Add Exclusions</h4>
     </div>
     <div class="modal-body" id="exclusionID${i}">  
-    ${this.ExclusionMaster.map((items)=>{
-      return ( (items.SourceId.includes(this.Sourceitems[i].Id)) ?`<div class="checkbox">
+    ${this.ExclusionMaster.map((items) => {
+          return ((items.SourceId.includes(this.Sourceitems[i].Id)) ? `<div class="checkbox">
           <label><input type="checkbox" name="type" value="${items.ID}">${items.Title}</label>
         </div>` : '')
-     }).join('')}
+        }).join('')}
      <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Exclusion-DIV">
       <input type="text" class="form-control Add-Custom-Field-Exclusion" name="" placeholder="custom text field">
      </div>
@@ -555,23 +555,23 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
           var arrayexclusion: any[] = [];
           var arrayexclusionName: any[] = [];
-          var CustomFieldNameExclusion:any = $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val();
+          var CustomFieldNameExclusion: any = $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val();
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
-            if($(this).closest("label").text() == "CustomField" && CustomFieldNameExclusion != ""){
-            arrayexclusionName.push($(this).closest("label").text().replace("CustomField",CustomFieldNameExclusion))
-            arrayexclusion.push($(this).val());
+            if ($(this).closest("label").text() == "CustomField" && CustomFieldNameExclusion != "") {
+              arrayexclusionName.push($(this).closest("label").text().replace("CustomField", CustomFieldNameExclusion))
+              arrayexclusion.push($(this).val());
             }
-            else if ($(this).closest("label").text() != "CustomField" ){
+            else if ($(this).closest("label").text() != "CustomField") {
               arrayexclusionName.push($(this).closest("label").text())
               arrayexclusion.push($(this).val());
             }
-            
+
           });
           $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
-            $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
+          $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
 
           $(`#ExclusionCustomFieldDisplayName${i}`).val(CustomFieldNameExclusion);
-          console.log(arrayexclusion, arrayexclusionName) 
+          console.log(arrayexclusion, arrayexclusionName)
         })
       }
 
@@ -637,7 +637,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     for (let i = 0; i < this.Sourceitems.length; i++) {
       distinctArr.forEach((val, ind) => {
         if (val.SourceId == this.Sourceitems[i].Id) {
-         // let Inclusionhtml ='';
+          // let Inclusionhtml ='';
           let InclusionName: any[] = [];
 
           val.Inclusion.forEach((inclus: any) => {
@@ -648,16 +648,16 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               }
             });
           });
-         
+
 
           $(`#edit${i}`).css("pointer-events", "auto");
-          $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion); 
+          $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion);
           $("#InclusionCustomFieldDisplayName" + i).val(val.CustomInclusion);
           let index = InclusionName.indexOf("CustomField");
           var NewInclusionName = InclusionName;
-          if( index != -1){
-             InclusionName[index] = val.CustomInclusion;
-             NewInclusionName =  InclusionName;
+          if (index != -1) {
+            InclusionName[index] = val.CustomInclusion;
+            NewInclusionName = InclusionName;
           }
           $("#InclusionDisplayName" + i).val(NewInclusionName);
           $("#InclusionDisplayID" + i).val(val.InclusionId);
@@ -686,7 +686,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $("#ExclusionCustomFieldDisplayName" + i).val(val.CustomExclusion);
           let indexExclusion = ExclusionName.indexOf("CustomField")
           var NewExclusionName = ExclusionName;
-          if( indexExclusion != -1){
+          if (indexExclusion != -1) {
             ExclusionName[indexExclusion] = val.CustomExclusion;
             NewExclusionName = ExclusionName;
           }
@@ -723,7 +723,12 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   private AddDataToIPRSList(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       let loopCount: number = 0;
-      var CityId :any = this.SelectedCity;
+      var CityId: any = this.SelectedCity;
+      var societyid: any = $("#societymaster").val();
+      var rightTypeid: any = $("#righttypemaster").val();
+      var countryid: any = $("#countrymaster").val();
+      var scope = this;
+      scope.CheckMandatoryField(countryid, societyid, rightTypeid);
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -739,68 +744,100 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         var sourceID: any = $(this).find("span.source-id").text();
         inclusionID = inclusionID.split(",");
         exclusionID = exclusionID.split(",");
-        var societyid: any = $("#societymaster").val();
-        var rightTypeid: any = $("#righttypemaster").val();
-        var countryid: any = $("#countrymaster").val();
-        if (inclusionID == ""){
+        if (inclusionID == "") {
           inclusionID = [];
         }
-        if (exclusionID == ""){
+        if (exclusionID == "") {
           exclusionID = [];
         }
         if (IsAddOrUpdate == "Edit") {
-          sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
-            GrantId: grant,
-            //SourceId: sourceID,
-            InclusionId: { results: inclusionID },
-            ExclusionId: { results: exclusionID },
-            ValidFrom: validFrom,
-            ValidTill: validTo,
-            Remarks: Remark,
-            // SocietyId: societyid,
-            // RightTypeId: rightTypeid,
-            CustomInclusion: CustomFieldInclusionText,
-            CustomExclusion:CustomFieldExclusionText,
-            CityId:CityId
-          }).then(() => {
-            console.log("Line Item updated of id" + IPRSId);
-            if (loopCount == $("#data tr.table-row-data").length) {
-              resolve("");
-            }
-          })
-            .catch((err) => {
-              console.log("error" + err) 
+          scope.CheckMandatoryField(countryid, societyid, rightTypeid, validFrom, validTo)
+          .then(()=>{
+            sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
+              GrantId: grant,
+              //SourceId: sourceID,
+              InclusionId: { results: inclusionID },
+              ExclusionId: { results: exclusionID },
+              ValidFrom: validFrom,
+              ValidTill: validTo,
+              Remarks: Remark,
+              // SocietyId: societyid,
+              // RightTypeId: rightTypeid,
+              CustomInclusion: CustomFieldInclusionText,
+              CustomExclusion: CustomFieldExclusionText,
+              CityId: CityId
+            }).then(() => {
+              console.log("Line Item updated of id" + IPRSId);
+              if (loopCount == $("#data tr.table-row-data").length) {
+                resolve("");
+              }
+            })
+              .catch((err) => {
+                console.log("error" + err)
+              })
             })
         }
         else if (IsAddOrUpdate == "New") {
-          sp.web.lists.getByTitle("IPRS").items.add({
-            GrantId: grant,
-            SourceId: sourceID,
-            InclusionId: { results: inclusionID },
-            ExclusionId: { results: exclusionID },
-            ValidFrom: validFrom,
-            ValidTill: validTo,
-            Remarks: Remark,
-            SocietyId: societyid,
-            RightTypeId: rightTypeid,
-            CountryId: countryid,
-            CityId:CityId,
-            CustomInclusion: CustomFieldInclusionText,
-            CustomExclusion:CustomFieldExclusionText
-          }).then(() => {
-            console.log(" New Line Item submitted ");
-            if (loopCount == $("#data tr.table-row-data").length) {
-              resolve("");
-            }
-          })
-            .catch((err) => {
-              console.log("error" + err)
+          scope.CheckMandatoryField(countryid, societyid, rightTypeid, validFrom, validTo)
+          .then(()=>{
+            sp.web.lists.getByTitle("IPRS").items.add({
+              GrantId: grant,
+              SourceId: sourceID,
+              InclusionId: { results: inclusionID },
+              ExclusionId: { results: exclusionID },
+              ValidFrom: validFrom,
+              ValidTill: validTo,
+              Remarks: Remark,
+              SocietyId: societyid,
+              RightTypeId: rightTypeid,
+              CountryId: countryid,
+              CityId: CityId,
+              CustomInclusion: CustomFieldInclusionText,
+              CustomExclusion: CustomFieldExclusionText
+            }).then(() => {
+              console.log(" New Line Item submitted ");
+              if (loopCount == $("#data tr.table-row-data").length) {
+                resolve("");
+              }
+            })
+              .catch((err) => {
+                console.log("error" + err)
+              })
             })
         }
       });
 
 
     })
+
+  }
+
+  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, validFrom: string="", validTo: string=""):Promise<any> {
+   return new Promise<any>((resolve, reject) => {
+    if (countryid == null) {
+      alert("Please fill Society.");
+      reject(false);
+    }
+    else if (societyid == null) {
+      alert("Please fill Society.");
+      reject(false);
+    }
+    else if (rightTypeid == null) {
+      alert("Please fill Society.");
+      reject(false);
+    }
+    else if (validFrom == "") {
+      alert("Please fill Valid From.")
+      reject(false);
+    }
+    else if (validTo == "") {
+      alert("Please fill Valid From.")
+      reject(false);
+    }
+    else {
+      resolve(true);
+    }
+   })
 
   }
 

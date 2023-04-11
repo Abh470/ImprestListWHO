@@ -718,7 +718,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         table += `  
                   <tr> 
                   ${(countryCount > 0) ? `<td rowspan="${countryCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Country.Title}</td>` : ''} 
-                  ${(societyCount > 0) ? `<td rowspan="${societyCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Society.Title}- (${items[i].Society.Code})</td>` : ''}
+                  ${(societyCount > 0) ? `<td rowspan="${societyCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].Society.Title}- (${items[i].City.Title})</td>` : ''}
                   <td hidden>${items[i].City.Title}</td> 
                   ${(rightCount > 0) ? `<td rowspan="${rightCount}" valign="middle" class="fb-600 border-right-d2-colr">${items[i].RightType.Title}</td>` : ''}
                     <td>${items[i].Source.Title}</td>
