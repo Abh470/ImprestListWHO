@@ -1018,7 +1018,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
       })}</td>
       <td>${items[i].Exclusion.map((val: any) => {
-        return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
+        return ((val.Title == "CustomField") ? items[i].CustomExclusion : val.Title)
       })}</td>
       <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
       <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
