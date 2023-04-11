@@ -153,7 +153,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
             <th class="w-5-th noExl" >Action</th>
         </tr>
     </thead>
-    <tbody id="data">
+    <tbody id="data"> 
   </tbody>  
   </table>
                     </div>
@@ -725,8 +725,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <td>${items[i].Grant.Title}</td>
                     <td class="noExl"><div class="reciprocal-status-dots-box">${InclusionStatushtml + ExclusionStatushtml}</div>
                      </td>
-                    <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
-                    <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
+                    <td>${moment(items[i].ValidFrom).format('DD-MMM-YYYY')}</td>
+                    <td>${moment(items[i].ValidTill).format('DD-MMM-YYYY')}</td>
                     <td hidden>${items[i].Inclusion.map((val: any) => {
                       return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title);
                     })}</td>
@@ -911,13 +911,13 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Valid From:</label>
-                        <p>${moment(items.ValidFrom).format('YYYY-MMM-DD')}</p>
+                        <p>${moment(items.ValidFrom).format('DD-MMM-YYYY')}</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Valid Till:</label>
-                        <p>${moment(items.ValidTill).format('YYYY-MMM-DD')}</p>
+                        <p>${moment(items.ValidTill).format('DD-MMM-YYYY')}</p>
                     </div>
                 </div>
             </div>
@@ -951,7 +951,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Created On:</label>
-                        <p>${moment(items.Created).format('YYYY-MMM-DD')}</p>
+                        <p>${moment(items.Created).format('DD-MMM-YYYY')}</p>
                     </div>
                 </div>
             </div>
@@ -978,7 +978,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-6 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Modified On:</label>
-                        <p>${moment(items.Modified).format('YYYY-MMM-DD')}</p>
+                        <p>${moment(items.Modified).format('DD-MMM-YYYY')}</p>
                     </div>
                 </div>
             </div>
@@ -1020,9 +1020,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       <td>${items[i].Exclusion.map((val: any) => {
         return ((val.Title == "CustomField") ? items[i].CustomInclusion : val.Title)
       })}</td>
-      <td>${moment(items[i].ValidFrom).format('YYYY-MMM-DD')}</td>
-      <td>${moment(items[i].ValidTill).format('YYYY-MMM-DD')}</td>
-      ${/* <td>${moment(items[i].Created).format('YYYY-MMM-DD')}</td>*/''}
+      <td>${moment(items[i].ValidFrom).format('DD-MMM-YYYY')}</td>
+      <td>${moment(items[i].ValidTill).format('DD-MMM-YYYY')}</td>
+      ${/* <td>${moment(items[i].Created).format('DD-MMM-YYYY')}</td>*/''}
       </tr>`
     }
 
