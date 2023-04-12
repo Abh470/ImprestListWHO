@@ -927,7 +927,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-12 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Remarks:</label>
-                        ${(items.Remarks != null) ? `<p>${items.Remarks}</p>` : ''}
+                        ${(items.Remarks != null) ? `<p>${items.Remarks}</p>` : ''} 
                     </div>
                 </div>
             </div>
