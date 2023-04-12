@@ -82,6 +82,26 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         <div class="panel-head">
             <h1 class="panel-head-text">Reciprocal Dashboard</h1>
         </div>
+        <div class="color-label-box">
+            <table border: none;>
+                <tr>
+                    <th><span class="reciprocal-green-dot color-icon-label"></span></th>
+                    <td><span class="color-icon-label"> For Inclusion</span></td>
+                </tr>  
+                <tr>
+                    <th><span class="reciprocal-red-dot color-icon-label"></span></th>
+                    <td><span class="color-icon-label"> For Exclusion</span></td>
+                </tr>  
+                <tr>
+                    <th><i class="fa fa-info color-icon-label"></i></th>
+                    <td><span class="color-icon-label"> For Details</span></td>
+                </tr>
+                <tr>
+                    <th><i class="fa fa-history color-icon-label"></i></th>
+                    <td><span class="color-icon-label"> For History</span></td>
+                </tr>    
+            </table>
+        </div>
         <div class="panel-body">
             <div class="row m-0 mb15 mt25">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
@@ -97,7 +117,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                         <div class="upload-chip" id="Right-Icon"></div>
                         </div>
                     </div> 
-                </div>
+                </div> 
             </div>
             <div class="row m-0 mb5">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-new-panel-col-1">
