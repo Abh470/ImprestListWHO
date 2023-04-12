@@ -734,7 +734,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <td hidden>${items[i].Exclusion.map((val: any) => {
                       return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomExclusion : val.Title); 
                     })}</td>
-                    <td hidden>${items[i].Remarks}</td>
+                    ${(items[i].Remarks != null) ? `<td hidden>${items[i].Remarks}</td>` : ''}
+                    
                     <td class="noExl"> 
                     <div class="reciprocal-action-btn-box">
                     <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">
@@ -926,7 +927,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-sm-12 col-xs-12">
                     <div class="form-group custom-form-group">
                         <label>Remarks:</label>
-                        <p>${items.Remarks}</p>
+                        ${(items.Remarks != null) ? `<p>${items.Remarks}</p>` : ''}
                     </div>
                 </div>
             </div>
