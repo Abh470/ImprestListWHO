@@ -53,7 +53,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     `<thead>
     <tr>
     <th class="w-10-th">Source <span class="text-red">*</span></th>
-    <th class="w-10-th">Grant</th>
+    <th class="w-10-th">Grant <span class="text-red">*</span></th>
     <th>Inclusion</th>
     <th>Exclusion</th>
     <th class="w-1-th">Valid From <span class="text-red">*</span></th>
@@ -743,7 +743,7 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
       var rightTypeid: any = $("#righttypemaster").val();
       var countryid: any = $("#countrymaster").val();
       var scope = this;
-      scope.CheckMandatoryField(countryid, societyid, rightTypeid,null,null);
+      scope.CheckMandatoryField(countryid, societyid, rightTypeid, null, null, null);
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -766,7 +766,7 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
           exclusionID = [];
         }
         if (IsAddOrUpdate == "Edit") {
-          scope.CheckMandatoryField(countryid, societyid, rightTypeid, validFrom, validTo)
+          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo)
           .then(()=>{
             sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
               GrantId: grant,
@@ -793,7 +793,7 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
             })
         }
         else if (IsAddOrUpdate == "New") {
-          scope.CheckMandatoryField(countryid, societyid, rightTypeid, validFrom, validTo)
+          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo)
           .then(()=>{
             sp.web.lists.getByTitle("IPRS").items.add({
               GrantId: grant,
@@ -827,7 +827,7 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
 
   }
 
-  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, validFrom: string="", validTo: string=""):Promise<any> {
+  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, Grantid: string , validFrom: string, validTo: string):Promise<any> {
    return new Promise<any>((resolve, reject) => {
     if (countryid == null) {
       alert("Please fill Country.");
@@ -839,6 +839,10 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
     }
     else if (rightTypeid == null) {
       alert("Please fill RightType.");
+      reject(false);
+    }
+    else if (Grantid == "") {
+      alert("Please fill Grant.");
       reject(false);
     }
     else if (validFrom == "") {
