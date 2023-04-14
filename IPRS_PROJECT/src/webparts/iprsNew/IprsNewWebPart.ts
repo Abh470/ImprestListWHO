@@ -70,8 +70,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public IsViewer: boolean = false;
   public IsInitiator: boolean = false;
   public IsContributor: boolean = false;
-  public HideEditButton: boolean = false;
-  public HideAddButton: boolean = false;
+  public ShowEditButton: boolean = false;
+  public ShowAddButton: boolean = false;
 
 
   public async render(): Promise<void> {
@@ -146,8 +146,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     groups.forEach((group: any) => {
       if (group.Title == "IPRS_Contributor") {
         this.IsContributor = true;
-        this.HideAddButton = true;
-        this.HideEditButton = true;
+        this.ShowAddButton = true;
+        this.ShowEditButton = true;
       }
       if (group.Title == "IPRS_Reader") {
         this.IsViewer = true;
@@ -155,7 +155,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       }
       if (group.Title == "IPRS_Initiator") {
         this.IsInitiator = true;
-        this.HideAddButton = true;
+        this.ShowAddButton = true;
       }
     });
 
@@ -461,10 +461,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
           <td>
               <div class="reciprocal-action-btn-box">
-              ${(this.HideEditButton) ? `<a type="button" href="#" class="custom-edit-btn mr15 disable-anchor-edit-btn Edit-row-disable" id="edit${i}" style="pointer-events:none">
+              ${(this.ShowEditButton) ? `<a type="button" href="#" class="custom-edit-btn mr15 disable-anchor-edit-btn Edit-row-disable" id="edit${i}" style="pointer-events:none">
                                     <i class="fa fa-pencil"></i>
                                                      </a>`: ""}    
-              ${(this.HideAddButton) ? `<a type="button" href="#" class="custom-edit-btn add-newrow-btn" id="newrow${i}" style="pointer-events:none">
+              ${(this.ShowAddButton) ? `<a type="button" href="#" class="custom-edit-btn add-newrow-btn" id="newrow${i}" style="pointer-events:none">
                                     <i class="fa fa-plus"></i>
                                                   </a>`: ""}        
               </div>

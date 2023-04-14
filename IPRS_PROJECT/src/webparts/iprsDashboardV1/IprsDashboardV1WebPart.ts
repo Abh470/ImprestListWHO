@@ -67,7 +67,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public IsViewer: boolean = false;
   public IsInitiator: boolean = false;
   public IsContributor: boolean = false;
-  public HideAddButton: boolean = false;
+  public ShowAddButton: boolean = false;
 
 
   public async render(): Promise<void> {
@@ -83,14 +83,14 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     groups.forEach((group: any) => {
       if (group.Title == "IPRS_Contributor") {
         this.IsContributor = true;
-        this.HideAddButton = true;
+        this.ShowAddButton = true;
       }
       if (group.Title == "IPRS_Reader") {
         this.IsViewer = true;
       }
       if (group.Title == "IPRS_Initiator") {
         this.IsInitiator = true;
-        this.HideAddButton = true;
+        this.ShowAddButton = true;
       }
     });
 
@@ -145,7 +145,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-new-panel-col-1">
                     <div class="dashboard-deta-btn-panel d-flex">
                         <div class="dropdown dashboard-table-btn">
-                        ${(this.HideAddButton) ? `<button class="btn dropdown-toggle" type="button" id="addnew">
+                        ${(this.ShowAddButton) ? `<button class="btn dropdown-toggle" type="button" id="addnew">
                         <img class="dashboard-icon-info mr2" src="${ADDUploaded}" alt="plus">
                         <span>Add</span>
                     </button>`: ""}
