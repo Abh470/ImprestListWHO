@@ -29,6 +29,7 @@ require("../../webparts/CommonAssets/ExcelJs/jquery.table2excel.js");
 const ADDUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/plus-icon.png');
 const filterUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/export-icon.png');
+const HistoryIcon: any = require('../../webparts/iprsDashboardV1/assets/assets/images/HistoryIcon.png');
 
 import * as strings from 'IprsDashboardV1WebPartStrings';
 
@@ -63,7 +64,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public CountrydropdownIPRS: any[] = [];
   public SocietydropdownIPRS: any[] = [];
   public RightTypedropdownIPRS: any[] = [];
-  public CustomFieldGlobalName: any = "Others"; 
+  public CustomFieldGlobalName: any = "Others";
 
 
   public async render(): Promise<void> {
@@ -79,29 +80,31 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     <div class="lds-dual-ring-box"> <div class="lds-dual-ring"></div> </div>
 <div class="container-fluid">
     <div class="custom-panel">
-        <div class="panel-head">
-            <h1 class="panel-head-text">Reciprocal Dashboard</h1>
-        </div>
-        <div class="color-label-box">
-            <table border: none;>
-                <tr>
-                    <th><span class="reciprocal-green-dot color-icon-label"></span></th>
-                    <td><span class="color-icon-label"> For Inclusion</span></td>
-                </tr>  
-                <tr>
-                    <th><span class="reciprocal-red-dot color-icon-label"></span></th>
-                    <td><span class="color-icon-label"> For Exclusion</span></td>
-                </tr>  
-                <tr>
-                    <th><i class="fa fa-info color-icon-label"></i></th>
-                    <td><span class="color-icon-label"> For Details</span></td>
-                </tr>
-                <tr>
-                    <th><i class="fa fa-history color-icon-label"></i></th>
-                    <td><span class="color-icon-label"> For History</span></td>
-                </tr>    
-            </table>
-        </div>
+          <div class="panel-head panel-flex">
+              <h1 class="panel-head-text">Reciprocal Dashboard</h1>
+              <div class="reciprocal-legend-box">
+                      <div class="d-flex align-center mr15 mb10">
+                          <span class="reciprocal-green-dot"></span>
+                          <span>Inclusion</span>
+                      </div>
+                <div class="d-flex align-center mr15 mb10">
+                    <span class="reciprocal-red-dot"></span>
+                    <span>Exclusion</span>
+                </div>
+                <div class="d-flex align-center mr15 mb10">
+                    <span class="custom-edit-btn mr10">
+                        <i class="fa fa-info"></i> 
+                    </span>
+                    <span>Details</span>
+                </div>
+                <div class="d-flex align-center mb10">
+                    <div class="activity-history-legend mr5">
+                        <img src="${HistoryIcon}" alt="" />
+                    </div>
+                    <span>History</span>
+                </div>
+              </div>
+          </div>
         <div class="panel-body">
             <div class="row m-0 mb15 mt25">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
@@ -625,7 +628,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       var rightTypeArr: any[] = [];
 
       for (let indx = 0; indx < items.length; indx++) {
-        if (!country.includes(items[indx].Country.Title)) { 
+        if (!country.includes(items[indx].Country.Title)) {
           country.push(items[indx].Country.Title);
         }
       }
@@ -721,17 +724,17 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         } else {
           rightCnt = rightCnt - 1;
         }
-        let InclusionStatushtml ='';
+        let InclusionStatushtml = '';
         let ExclusionStatushtml = '';
-        if (items[i].Inclusion.length > 0 && items[i].Exclusion.length > 0){
+        if (items[i].Inclusion.length > 0 && items[i].Exclusion.length > 0) {
           InclusionStatushtml += '<span class="reciprocal-green-dot"></span>';
           ExclusionStatushtml += '<span class="reciprocal-red-dot"></span>';
 
         }
-        else if(items[i].Inclusion.length > 0){
+        else if (items[i].Inclusion.length > 0) {
           InclusionStatushtml += '<span class="reciprocal-green-dot"></span>';
         }
-        else if(items[i].Exclusion.length > 0){
+        else if (items[i].Exclusion.length > 0) {
           ExclusionStatushtml += '<span class="reciprocal-red-dot"></span>';
         }
 
@@ -749,19 +752,19 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <td>${moment(items[i].ValidFrom).format('DD-MM-YYYY')}</td>
                     <td>${moment(items[i].ValidTill).format('DD-MM-YYYY')}</td>
                     <td hidden>${items[i].Inclusion.map((val: any) => {
-                      return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title);
-                    })}</td>
-                    <td hidden>${items[i].Exclusion.map((val: any) => {
-                      return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomExclusion : val.Title); 
-                    })}</td>
+          return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title);
+        })}</td>
+                     <td hidden>${items[i].Exclusion.map((val: any) => {
+          return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomExclusion : val.Title);
+        })}</td>
                     ${(items[i].Remarks != null) ? `<td hidden>${items[i].Remarks}</td>` : ''}
                     
                     <td class="noExl"> 
                     <div class="reciprocal-action-btn-box">
                     <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal${i}" id="detail${i + uniqueid}">
                     <i class="fa fa-info"></i></a>
-                    <a type="button" href="#" class="custom-edit-btn" data-toggle="modal" data-target="#history-modal${i}" id="history${i + uniqueid}">
-                    <i class="fa fa-history"></i></a>
+                    <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#history-modal${i}" id="history${i + uniqueid}">
+                    <span class="activity-history-dashboard"><img src="${HistoryIcon}" alt=""/></span></a>
                     </div>
                     </td>
                   </tr>
@@ -1026,7 +1029,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     const items = await sp.web.lists.getByTitle("IPRS")
       .items.filter(`Country eq '${CountryHistoryID}' and Society eq '${SocietyHistoryID}' and RightType eq '${RightTypeHistoryid}' and Source eq '${SourceHistoryID}'`).select("Country/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title,*")
       .expand("Country,Source,Grant,Inclusion,Exclusion").orderBy("Created", false).get();
-    console.log(items.length); 
+    console.log(items.length);
     console.log(items);
 
     let historytable = ``;
