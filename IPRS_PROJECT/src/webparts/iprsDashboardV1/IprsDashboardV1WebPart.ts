@@ -30,7 +30,6 @@ const ADDUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/i
 const filterUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/export-icon.png');
 const HistoryIcon: any = require('../../webparts/iprsDashboardV1/assets/assets/images/HistoryIcon.png');
-
 import * as strings from 'IprsDashboardV1WebPartStrings';
 
 export interface IIprsDashboardV1WebPartProps {
@@ -65,6 +64,10 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public SocietydropdownIPRS: any[] = [];
   public RightTypedropdownIPRS: any[] = [];
   public CustomFieldGlobalName: any = "Others";
+  public IsViewer: boolean = false;
+  public IsInitiator: boolean = false;
+  public IsContributor: boolean = false;
+  public HideAddButton: boolean = false;
 
 
   public async render(): Promise<void> {
@@ -74,6 +77,22 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     SPComponentLoader.loadScript("https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js");
     //SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
     //SPComponentLoader.loadScript("src/jquery.table2excel.js");
+
+    let groups: [] = await sp.web.currentUser.groups();
+    console.log(groups)
+    groups.forEach((group: any) => {
+      if (group.Title == "IPRS_Contributor") {
+        this.IsContributor = true;
+        this.HideAddButton = true;
+      }
+      if (group.Title == "IPRS_Reader") {
+        this.IsViewer = true;
+      }
+      if (group.Title == "IPRS_Initiator") {
+        this.IsInitiator = true;
+        this.HideAddButton = true;
+      }
+    });
 
 
     this.domElement.innerHTML = `
@@ -126,10 +145,11 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-new-panel-col-1">
                     <div class="dashboard-deta-btn-panel d-flex">
                         <div class="dropdown dashboard-table-btn">
-                            <button class="btn dropdown-toggle" type="button" id="addnew">
-                                <img class="dashboard-icon-info mr2" src="${ADDUploaded}" alt="plus">
-                                <span>Add</span>
-                            </button>
+                        ${(this.HideAddButton) ? `<button class="btn dropdown-toggle" type="button" id="addnew">
+                        <img class="dashboard-icon-info mr2" src="${ADDUploaded}" alt="plus">
+                        <span>Add</span>
+                    </button>`: ""}
+                            
                         </div>
                         <div class="dropdown dashboard-table-btn" data-toggle="modal" data-target="#dashboard-filter">
                             <button class="btn dropdown-toggle" type="button">
@@ -274,6 +294,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 <div id ="modal-list-collection-history">
 </div>
 `
+
+
 
     //this.fetchfromSocietyMaster();
     //this.societymultiselect();
@@ -585,7 +607,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       .items.get();
     console.log(items.length);
 
-    var fetch = `<option value="" selected> Select All </option>`
+    var fetch = `<option value="" selected> All </option>`
     for (var i = 0; i < items.length; i++) {
       fetch += `<option value= ${items[i].ID}> ${items[i].Title} </option>`;
       //console.log(items[i].Title)

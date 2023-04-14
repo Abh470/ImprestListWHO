@@ -67,6 +67,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public InclusionMasterHTML = ``;
   public modalHTMLInclusion = ``;
   public Sourceitems: any[] = [];
+  public IsViewer: boolean = false;
+  public IsInitiator: boolean = false;
+  public IsContributor: boolean = false;
+  public HideEditButton: boolean = false;
+  public HideAddButton: boolean = false;
 
 
   public async render(): Promise<void> {
@@ -132,9 +137,29 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         `
     this._bindEvents();
 
+
   }
 
   private async _bindEvents() {
+    let groups = await sp.web.currentUser.groups();
+    console.log(groups)
+    groups.forEach((group: any) => {
+      if (group.Title == "IPRS_Contributor") {
+        this.IsContributor = true;
+        this.HideAddButton = true;
+        this.HideEditButton = true;
+      }
+      if (group.Title == "IPRS_Reader") {
+        this.IsViewer = true;
+
+      }
+      if (group.Title == "IPRS_Initiator") {
+        this.IsInitiator = true;
+        this.HideAddButton = true;
+      }
+    });
+
+
     await this.fetchfromcountrymaster()
     //await this.fetchfromsocietymaster()
     await this.righttypemaster()
@@ -436,12 +461,12 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
           <td>
               <div class="reciprocal-action-btn-box">
-                  <a type="button" href="#" class="custom-edit-btn mr15 disable-anchor-edit-btn Edit-row-disable" id="edit${i}" style="pointer-events:none">
-                      <i class="fa fa-pencil"></i>
-                  </a>
-                  <a type="button" href="#" class="custom-edit-btn add-newrow-btn" id="newrow${i}" style="pointer-events:none">
-                      <i class="fa fa-plus"></i>
-                  </a>
+              ${(this.HideEditButton) ? `<a type="button" href="#" class="custom-edit-btn mr15 disable-anchor-edit-btn Edit-row-disable" id="edit${i}" style="pointer-events:none">
+                                    <i class="fa fa-pencil"></i>
+                                                     </a>`: ""}    
+              ${(this.HideAddButton) ? `<a type="button" href="#" class="custom-edit-btn add-newrow-btn" id="newrow${i}" style="pointer-events:none">
+                                    <i class="fa fa-plus"></i>
+                                                  </a>`: ""}        
               </div>
           </td>
 </tr>
@@ -500,11 +525,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 </div>
 </div>`
 
-$(document).on('click', `#Inclusion-Checkbox${i}`, async function (this){
-  if($(this).closest("label").text() == scope.CustomFieldGlobalName){
-    $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled",false)
-  }
-})
+        $(document).on('click', `#Inclusion-Checkbox${i}`, async function (this) {
+          if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
+            $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", false)
+          }
+        })
 
         $(document).on('click', `#Add-btn-modal-inclusion${i}`, async function (this) {
 
@@ -561,11 +586,11 @@ $(document).on('click', `#Inclusion-Checkbox${i}`, async function (this){
 </div>
 </div>`
 
-$(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){ 
-  if($(this).closest("label").text() == scope.CustomFieldGlobalName){
-    $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled",false)
-  }
-})
+        $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this) {
+          if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
+            $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled", false)
+          }
+        })
         $(document).on('click', `#Add-btn-modal-exclusion${i}`, async function (this) {
 
           var arrayexclusion: any[] = [];
@@ -767,57 +792,57 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
         }
         if (IsAddOrUpdate == "Edit") {
           scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo)
-          .then(()=>{
-            sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
-              GrantId: grant,
-              //SourceId: sourceID,
-              InclusionId: { results: inclusionID },
-              ExclusionId: { results: exclusionID },
-              ValidFrom: validFrom,
-              ValidTill: validTo,
-              Remarks: Remark,
-              // SocietyId: societyid,
-              // RightTypeId: rightTypeid,
-              CustomInclusion: CustomFieldInclusionText,
-              CustomExclusion: CustomFieldExclusionText,
-              CityId: CityId
-            }).then(() => {
-              console.log("Line Item updated of id" + IPRSId);
-              if (loopCount == $("#data tr.table-row-data").length) {
-                resolve("");
-              }
-            })
-              .catch((err) => {
-                console.log("error" + err)
+            .then(() => {
+              sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
+                GrantId: grant,
+                //SourceId: sourceID,
+                InclusionId: { results: inclusionID },
+                ExclusionId: { results: exclusionID },
+                ValidFrom: validFrom,
+                ValidTill: validTo,
+                Remarks: Remark,
+                // SocietyId: societyid,
+                // RightTypeId: rightTypeid,
+                CustomInclusion: CustomFieldInclusionText,
+                CustomExclusion: CustomFieldExclusionText,
+                CityId: CityId
+              }).then(() => {
+                console.log("Line Item updated of id" + IPRSId);
+                if (loopCount == $("#data tr.table-row-data").length) {
+                  resolve("");
+                }
               })
+                .catch((err) => {
+                  console.log("error" + err)
+                })
             })
         }
         else if (IsAddOrUpdate == "New") {
           scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo)
-          .then(()=>{
-            sp.web.lists.getByTitle("IPRS").items.add({
-              GrantId: grant,
-              SourceId: sourceID,
-              InclusionId: { results: inclusionID },
-              ExclusionId: { results: exclusionID },
-              ValidFrom: validFrom,
-              ValidTill: validTo,
-              Remarks: Remark,
-              SocietyId: societyid,
-              RightTypeId: rightTypeid,
-              CountryId: countryid,
-              CityId: CityId,
-              CustomInclusion: CustomFieldInclusionText,
-              CustomExclusion: CustomFieldExclusionText
-            }).then(() => {
-              console.log(" New Line Item submitted ");
-              if (loopCount == $("#data tr.table-row-data").length) {
-                resolve("");
-              }
-            })
-              .catch((err) => {
-                console.log("error" + err)
+            .then(() => {
+              sp.web.lists.getByTitle("IPRS").items.add({
+                GrantId: grant,
+                SourceId: sourceID,
+                InclusionId: { results: inclusionID },
+                ExclusionId: { results: exclusionID },
+                ValidFrom: validFrom,
+                ValidTill: validTo,
+                Remarks: Remark,
+                SocietyId: societyid,
+                RightTypeId: rightTypeid,
+                CountryId: countryid,
+                CityId: CityId,
+                CustomInclusion: CustomFieldInclusionText,
+                CustomExclusion: CustomFieldExclusionText
+              }).then(() => {
+                console.log(" New Line Item submitted ");
+                if (loopCount == $("#data tr.table-row-data").length) {
+                  resolve("");
+                }
               })
+                .catch((err) => {
+                  console.log("error" + err)
+                })
             })
         }
       });
@@ -827,36 +852,36 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
 
   }
 
-  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, Grantid: string , validFrom: string, validTo: string):Promise<any> {
-   return new Promise<any>((resolve, reject) => {
-    if (countryid == null) {
-      alert("Please fill Country.");
-      reject(false);
-    }
-    else if (societyid == null) {
-      alert("Please fill Society.");
-      reject(false);
-    }
-    else if (rightTypeid == null) {
-      alert("Please fill RightType.");
-      reject(false);
-    }
-    else if (Grantid == "") {
-      alert("Please fill Grant.");
-      reject(false);
-    }
-    else if (validFrom == "") {
-      alert("Please fill Valid From.")
-      reject(false);
-    }
-    else if (validTo == "") {
-      alert("Please fill Valid To.")
-      reject(false);
-    }
-    else {
-      resolve(true);
-    }
-   })
+  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, Grantid: string, validFrom: string, validTo: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (countryid == null) {
+        alert("Please fill Country.");
+        reject(false);
+      }
+      else if (societyid == null) {
+        alert("Please fill Society.");
+        reject(false);
+      }
+      else if (rightTypeid == null) {
+        alert("Please fill RightType.");
+        reject(false);
+      }
+      else if (Grantid == "") {
+        alert("Please fill Grant.");
+        reject(false);
+      }
+      else if (validFrom == "") {
+        alert("Please fill Valid From.")
+        reject(false);
+      }
+      else if (validTo == "") {
+        alert("Please fill Valid To.")
+        reject(false);
+      }
+      else {
+        resolve(true);
+      }
+    })
 
   }
 
@@ -866,7 +891,7 @@ $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this){
       results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' ')); 
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
 
