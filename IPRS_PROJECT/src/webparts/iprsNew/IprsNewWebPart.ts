@@ -402,7 +402,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     for (let i = 0; i < this.Sourceitems.length; i++) {
       this.table += `
     <tr class="table-row-data">
-          <td class="ellipsis-2">${this.Sourceitems[i].Title}
+          <td><span class="source-name">${this.Sourceitems[i].Title}</span>
           <span class="source-id" id="SourceID${i}" hidden>${this.Sourceitems[i].Id}</span>
           </td>
           <td>
@@ -446,7 +446,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
           <td>
               <div class="form-group custom-form-group mb0">
-                  <input type="date" class="form-control from-date-data" name="" value="" id="from-date${i}" disabled>
+                  <input type="date" class="form-control from-date-data" name="" max="9999-12-01" value="" id="from-date${i}" disabled>
               </div>
           </td>
           <td>
@@ -475,6 +475,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         let answer = window.confirm("Do you want to add New Record?");
         if (answer == true) {
           $(this).closest('tr').find("input:text,input[type=date].from-date-data,textarea").val("");
+          $(this).closest('tr').find("input[type=date].to-date-data").val("9999-12-01");
           $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
           $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
           $(this).closest('tr').find("select.grant-data").val("");
@@ -491,7 +492,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       //var scope = this;
       $(document).on('click', `#edit${i}`, async function (this) {
         let answer = window.confirm("Do you want to Edit this Record?");
-        if (answer == true) {
+        if (answer == true) { 
           $(`#IsRecord-Edit-New${i}`).text("Edit");
           $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
           $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
@@ -549,9 +550,12 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               arrayinclusion.push($(this).val());
             }
 
-
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameInclusion == "" && $(this).is(":checked")) {
+              alert("Please enter the value of others for Inclusion")
+            }
 
           });
+          
           $(`#InclusionDisplayName${i}`).val(arrayinclusionName)
           $(`#InclusionDisplayID${i}`).val(arrayinclusion)
           console.log(arrayinclusion, arrayinclusionName)
@@ -605,8 +609,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               arrayexclusionName.push($(this).closest("label").text())
               arrayexclusion.push($(this).val());
             }
+            
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameExclusion == "" && $(this).is(":checked")) {
+              alert("Please enter the value of others for Exclusion")
+            }
 
           });
+          
           $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
           $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
 
@@ -768,7 +777,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var rightTypeid: any = $("#righttypemaster").val();
       var countryid: any = $("#countrymaster").val();
       var scope = this;
-      scope.CheckMandatoryField(countryid, societyid, rightTypeid, null, null, null);
+      scope.CheckMandatoryField(countryid, societyid, rightTypeid, null, null, null ,null);
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -782,6 +791,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         var IsAddOrUpdate: any = $(this).find("span.AddOrUpdate").text();
         var IPRSId: any = $(this).find("span.IPRSId").text();
         var sourceID: any = $(this).find("span.source-id").text();
+        var sourceName: any = $(this).find("span.source-name").text();
         inclusionID = inclusionID.split(",");
         exclusionID = exclusionID.split(",");
         if (inclusionID == "") {
@@ -791,7 +801,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           exclusionID = [];
         }
         if (IsAddOrUpdate == "Edit") {
-          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo)
+          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo, sourceName)
             .then(() => {
               sp.web.lists.getByTitle("IPRS").items.getById(IPRSId).update({
                 GrantId: grant,
@@ -818,7 +828,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             })
         }
         else if (IsAddOrUpdate == "New") {
-          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo)
+          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo ,sourceName)
             .then(() => {
               sp.web.lists.getByTitle("IPRS").items.add({
                 GrantId: grant,
@@ -852,7 +862,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   }
 
-  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, Grantid: string, validFrom: string, validTo: string): Promise<any> {
+  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, Grantid: string, validFrom: string, validTo: string ,sourceName: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (countryid == null) {
         alert("Please fill Country.");
@@ -875,7 +885,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         reject(false);
       }
       else if (validTo == "") {
-        alert("Please fill Valid To.")
+        alert("Please fill Valid Till")
+        reject(false);
+      }
+      else if(new Date(moment(validFrom).format("YYYY-MM-DD")).getTime() >= new Date(moment(validTo).format("YYYY-MM-DD")).getTime() ) {
+        alert("Valid From should be smaller than Valid Till of " + sourceName)
         reject(false);
       }
       else {

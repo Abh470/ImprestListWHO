@@ -1414,7 +1414,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
       this.APIDataFilter = this.APIDataFilter.filter(function (el) {
         let ValidTillfilterlist = new Date(moment(el.ValidTill).format("YYYY-MM-DD")).getTime();
         return ValidTillfilterlist <= filterValidTill
-      });
+      }); 
     }
     if (!Number.isNaN(filterValidFrom)) {
       this.APIDataFilter = this.APIDataFilter.filter(function (el) {
