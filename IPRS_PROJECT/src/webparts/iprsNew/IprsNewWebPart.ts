@@ -471,6 +471,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           </td>
 </tr>
 `
+      $(document).on('change', `#to-date${i}`, async function (this) {
+        let ToDate: any = $(this).val();
+        $(this).closest('tr').find("input[type=date].from-date-data").attr('max', ToDate);
+
+      })
       $(document).on('click', `#newrow${i}`, async function (this) {
         let answer = window.confirm("Do you want to add New Record?");
         if (answer == true) {
@@ -492,7 +497,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       //var scope = this;
       $(document).on('click', `#edit${i}`, async function (this) {
         let answer = window.confirm("Do you want to Edit this Record?");
-        if (answer == true) { 
+        if (answer == true) {
           $(`#IsRecord-Edit-New${i}`).text("Edit");
           $(this).closest('tr').find("input,textarea,select").prop('disabled', false);
           $(this).closest('tr').find(".disable-anchor-tag").css("pointer-events", "auto");
@@ -551,11 +556,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             }
 
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameInclusion == "" && $(this).is(":checked")) {
-              alert("Please enter the value of others for Inclusion")
+              $(this).prop("checked", false);
+              $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", true);
+              alert("Please enter the value of others for Inclusion");
             }
 
           });
-          
+
           $(`#InclusionDisplayName${i}`).val(arrayinclusionName)
           $(`#InclusionDisplayID${i}`).val(arrayinclusion)
           console.log(arrayinclusion, arrayinclusionName)
@@ -609,13 +616,15 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               arrayexclusionName.push($(this).closest("label").text())
               arrayexclusion.push($(this).val());
             }
-            
+
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameExclusion == "" && $(this).is(":checked")) {
-              alert("Please enter the value of others for Exclusion")
+              $(this).prop("checked", false);
+              $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled", true);
+              alert("Please enter the value of others for Exclusion");
             }
 
           });
-          
+
           $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
           $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
 
@@ -648,6 +657,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     $("input.InclusionName-data").val("");
     $("input.ExclusionName-data").val("");
     $("input[type=date].from-date-data").val("");
+    $("input[type=date].to-date-data").val("9999-12-01");
     $("input[type=date]").prop('disabled', true);
     $("input[type=checkbox]").prop("checked", false);
     $("input[type=hidden]").val("");
@@ -742,7 +752,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $("#ExclusionDisplayName" + i).val(NewExclusionName);
           $("#ExclusionDisplayID" + i).val(val.ExclusionId);
         }
-      })
+      }) 
 
     }
 
@@ -777,7 +787,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var rightTypeid: any = $("#righttypemaster").val();
       var countryid: any = $("#countrymaster").val();
       var scope = this;
-      scope.CheckMandatoryField(countryid, societyid, rightTypeid, null, null, null ,null);
+      scope.CheckMandatoryField(countryid, societyid, rightTypeid, null, null, null, null);
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -828,7 +838,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             })
         }
         else if (IsAddOrUpdate == "New") {
-          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo ,sourceName)
+          scope.CheckMandatoryField(countryid, societyid, rightTypeid, grant, validFrom, validTo, sourceName)
             .then(() => {
               sp.web.lists.getByTitle("IPRS").items.add({
                 GrantId: grant,
@@ -862,7 +872,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   }
 
-  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, Grantid: string, validFrom: string, validTo: string ,sourceName: any): Promise<any> {
+  private CheckMandatoryField(countryid: any, societyid: any, rightTypeid: any, Grantid: string, validFrom: string, validTo: string, sourceName: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (countryid == null) {
         alert("Please fill Country.");
@@ -888,7 +898,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         alert("Please fill Valid Till")
         reject(false);
       }
-      else if(new Date(moment(validFrom).format("YYYY-MM-DD")).getTime() >= new Date(moment(validTo).format("YYYY-MM-DD")).getTime() ) {
+      else if (new Date(moment(validFrom).format("YYYY-MM-DD")).getTime() >= new Date(moment(validTo).format("YYYY-MM-DD")).getTime()) {
         alert("Valid From should be smaller than Valid Till of " + sourceName)
         reject(false);
       }
