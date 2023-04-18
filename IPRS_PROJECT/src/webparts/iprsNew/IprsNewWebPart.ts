@@ -572,7 +572,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
       {
         this.modalHTMLExclusion += ` <div id="exclusionlist${i}" class="modal fade" role="dialog">
-<div class="modal-dialog">
+<div class="modal-dialog"> 
 
   <!-- Modal content-->
   <div class="modal-content reciprocal-custom-modal">
