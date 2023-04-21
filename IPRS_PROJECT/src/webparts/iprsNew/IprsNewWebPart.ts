@@ -847,11 +847,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                   console.log("error" + err);
                  
                   
-                }).catch((err) => {
-                  //catch for check mandatory field function
-                  console.log("error" + err)
-                  reject("");
                 })
+            }).catch((err) => {
+              //catch for check mandatory field function
+              console.log("error" + err)
+              reject("");
             })
         }
         else if (IsAddOrUpdate == "New") {
