@@ -76,11 +76,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   public async render(): Promise<void> {
 
+
+
     SPComponentLoader.loadCss("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
     SPComponentLoader.loadCss('https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css');
 
     this.domElement.innerHTML = `
-    <div class="container-fluid">
+    <div id ="mainDIV" class="container-fluid">
     <div class="custom-panel">
         <div class="panel-head">
             <h1 class="panel-head-text">Reciprocal Add Screen</h1>
@@ -144,18 +146,22 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     let groups = await sp.web.currentUser.groups();
     console.log(groups)
     groups.forEach((group: any) => {
-      if (group.Title == "IPRS_Contributor") {
-        this.IsContributor = true;
-        this.ShowAddButton = true;
-        this.ShowEditButton = true;
-      }
       if (group.Title == "IPRS_Reader") {
         this.IsViewer = true;
-
+        alert("Sorry, you are not allowed to access this page")
+        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`
+        ;
       }
-      if (group.Title == "IPRS_Initiator") {
-        this.IsInitiator = true;
-        this.ShowAddButton = true;
+      else {
+        if (group.Title == "IPRS_Contributor") {
+          this.IsContributor = true;
+          this.ShowAddButton = true;
+          this.ShowEditButton = true;
+        }
+        if (group.Title == "IPRS_Initiator") {
+          this.IsInitiator = true;
+          this.ShowAddButton = true;
+        }
       }
     });
 
@@ -215,8 +221,6 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     document.getElementById('countrymaster').innerHTML = events;
 
   }
-
-
   //fetchfromsocietymasterlist
   private async fetchfromsocietymaster(CountryId: any): Promise<void> {
 
@@ -476,6 +480,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         $(this).closest('tr').find("input[type=date].from-date-data").attr('max', ToDate);
 
       })
+
       $(document).on('click', `#newrow${i}`, async function (this) {
         let answer = window.confirm("Do you want to add New Record?");
         if (answer == true) {
@@ -546,15 +551,17 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           var arrayinclusionName: any[] = [];
           var CustomFieldNameInclusion: any = $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val();
           $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
+            //checking if checkbox = others and text area is blank or not.
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameInclusion != "") {
               arrayinclusionName.push($(this).closest("label").text().replace(scope.CustomFieldGlobalName, CustomFieldNameInclusion))
               arrayinclusion.push($(this).val());
             }
+            //checking if checkbox != others
             else if ($(this).closest("label").text() != scope.CustomFieldGlobalName) {
               arrayinclusionName.push($(this).closest("label").text())
               arrayinclusion.push($(this).val());
             }
-
+//checking if checkbox is checked on others and if value of others is blank 
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameInclusion == "" && $(this).is(":checked")) {
               $(this).prop("checked", false);
               $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", true);
@@ -572,7 +579,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
       {
         this.modalHTMLExclusion += ` <div id="exclusionlist${i}" class="modal fade" role="dialog">
-<div class="modal-dialog">
+<div class="modal-dialog"> 
 
   <!-- Modal content-->
   <div class="modal-content reciprocal-custom-modal">
@@ -608,15 +615,17 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           var arrayexclusionName: any[] = [];
           var CustomFieldNameExclusion: any = $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val();
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]:checked").each(function () {
+            //checking if checkbox = others and text area is blank or not.
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameExclusion != "") {
               arrayexclusionName.push($(this).closest("label").text().replace(scope.CustomFieldGlobalName, CustomFieldNameExclusion))
               arrayexclusion.push($(this).val());
             }
+            //checking if checkbox != others
             else if ($(this).closest("label").text() != scope.CustomFieldGlobalName) {
               arrayexclusionName.push($(this).closest("label").text())
               arrayexclusion.push($(this).val());
             }
-
+         //checking if checkbox is checked on others and if value of others is blank
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameExclusion == "" && $(this).is(":checked")) {
               $(this).prop("checked", false);
               $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled", true);
@@ -712,7 +721,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $(`#edit${i}`).css("pointer-events", "auto");
           $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion);
           $("#InclusionCustomFieldDisplayName" + i).val(val.CustomInclusion);
-          let index = InclusionName.indexOf("CustomField");
+          let index = InclusionName.indexOf(this.CustomFieldGlobalName);
           var NewInclusionName = InclusionName;
           if (index != -1) {
             InclusionName[index] = val.CustomInclusion;
@@ -743,7 +752,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           })
           $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val(val.CustomExclusion);
           $("#ExclusionCustomFieldDisplayName" + i).val(val.CustomExclusion);
-          let indexExclusion = ExclusionName.indexOf("CustomField")
+          let indexExclusion = ExclusionName.indexOf(this.CustomFieldGlobalName)
           var NewExclusionName = ExclusionName;
           if (indexExclusion != -1) {
             ExclusionName[indexExclusion] = val.CustomExclusion;
@@ -752,7 +761,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $("#ExclusionDisplayName" + i).val(NewExclusionName);
           $("#ExclusionDisplayID" + i).val(val.ExclusionId);
         }
-      }) 
+      })
 
     }
 
@@ -787,7 +796,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var rightTypeid: any = $("#righttypemaster").val();
       var countryid: any = $("#countrymaster").val();
       var scope = this;
+      
       scope.CheckMandatoryField(countryid, societyid, rightTypeid, null, null, null, null);
+  
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -833,7 +844,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                 }
               })
                 .catch((err) => {
+                  console.log("error" + err);
+                 
+                  
+                }).catch((err) => {
+                  //catch for check mandatory field function
                   console.log("error" + err)
+                  reject("");
                 })
             })
         }
@@ -861,13 +878,19 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                 }
               })
                 .catch((err) => {
+                  //catch for list Submit
                   console.log("error" + err)
+                  
+
                 })
+
+            }).catch((err) => {
+              //catch for check mandatory field function
+              console.log("error" + err)
+              reject("");
             })
         }
-      });
-
-
+      })
     })
 
   }
