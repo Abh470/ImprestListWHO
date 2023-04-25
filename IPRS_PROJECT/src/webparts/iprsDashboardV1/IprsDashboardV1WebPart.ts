@@ -760,6 +760,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
           ExclusionStatushtml += '<span class="reciprocal-red-dot"></span>';
         }
 
+       
+
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
         table += `  
                   <tr> 
@@ -771,10 +773,10 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <td>${items[i].Grant.Title}</td>
                     <td class="noExl"><div class="reciprocal-status-dots-box">${InclusionStatushtml + ExclusionStatushtml}</div>
                      </td>
-                    <td>${moment(items[i].ValidFrom).format('DD-MM-YYYY')}</td>
-                    <td>${moment(items[i].ValidTill).format('DD-MM-YYYY')}</td>
+                    <td>${moment(items[i].ValidFrom).format("DD-MM-YYYY").toString()}</td>
+                    <td>${moment(items[i].ValidTill).format("DD-MM-YYYY").toString()}</td>
                     <td hidden>${items[i].Inclusion.map((val: any) => {
-          return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title);
+          return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title); 
         })}</td>
                      <td hidden>${items[i].Exclusion.map((val: any) => {
           return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomExclusion : val.Title);
