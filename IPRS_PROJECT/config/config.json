@@ -25,15 +25,8 @@
           "manifest": "./src/webparts/iprsDashboardV1/IprsDashboardV1WebPart.manifest.json"
         }
       ]
-    },
-    "iprs-admin-web-part": {
-      "components": [
-        {
-          "entrypoint": "./lib/webparts/iprsAdmin/IprsAdminWebPart.js",
-          "manifest": "./src/webparts/iprsAdmin/IprsAdminWebPart.manifest.json"
-        }
-      ]
     }
+   
   },
   "externals": {
     "jquery": {
@@ -51,7 +44,7 @@
   "localizedResources": {
     "IprsNewWebPartStrings": "lib/webparts/iprsNew/loc/{locale}.js",
     "IprsDashboardWebPartStrings": "lib/webparts/iprsDashboard/loc/{locale}.js",
-    "IprsDashboardV1WebPartStrings": "lib/webparts/iprsDashboardV1/loc/{locale}.js",
-    "IprsAdminWebPartStrings": "lib/webparts/iprsAdmin/loc/{locale}.js"
+    "IprsDashboardV1WebPartStrings": "lib/webparts/iprsDashboardV1/loc/{locale}.js"
+    
   }
 }

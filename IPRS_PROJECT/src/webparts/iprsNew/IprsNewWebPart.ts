@@ -725,7 +725,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           var NewInclusionName = InclusionName;
           if (index != -1) {
             InclusionName[index] = val.CustomInclusion;
-            NewInclusionName = InclusionName;
+            NewInclusionName = InclusionName; 
           }
           $("#InclusionDisplayName" + i).val(NewInclusionName);
           $("#InclusionDisplayID" + i).val(val.InclusionId);
