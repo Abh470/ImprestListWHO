@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Reciprocal Dashboard</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="assets/css/jquery.multiselect.css" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="assets/css/padding.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-custom header-nav">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#"><img src="assets/images/IPRS-logo.webp" class="logo" alt=""></a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+    <!--
+                    <ul class="nav navbar-nav">
+                        <li class="navItem active"><a href="#">Menu</a></li>
+                        <li class="navItem"><a href="#">menu1</a></li>
+                    </ul>
+    -->
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="custom-panel">
+                <div class="panel-head panel-flex">
+                    <h1 class="panel-head-text">Reciprocal Dashboard</h1>
+                    <div class="reciprocal-legend-box">
+                        <div class="d-flex align-center mr15 mb10">
+                            <span class="reciprocal-green-dot"></span> 
+                            <span>Inclusion</span>
+                        </div>
+                        <div class="d-flex align-center mr15 mb10">
+                            <span class="reciprocal-red-dot"></span> 
+                            <span>Exclusion</span>
+                        </div>
+                        <div class="d-flex align-center mr15 mb10">
+                            <span class="custom-edit-btn mr10">
+                                <i class="fa fa-info" ></i>
+                            </span>
+                            <span>Details</span>
+                        </div>
+                        <div class="d-flex align-center mb10">
+                            <div class="activity-history-legend mr5">
+                                <img src="assets/images/clock.png" alt=""/>
+                            </div>
+                            <span>History</span>
+                        </div>
+                    </div>
+<!--
+                    <div class="reciprocal-legend-box">
+                        <div class="d-flex flex-column mr15">
+                            <div class="d-flex align-center mb5">
+                                <span class="reciprocal-green-dot"></span> 
+                                <span>Inclusion</span>
+                            </div>
+                            <div class="d-flex align-center">
+                                <span class="reciprocal-red-dot"></span> 
+                                <span>Exclusion</span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div class="d-flex mb5">
+                                <span class="custom-edit-btn ml5 mr10">
+                                    <i class="fa fa-info"></i>
+                                </span>
+                                <span>Details</span>
+                            </div>
+                            <div class="d-flex">
+                                <div class="activity-history-legend mr5">
+                                    <img src="assets/images/clock.png" alt=""/>
+                                </div>
+                                <span>History</span>
+                            </div>
+                        </div>
+                    </div>
+-->
+                </div>
+                <div class="panel-body">
+                    <div class="row m-0 mb15 mt15">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="scrollbar-panel chip-panel">
+                                <div class="chip-box">
+                                    <div class="upload-chip">Netherlands</div>
+                                    <div class="upload-chip">Buma</div>
+                                    <div class="upload-chip">ASCAP</div>
+                                    <div class="upload-chip">Performing</div>
+                                    <div class="upload-chip">Sync</div>
+                                    <div class="upload-chip">Mechanical</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-0 mb5">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-new-panel-col-1">
+                            <div class="dashboard-deta-btn-panel d-flex">
+                                
+                                <div class="dropdown dashboard-table-btn">
+                                    <button class="btn dropdown-toggle" type="button" onclick="window.location.href='add.html'">
+                                        <img class="dashboard-icon-info mr2" src="assets/images/edit-property-icon.png" alt="plus">
+                                        <span>Manage</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown dashboard-table-btn" data-toggle="modal" data-target="#dashboard-filter">
+                                    <button class="btn dropdown-toggle" type="button">
+                                      <img class="dashboard-icon-info mr2" src="assets/images/filter-icon.png" alt="filter">
+                                      <span>Filter</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown dashboard-table-btn">
+                                    <button class="btn dropdown-toggle" type="button">
+                                      <img class="dashboard-icon-info mr2" src="assets/images/export-icon.png" alt="export">
+                                      <span>Export</span>
+                                    </button>
+                                </div>
+                                <div class="dropdown dashboard-table-btn">
+
+                                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                    <img class="dashboard-icon-info mr2" src="assets/images/administrative-tools.png" alt="" data-themekey="#">
+                                                    <span>Admin Controls</span>
+                                                    <img class="dashboard-icon-info ml2" src="assets/images/expand-arrow-icon.png" alt="expand arrow" data-themekey="#">
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-color-menu-icon">
+                                                    <li>
+                                                        <a href="manage-countries.html">
+                                                            <span class="">Manage Countries</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="manage-cities.html">
+                                                            <span class="">Manage Cities</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="manage-societies.html">
+                                                            <span class="">Manage Society</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="manage-right-types.html">
+                                                            <span class="">Manage Right Types</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="manage-sources.html">
+                                                            <span class="">Manage Sources</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="manage-inclusions.html">
+                                                            <span class="">Manage Inclusion</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="manage-exclusions.html">
+                                                            <span class="">Manage Exclusion</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="manage-grants.html">
+                                                            <span class="">Manage Grant</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                            </div>
+<!--
+                            <div class="form-group custom-form-group dashboard-search-box">
+                                <input class="form-control" type="text" name="" placeholder="Search">
+                            </div>
+-->
+                        </div>
+                    </div>
+                    <div class="row mt5">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-responsive reciprocal-table skill-set-table scrollbar-panel">
+                                <table class="table mb0 custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-5-th">Country</th>
+                                            <th class="w-10-th">Society</th>
+                                            <th class="w-5-th">Right Type</th>
+                                            <th class="w-15-th">Source</th>
+                                            <th class="w-7-th">Grant</th>
+                                            <th class="w-3-th">&nbsp;</th>
+                                            <th class="w-5-th">Valid From</th>
+                                            <th class="w-5-th">Valid Till</th>
+                                            <th class="w-5-th">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="24" valign="middle" class="fb-600 border-right-d2-colr">Netherlands</td>
+                                            <td rowspan="16" valign="middle" class="fb-600 border-right-d2-colr">Buma (Buma-01)</td>
+                                            <td rowspan="8" valign="middle" class="fb-600 border-right-d2-colr">Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Internet Streaming</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Radio Broadcasting</td>
+                                            <td>Non-Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Public Performance</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Physical Format</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>18-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lyric Display Right</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phonogram</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Private Copying</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="8" valign="middle" class="fb-600 border-right-d2-colr">Sync</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Internet Streaming</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Radio Broadcasting</td>
+                                            <td>Non-Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Public Performance</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Physical Format</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>18-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lyric Display Right</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phonogram</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Private Copying</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="8" valign="middle" class="fb-600 border-right-d2-colr">ASCAP</td>
+                                            <td rowspan="8" valign="middle" class="fb-600 border-right-d2-colr">Mechanical</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Internet Streaming</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Radio Broadcasting</td>
+                                            <td>Non-Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Public Performance</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Physical Format</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>18-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lyric Display Right</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phonogram</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Private Copying</td>
+                                            <td>Exclusive</td>
+                                            <td>
+                                                <div class="reciprocal-status-dots-box">
+                                                    <span class="reciprocal-green-dot"></span>
+                                                    <span class="reciprocal-red-dot"></span>
+                                                </div>
+                                            </td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                            <td>
+                                                <div class="reciprocal-action-btn-box">
+                                                        <a type="button" href="#" class="custom-edit-btn mr15" data-toggle="modal" data-target="#detail-modal">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <a type="button" href="#" class="custom-edit-btn line-height-clock" data-toggle="modal" data-target="#old_archive">
+                                                                <span class="activity-history-dashboard"><img src="assets/images/clock.png" alt=""/></span>
+                                                        </a>
+                                                    </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+
+        
+        
+        
+        <div id="dashboard-filter" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                 <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">Ã—</span></button>
+                <h4 class="modal-title">Filter</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Country:</label>
+                            <select id="country" name="country_basic[]" multiple="multiple" class="3col active form-control">
+                                <option value="netherland">Netherland</option>
+                                <option value="countryname1">Country Name 1</option>
+                                <option value="countryname2">Country Name 2</option>
+                                <option value="countryname3">Country Name 3</option>
+                                <option value="countryname4">Country Name 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Society:</label>
+                            <select id="society" name="society_basic[]" multiple="multiple" class="3col active form-control">
+                                <option value="buma">Buma</option>
+                                <option value="societyname1">Society Name 1</option>
+                                <option value="societyname2">Society Name 2</option>
+                                <option value="societyname3">Society Name 3</option>
+                                <option value="societyname4">Society Name 4</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Right Type:</label>
+                            <select id="right" name="right_basic[]" multiple="multiple" class="3col active form-control">
+                                <option value="performing">Performing</option>
+                                <option value="sync">Sync</option>
+                                <option value="mechanical">Mechanical</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Source:</label>
+                            <select class="form-control">
+                                <option>Television Broadcasting</option>
+                                <option>Internet Streaming</option>
+                                <option>Radio Broadcasting</option>
+                                <option>Public Performance</option>
+                                <option>Physical Format</option>
+                                <option>Lyric Display Right</option>
+                                <option>Phonogram</option>
+                                <option>Private Copying</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Grant:</label>
+                            <select class="form-control">
+                                <option>Exclusive</option>
+                                <option>Non-Exclusive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>From Date:</label>
+                            <input type="date" class="form-control" name="">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>To Date:</label>
+                            <input type="date" class="form-control" name="">
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn custom-btn mr-8" data-dismiss="modal">Apply</button>
+                <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        <div id="detail-modal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">Ã—</span></button>
+                <h4 class="modal-title">Details</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Country:</label>
+                            <p>US</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Society:</label>
+                            <p>Buma (Buma-01)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Society Location:</label>
+                            <p>Mumbai, India</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Right Type:</label>
+                            <p>Perf Right</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Source:</label>
+                            <p>Television Broadcasting</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Grant:</label>
+                            <p>Exclusive</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Inclusion:</label>
+                            <p>Facebook</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Exclusion:</label>
+                            <p>Youtube</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Valid From:</label>
+                            <p>14-02-2023</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Valid To:</label>
+                            <p>28-03-2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt10">
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Remarks:</label>
+                            <p>Lorem ipsum dolor sit amet do solor. Lorem ipsum dolor sit amet do solor. Lorem ipsum dolor sit amet do solor. </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Created By:</label>
+                            <div class="reciprocal-user-card-panel">
+                                <div class="reciprocal-user-card-img">
+                                    <img src="assets/images/img-21.jpg" alt="user">
+                                </div>
+                                <div class="reciprocal-user-card-info">
+                                    <div class="reciprocal-user-card-name ellipsis-1">
+                                        Patrick Dawson
+                                    </div>
+                                    <div class="reciprocal-user-card-email ellipsis-1">
+                                        pat.dawson@mail-india.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Created On:</label>
+                            <p>16-02-2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt10">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Modified By:</label>
+                            <div class="reciprocal-user-card-panel">
+                                <div class="reciprocal-user-card-img">
+                                    <img src="assets/images/1.png" alt="user">
+                                </div>
+                                <div class="reciprocal-user-card-info">
+                                    <div class="reciprocal-user-card-name ellipsis-1">
+                                        David Norman
+                                    </div>
+                                    <div class="reciprocal-user-card-email ellipsis-1">
+                                        dav.norman@mail-india.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="form-group custom-form-group">
+                            <label>Modified On:</label>
+                            <p>01-03-2023</p>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        <div id="old_archive" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-lg modal-xl">
+
+            <!-- Modal content-->
+            <div class="modal-content reciprocal-custom-modal">
+              <div class="modal-header">
+                <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">Ã—</span></button>
+                <h4 class="modal-title">History</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row mt5">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-responsive reciprocal-table skill-set-table scrollbar-panel">
+                                <table class="table mb0 custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-5-th">Country</th>
+                                            <th class="w-10-th">Society</th>
+                                            <th class="w-5-th">Right Type</th>
+                                            <th class="w-15-th">Source</th>
+                                            <th class="w-10-th">Grant</th>
+                                            <th class="w-5-th">Valid From</th>
+                                            <th class="w-5-th">Valid Till</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Netherlands</td>
+                                            <td>Buma (Buma-01)</td>
+                                            <td>Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Exclusive</td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Netherlands</td>
+                                            <td>Buma (Buma-01)</td>
+                                            <td>Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Non-Exclusive</td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Netherlands</td>
+                                            <td>Buma (Buma-01)</td>
+                                            <td>Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Exclusive</td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Netherlands</td>
+                                            <td>Buma (Buma-01)</td>
+                                            <td>Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Non-Exclusive</td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Netherlands</td>
+                                            <td>Buma (Buma-01)</td>
+                                            <td>Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Exclusive</td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Netherlands</td>
+                                            <td>Buma (Buma-01)</td>
+                                            <td>Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Non-Exclusive</td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Netherlands</td>
+                                            <td>Buma (Buma-01)</td>
+                                            <td>Performing</td>
+                                            <td>Television Broadcasting</td>
+                                            <td>Exclusive</td>
+                                            <td>14-02-2023</td>
+                                            <td>28-03-2023</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt10">
+                        <div class="row">
+                          <div class="col-sm-7 col-xs-12">
+                            <ul class="pagination custom-pagination">
+                              <li><a href="#"><i class="fa fa-angle-double-left"></i></a>
+                              </li>
+                              <li><a href="#"><i class="fa fa-angle-left"></i></a>
+                              </li>
+                              <li class="active"><a href="#">1</a></li>
+                              <li><a href="#">2</a></li>
+                              <li><a href="#">...</a></li>
+                              <li><a href="#">5</a></li>
+                              <li><a href="#"><i class="fa fa-angle-right"></i></a>
+                              </li>
+                              <li><a href="#"><i class="fa fa-angle-double-right"></i></a>
+                              </li>
+                            </ul>
+
+                          </div>
+                          <div class="col-sm-5 col-xs-12">
+                            <div class="dms-table-total-items">
+                              <label class="total-items">Showing 7 out of 7 Items |</label>
+                            <a class="view-all-card-link" href="#">View all</a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn custom-btn-two-cancel" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="assets/js/popper.min.js"></script>
+        <script type="text/javascript" src="assets/js/jquery.multiselect.js"></script>
+
+        <script>
+            $(document).on('click', '.dropdown-menu', function (e) {
+              e.stopPropagation();
+            });
+        </script>
+        <script>
+            $(function() {
+                $('#country').multiselect({
+                  columns: 1,
+                  selectAllText:false,
+                  placeholder: 'Country Name',
+                  search: true,
+                  searchOptions: {
+                      'default': 'Search'
+                  },
+                  selectAll: true,
+                });
+
+            });
+        </script>
+        <script>
+            $(function() {
+                $('#society').multiselect({
+                  columns: 1,
+                  selectAllText:false,
+                  placeholder: 'Society Name',
+                  search: true,
+                  searchOptions: {
+                      'default': 'Search'
+                  },
+                  selectAll: true,
+                });
+
+            });
+        </script>
+        <script>
+            $(function() {
+                $('#right').multiselect({
+                  columns: 1,
+                  selectAllText:false,
+                  placeholder: 'Right Type',
+                  search: true,
+                  searchOptions: {
+                      'default': 'Search'
+                  },
+                  selectAll: true,
+                });
+
+            });
+        </script>
+
+    </body>
+
+</html>
+
+
+
+
+if (group.Title == "IPRS_Reader") {
+        this.IsViewer = true;
+
+      }

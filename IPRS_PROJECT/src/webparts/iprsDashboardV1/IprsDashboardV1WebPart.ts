@@ -19,17 +19,22 @@ require("../../webparts/iprsDashboardV1/assets/assets/css/padding.css");
 require("../../webparts/iprsDashboardV1/assets/assets/css/styles.css");
 require("../../webparts/CommonAssets/Style.css");
 require("../../webparts/CommonAssets/Common.js");
+require("../../webparts/CommonAssets/assets/css/padding.css");
+require("../../webparts/CommonAssets/assets/css/styles.css");
 //require("../../webparts/iprsDashboard/assets/assets/font-awesome/css/font-awesome.min.css");
 require("../../webparts/iprsDashboardV1/assets/assets/js/jquery.multiselect.js");
 require("../../webparts/iprsDashboardV1/assets/assets/css/jquery.multiselect.css");
-
 require("../../webparts/CommonAssets/ExcelJs/jquery.table2excel.js");
 // require("../../webparts/CommonAssets/row-merge-bundle.min.js");
 
-const ADDUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/plus-icon.png');
+const ADDUploaded: any = require('../../webparts/CommonAssets/assets/images/edit-property-icon.png');
 const filterUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/filter-icon.png');
 const ExportUploaded: any = require('../../webparts/iprsDashboardV1/assets/assets/images/export-icon.png');
 const HistoryIcon: any = require('../../webparts/iprsDashboardV1/assets/assets/images/HistoryIcon.png');
+const IprsLogo: any = require("../../webparts/CommonAssets/assets/images/IPRS-logo.png");
+const AdminManage: any = require("../../webparts/CommonAssets/assets/images/administrative-tools.png");
+const Expandarrow: any = require("../../webparts/CommonAssets/assets/images/expand-arrow-icon.png");
+
 import * as strings from 'IprsDashboardV1WebPartStrings';
 
 export interface IIprsDashboardV1WebPartProps {
@@ -75,8 +80,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
     SPComponentLoader.loadCss("https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css");
     SPComponentLoader.loadScript("https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js");
-    //SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-    //SPComponentLoader.loadScript("src/jquery.table2excel.js");
+   // SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+   // SPComponentLoader.loadScript("src/jquery.table2excel.js");
+    
 
     let groups: [] = await sp.web.currentUser.groups();
     console.log(groups)
@@ -96,6 +102,24 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
 
     this.domElement.innerHTML = `
+
+    <nav class="navbar navbar-custom header-nav">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="${IprsLogo}" class="logo" alt=""></a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+        </div>
+    </div>
+</nav>
+
+  
     <div class="lds-dual-ring-box"> <div class="lds-dual-ring"></div> </div>
 <div class="container-fluid">
     <div class="custom-panel">
@@ -147,7 +171,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                         <div class="dropdown dashboard-table-btn">
                         ${(this.ShowAddButton) ? `<button class="btn dropdown-toggle" type="button" id="addnew">
                         <img class="dashboard-icon-info mr2" src="${ADDUploaded}" alt="plus">
-                        <span>Add</span>
+                        <span>Manage</span>
                     </button>`: ""}
                             
                         </div>
@@ -163,6 +187,43 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                               <span>Export</span>
                             </button>
                         </div>
+                        <div class="dropdown dashboard-table-btn" id="admincontrol">
+
+                                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                    <img class="dashboard-icon-info mr2" src="${AdminManage}" alt="" data-themekey="#">
+                                                    <span>Admin Controls</span>
+                                                    <img class="dashboard-icon-info ml2" src="${Expandarrow}" alt="expand arrow" data-themekey="#">
+                                                </button>
+
+                                                <ul class="dropdown-menu dropdown-color-menu-icon">
+                                                    <li>
+                                                        <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageCities.aspx">
+                                                            <span class="">Manage Cities</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageSocieties.aspx">
+                                                            <span class="">Manage Society</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageSources.aspx">
+                                                            <span class="">Manage Sources</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageInclusions.aspx">
+                                                            <span class="">Manage Inclusion</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageExclusions.aspx">
+                                                            <span class="">Manage Exclusion</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                            </div>
                         ${/*  Backtick Comment    
                         <div class="dropdown dashboard-table-btn">
                         
@@ -270,13 +331,13 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
             <div class="col-sm-6 col-xs-12">
                 <div class="form-group custom-form-group">
                     <label>From Date:</label>
-                    <input type="date" class="form-control" name="" id="Fromdatefilter">
+                    <input type="date" class="form-control dateformat" name="" id="Fromdatefilter"> 
                 </div>
             </div>
             <div class="col-sm-6 col-xs-12">
                 <div class="form-group custom-form-group">
                     <label>To Date:</label>
-                    <input type="date" class="form-control" name="" id="Todatefilter">
+                    <input type="date" class="form-control dateformat" name="" id="Todatefilter">
                 </div>
             </div>
         </div>
@@ -296,9 +357,16 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 `
 
 
-
     //this.fetchfromSocietyMaster();
     //this.societymultiselect();
+    
+
+    this.bindevent();
+
+  }
+
+  private async bindevent()  {
+
     this.fetchDropdownIPRS().then(() => {
       //this.fetchfromRightTypeMaster();
       this.fetchfromcountrymaster();
@@ -759,8 +827,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         else if (items[i].Exclusion.length > 0) {
           ExclusionStatushtml += '<span class="reciprocal-red-dot"></span>';
         }
-
-       
+let NewValidFrom :string = "'"+moment(items[i].ValidFrom).format("DD-MM-YYYY").toString(); 
+let NewValidTill :string = "'"+moment(items[i].ValidTill).format("DD-MM-YYYY").toString();       
 
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
         table += `  
@@ -773,8 +841,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                     <td>${items[i].Grant.Title}</td>
                     <td class="noExl"><div class="reciprocal-status-dots-box">${InclusionStatushtml + ExclusionStatushtml}</div>
                      </td>
-                    <td>${moment(items[i].ValidFrom).format("DD-MM-YYYY").toString()}</td>
-                    <td>${moment(items[i].ValidTill).format("DD-MM-YYYY").toString()}</td>
+                    <td>${NewValidFrom}</td>
+                    <td>${NewValidTill}</td>
                     <td hidden>${items[i].Inclusion.map((val: any) => {
           return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title); 
         })}</td>
@@ -1208,9 +1276,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     let filterSource = $("#source").val();
     let filterGrant = $("#grant").val();
     let filterValidFrom: any = $("#Fromdatefilter").val();
-
     let filterValidTill: any = $("#Todatefilter").val();
-
     $("#Country-Icon").text($("#country option:selected").text().replaceAll("  ", ","));
     $("#Society-Icon").text($("#society option:selected").text().replaceAll("  ", ","));
     $("#Right-Icon").text($("#righttype option:selected").text().replaceAll("  ", ","));
@@ -1372,77 +1438,77 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   }
 
 
-  public FilterAPIData() {
-    let filterSociety = $("#society").val() as any;
-    let filterRightType: any = $("#righttype").val();
-    let Country: any = $("#country").val();
-    let filterSource = $("#source").val();
-    let filterGrant = $("#grant").val();
-    let filterValidFrom: any = $("#Fromdatefilter").val();
-    filterValidFrom = moment(filterValidFrom).format("YYYY-MM-DD");
-    filterValidFrom = new Date(filterValidFrom).getTime();
+  // public FilterAPIData() {
+  //   let filterSociety = $("#society").val() as any;
+  //   let filterRightType: any = $("#righttype").val();
+  //   let Country: any = $("#country").val();
+  //   let filterSource = $("#source").val();
+  //   let filterGrant = $("#grant").val();
+  //   let filterValidFrom: any = $("#Fromdatefilter").val();
+  //   filterValidFrom = moment(filterValidFrom).format("YYYY-MM-DD");
+  //   filterValidFrom = new Date(filterValidFrom).getTime();
 
-    let filterValidTill: any = $("#Todatefilter").val();
-    filterValidTill = moment(filterValidTill).format("YYYY-MM-DD");
-    filterValidTill = new Date(filterValidTill).getTime();
-    $("#Country-Icon").text($("#country option:selected").text());
-    $("#Society-Icon").text($("#society option:selected").text());
-    $("#Right-Icon").text($("#righttype option:selected").text());
+  //   let filterValidTill: any = $("#Todatefilter").val();
+  //   filterValidTill = moment(filterValidTill).format("YYYY-MM-DD");
+  //   filterValidTill = new Date(filterValidTill).getTime();
+  //   $("#Country-Icon").text($("#country option:selected").text());
+  //   $("#Society-Icon").text($("#society option:selected").text());
+  //   $("#Right-Icon").text($("#righttype option:selected").text());
 
-    this.APIDataFilter = this.APIDataForFilterSort;
-
-
-    if (filterSociety != '' && Country != '') {
-      this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
-        let Societyfilterlist: string[] = []
-        Societyfilterlist.push(el.SocietyId);
-        let Countryfilterlist = el.CountryId;
-        return Societyfilterlist.some(r => filterSociety.toString().includes(r)) && Country == Countryfilterlist
-      });
-    }
-    if (filterSource != '') {
-      this.APIDataFilter = this.APIDataFilter.filter(function (el) {
-        let Sourcefilterlist = el.SourceId;
-        return Sourcefilterlist == filterSource
-      });
-    }
-    if (filterGrant != '') {
-      this.APIDataFilter = this.APIDataFilter.filter(function (el) {
-        let Grantfilterlist = el.GrantId;
-        return Grantfilterlist == filterGrant
-      });
-    }
-    if (!Number.isNaN(filterValidTill)) {
-      this.APIDataFilter = this.APIDataFilter.filter(function (el) {
-        let ValidTillfilterlist = new Date(moment(el.ValidTill).format("YYYY-MM-DD")).getTime();
-        return ValidTillfilterlist <= filterValidTill
-      }); 
-    }
-    if (!Number.isNaN(filterValidFrom)) {
-      this.APIDataFilter = this.APIDataFilter.filter(function (el) {
-        let ValidFromfilterlist = new Date(moment(el.ValidFrom).format("YYYY-MM-DD")).getTime();
-        return filterValidFrom <= ValidFromfilterlist
-      });
-    }
-    if (filterRightType != '') {
-      this.APIDataFilter = this.APIDataFilter.filter(function (el) {
-        let RightTypefilterlist = el.RightTypeId;
-        return RightTypefilterlist == filterRightType
-      });
-    }
+  //   this.APIDataFilter = this.APIDataForFilterSort;
 
 
-
-
-    this.IsFilterApplied = true;
-    this.fetchfromIPRS(this.APIDataFilter).then(() => {
-      $(".lds-dual-ring").hide();
-    })
+  //   if (filterSociety != '' && Country != '') {
+  //     this.APIDataFilter = this.APIDataForFilterSort.filter(function (el) {
+  //       let Societyfilterlist: string[] = []
+  //       Societyfilterlist.push(el.SocietyId);
+  //       let Countryfilterlist = el.CountryId;
+  //       return Societyfilterlist.some(r => filterSociety.toString().includes(r)) && Country == Countryfilterlist
+  //     });
+  //   }
+  //   if (filterSource != '') {
+  //     this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+  //       let Sourcefilterlist = el.SourceId;
+  //       return Sourcefilterlist == filterSource
+  //     });
+  //   }
+  //   if (filterGrant != '') {
+  //     this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+  //       let Grantfilterlist = el.GrantId;
+  //       return Grantfilterlist == filterGrant
+  //     });
+  //   }
+  //   if (!Number.isNaN(filterValidTill)) {
+  //     this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+  //       let ValidTillfilterlist = new Date(moment(el.ValidTill).format("YYYY-MM-DD")).getTime();
+  //       return ValidTillfilterlist <= filterValidTill
+  //     }); 
+  //   }
+  //   if (!Number.isNaN(filterValidFrom)) {
+  //     this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+  //       let ValidFromfilterlist = new Date(moment(el.ValidFrom).format("YYYY-MM-DD")).getTime();
+  //       return filterValidFrom <= ValidFromfilterlist
+  //     });
+  //   }
+  //   if (filterRightType != '') {
+  //     this.APIDataFilter = this.APIDataFilter.filter(function (el) {
+  //       let RightTypefilterlist = el.RightTypeId;
+  //       return RightTypefilterlist == filterRightType
+  //     });
+  //   }
 
 
 
 
-  }
+  //   this.IsFilterApplied = true;
+  //   this.fetchfromIPRS(this.APIDataFilter).then(() => {
+  //     $(".lds-dual-ring").hide();
+  //   })
+
+
+
+
+  // }
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');

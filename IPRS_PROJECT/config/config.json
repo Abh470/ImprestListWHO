@@ -25,8 +25,47 @@
           "manifest": "./src/webparts/iprsDashboardV1/IprsDashboardV1WebPart.manifest.json"
         }
       ]
+    },
+    "admin-cities-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/adminCities/AdminCitiesWebPart.js",
+          "manifest": "./src/webparts/adminCities/AdminCitiesWebPart.manifest.json"
+        }
+      ]
+    },
+    "admin-socities-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/adminSocities/AdminSocitiesWebPart.js",
+          "manifest": "./src/webparts/adminSocities/AdminSocitiesWebPart.manifest.json"
+        }
+      ]
+    },
+    "admin-source-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/adminSource/AdminSourceWebPart.js",
+          "manifest": "./src/webparts/adminSource/AdminSourceWebPart.manifest.json"
+        }
+      ]
+    },
+    "admin-inclusion-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/adminInclusion/AdminInclusionWebPart.js",
+          "manifest": "./src/webparts/adminInclusion/AdminInclusionWebPart.manifest.json"
+        }
+      ]
+    },
+    "admin-exclusion-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/adminExclusion/AdminExclusionWebPart.js",
+          "manifest": "./src/webparts/adminExclusion/AdminExclusionWebPart.manifest.json"
+        }
+      ]
     }
-   
   },
   "externals": {
     "jquery": {
@@ -44,7 +83,11 @@
   "localizedResources": {
     "IprsNewWebPartStrings": "lib/webparts/iprsNew/loc/{locale}.js",
     "IprsDashboardWebPartStrings": "lib/webparts/iprsDashboard/loc/{locale}.js",
-    "IprsDashboardV1WebPartStrings": "lib/webparts/iprsDashboardV1/loc/{locale}.js"
-    
+    "IprsDashboardV1WebPartStrings": "lib/webparts/iprsDashboardV1/loc/{locale}.js",
+    "AdminCitiesWebPartStrings": "lib/webparts/adminCities/loc/{locale}.js",
+    "AdminSocitiesWebPartStrings": "lib/webparts/adminSocities/loc/{locale}.js",
+    "AdminSourceWebPartStrings": "lib/webparts/adminSource/loc/{locale}.js",
+    "AdminInclusionWebPartStrings": "lib/webparts/adminInclusion/loc/{locale}.js",
+    "AdminExclusionWebPartStrings": "lib/webparts/adminExclusion/loc/{locale}.js"
   }
 }

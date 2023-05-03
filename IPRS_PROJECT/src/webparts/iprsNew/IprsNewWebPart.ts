@@ -16,9 +16,14 @@ require("../iprsNew/assets/assets1/css/styles.css");
 //require("../iprsNew/assets/assets1/font-awesome/css/font-awesome.min.css");
 require("../../webparts/CommonAssets/Common.js");
 require("../../webparts/CommonAssets/Style.css");
+require("../../webparts/CommonAssets/assets/css/padding.css");
+require("../../webparts/CommonAssets/assets/css/styles.css");
+
 import { SPComponentLoader } from '@microsoft/sp-loader';
 import * as _ from "lodash";
 import * as moment from 'moment';
+
+const IprsLogo: any = require("../../webparts/CommonAssets/assets/images/IPRS-logo.png");
 
 
 //import * as $ from 'jquery';
@@ -82,6 +87,23 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     SPComponentLoader.loadCss('https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css');
 
     this.domElement.innerHTML = `
+
+    <nav class="navbar navbar-custom header-nav">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="${IprsLogo}" class="logo" alt=""></a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+        </div>
+    </div>
+</nav>
+
     <div id ="mainDIV" class="container-fluid">
     <div class="custom-panel">
         <div class="panel-head">
@@ -150,7 +172,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         this.IsViewer = true;
         alert("Sorry, you are not allowed to access this page")
         window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`
-        ;
+          ;
       }
       else {
         if (group.Title == "IPRS_Contributor") {
@@ -233,6 +255,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
       events += `<option value='${items[i].ID}'> ${items[i].Title} - (${items[i].Code})</option>`
       console.log(items[i].Title)
+
 
     }
 
@@ -537,8 +560,16 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 </div>`
 
         $(document).on('click', `#Inclusion-Checkbox${i}`, async function (this) {
-          if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
-            $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", false)
+          let IsCheckInclusionCheckBox: any = $(this).is(":checked");
+          if (IsCheckInclusionCheckBox) {
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
+              $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", false)
+            }
+          }
+          else {
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
+              $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", true)
+            }
           }
         })
 
@@ -561,7 +592,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               arrayinclusionName.push($(this).closest("label").text())
               arrayinclusion.push($(this).val());
             }
-//checking if checkbox is checked on others and if value of others is blank 
+            //checking if checkbox is checked on others and if value of others is blank 
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameInclusion == "" && $(this).is(":checked")) {
               $(this).prop("checked", false);
               $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", true);
@@ -584,7 +615,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   <!-- Modal content-->
   <div class="modal-content reciprocal-custom-modal">
     <div class="modal-header">
-    <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>  
+    <button type="button" class="close close-round" data-dismiss="modal"><span class="close-icon">×</span></button>   
       <h4 class="modal-title">Add Exclusions</h4>
     </div>
     <div class="modal-body" id="exclusionID${i}">  
@@ -605,10 +636,19 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 </div>`
 
         $(document).on('click', `#Exclusion-Checkbox${i}`, async function (this) {
-          if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
-            $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled", false)
+          let IsCheckExclusionCheckBox: any = $(this).is(":checked");
+          if (IsCheckExclusionCheckBox) {
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
+              $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled", false)
+            }
+          }
+          else {
+            if ($(this).closest("label").text() == scope.CustomFieldGlobalName) {
+              $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled", true)
+            }
           }
         })
+
         $(document).on('click', `#Add-btn-modal-exclusion${i}`, async function (this) {
 
           var arrayexclusion: any[] = [];
@@ -625,7 +665,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               arrayexclusionName.push($(this).closest("label").text())
               arrayexclusion.push($(this).val());
             }
-         //checking if checkbox is checked on others and if value of others is blank
+            //checking if checkbox is checked on others and if value of others is blank
             if ($(this).closest("label").text() == scope.CustomFieldGlobalName && CustomFieldNameExclusion == "" && $(this).is(":checked")) {
               $(this).prop("checked", false);
               $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").prop("disabled", true);
@@ -725,7 +765,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           var NewInclusionName = InclusionName;
           if (index != -1) {
             InclusionName[index] = val.CustomInclusion;
-            NewInclusionName = InclusionName; 
+            NewInclusionName = InclusionName;
           }
           $("#InclusionDisplayName" + i).val(NewInclusionName);
           $("#InclusionDisplayID" + i).val(val.InclusionId);
@@ -796,9 +836,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       var rightTypeid: any = $("#righttypemaster").val();
       var countryid: any = $("#countrymaster").val();
       var scope = this;
-      
+
       scope.CheckMandatoryField(countryid, societyid, rightTypeid, null, null, null, null);
-  
+
       $("#data tr.table-row-data").each(function () {
         loopCount = loopCount + 1;
         var grant: any = $(this).find("select.grant-data").val();
@@ -845,8 +885,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               })
                 .catch((err) => {
                   console.log("error" + err);
-                 
-                  
+
+
                 })
             }).catch((err) => {
               //catch for check mandatory field function
@@ -880,7 +920,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                 .catch((err) => {
                   //catch for list Submit
                   console.log("error" + err)
-                  
+
 
                 })
 
