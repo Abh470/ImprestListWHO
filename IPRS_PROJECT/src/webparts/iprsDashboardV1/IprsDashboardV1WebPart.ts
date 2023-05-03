@@ -80,9 +80,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
     SPComponentLoader.loadCss("https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css");
     SPComponentLoader.loadScript("https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js");
-   // SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
-   // SPComponentLoader.loadScript("src/jquery.table2excel.js");
-    
+    // SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+    // SPComponentLoader.loadScript("src/jquery.table2excel.js");
+
 
     let groups: [] = await sp.web.currentUser.groups();
     console.log(groups)
@@ -91,13 +91,14 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         this.IsContributor = true;
         this.ShowAddButton = true;
       }
-      if (group.Title == "IPRS_Reader") {
-        this.IsViewer = true;
-      }
-      if (group.Title == "IPRS_Initiator") {
+      else if (group.Title == "IPRS_Initiator") {
         this.IsInitiator = true;
         this.ShowAddButton = true;
       }
+      else if (group.Title == "IPRS_Reader") {
+        this.IsViewer = true;
+      }
+
     });
 
 
@@ -359,13 +360,13 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
 
     //this.fetchfromSocietyMaster();
     //this.societymultiselect();
-    
+
 
     this.bindevent();
 
   }
 
-  private async bindevent()  {
+  private async bindevent() {
 
     this.fetchDropdownIPRS().then(() => {
       //this.fetchfromRightTypeMaster();
@@ -827,8 +828,8 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
         else if (items[i].Exclusion.length > 0) {
           ExclusionStatushtml += '<span class="reciprocal-red-dot"></span>';
         }
-let NewValidFrom :string = "'"+moment(items[i].ValidFrom).format("DD-MM-YYYY").toString(); 
-let NewValidTill :string = "'"+moment(items[i].ValidTill).format("DD-MM-YYYY").toString();       
+        let NewValidFrom: string = "'" + moment(items[i].ValidFrom).format("DD-MM-YYYY").toString();
+        let NewValidTill: string = "'" + moment(items[i].ValidTill).format("DD-MM-YYYY").toString();
 
         //${(countryCount > 0) ? `<td rowspan="${countryCount}">${items[i].Country.Title}</td>` : ''} 
         table += `  
@@ -844,7 +845,7 @@ let NewValidTill :string = "'"+moment(items[i].ValidTill).format("DD-MM-YYYY").t
                     <td>${NewValidFrom}</td>
                     <td>${NewValidTill}</td>
                     <td hidden>${items[i].Inclusion.map((val: any) => {
-          return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title); 
+          return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomInclusion : val.Title);
         })}</td>
                      <td hidden>${items[i].Exclusion.map((val: any) => {
           return ((val.Title == this.CustomFieldGlobalName) ? items[i].CustomExclusion : val.Title);

@@ -168,22 +168,23 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     let groups = await sp.web.currentUser.groups();
     console.log(groups)
     groups.forEach((group: any) => {
-      if (group.Title == "IPRS_Reader") {
+
+
+      if (group.Title == "IPRS_Contributor") {
+        this.IsContributor = true;
+        this.ShowAddButton = true;
+        this.ShowEditButton = true;
+      }
+      else if (group.Title == "IPRS_Initiator") {
+        this.IsInitiator = true;
+        this.ShowAddButton = true;
+
+      }
+      else if (group.Title == "IPRS_Reader") {
         this.IsViewer = true;
         alert("Sorry, you are not allowed to access this page")
         window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`
           ;
-      }
-      else {
-        if (group.Title == "IPRS_Contributor") {
-          this.IsContributor = true;
-          this.ShowAddButton = true;
-          this.ShowEditButton = true;
-        }
-        if (group.Title == "IPRS_Initiator") {
-          this.IsInitiator = true;
-          this.ShowAddButton = true;
-        }
       }
     });
 
@@ -515,8 +516,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           //$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
           $(`#inclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
           $(`#exclusionID${i}`).find("div.checkbox").find("input:checkbox[name=type]").prop("checked", false);
-          $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val("");
-          $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val("");
+          $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val("").prop("disabled", true);
+          $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val("").prop("disabled", true);
 
           $(`#IsRecord-Edit-New${i}`).text("New");
         }
@@ -714,8 +715,8 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     $("span.IPRSId").text("");
     $("span.AddOrUpdate").text("");
     $("a.Edit-row-disable").css("pointer-events", "none");
-    $("input.Add-Custom-Field-Inclusion").val("");
-    $("input.Add-Custom-Field-Exclusion").val("");
+    $("input.Add-Custom-Field-Inclusion").val("").prop("disabled", true);
+    $("input.Add-Custom-Field-Exclusion").val("").prop("disabled", true);
     const item: any[] = await sp.web.lists.getByTitle("IPRS").items
       .select("*, RightType/Title,Society/Title,Source/Title,Grant/Title,Inclusion/Title,Exclusion/Title")
       .expand("RightType,Society,Source,Grant,Inclusion,Exclusion")
@@ -759,7 +760,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
 
           $(`#edit${i}`).css("pointer-events", "auto");
-          $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion);
+          //adding value in customtextArea for inclusion and disabling text area
+          if (val.CustomInclusion != null) {
+            $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val(val.CustomInclusion).prop("disabled", false);
+          }
           $("#InclusionCustomFieldDisplayName" + i).val(val.CustomInclusion);
           let index = InclusionName.indexOf(this.CustomFieldGlobalName);
           var NewInclusionName = InclusionName;
@@ -790,7 +794,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               }
             });
           })
-          $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val(val.CustomExclusion);
+          //adding value in customtextArea for exclusion and disabling text area
+          if (val.CustomExclusion != null) {
+            $(`#exclusionID${i}`).find("input.Add-Custom-Field-Exclusion").val(val.CustomExclusion).prop("disabled", false);
+          }
           $("#ExclusionCustomFieldDisplayName" + i).val(val.CustomExclusion);
           let indexExclusion = ExclusionName.indexOf(this.CustomFieldGlobalName)
           var NewExclusionName = ExclusionName;
