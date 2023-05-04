@@ -102,6 +102,10 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
                                 </div>
                             </div>
                         </div>
+                        <div class="mt20 text-center">
+                              <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx" type="button"
+                                  class="btn custom-btn-two-cancel mr5 wpx-90">Close</a>
+                        </div>
                 </div>
             </div>
         </div>

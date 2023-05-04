@@ -999,6 +999,30 @@ label {
 
 /**** add in style.css ****/
 
+/* class for close-btn start */
+
+.text-center {
+    text-align: center !important;
+}
+
+
+
+.custom-btn-two-cancel {
+    border-radius: 2px;
+    color: #fff;
+    background-color: #7B7A7A;
+    border-color: #7B7A7A;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.custom-btn-two-cancel:hover,
+.custom-btn-two-cancel:focus {
+    background: #ffffff;
+    color: #7B7A7A;
+    border-color: #7B7A7A;
+}
+
+/* class for close-btn end */
 
 /*multiselect css*/
 
