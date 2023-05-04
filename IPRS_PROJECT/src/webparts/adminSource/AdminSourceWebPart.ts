@@ -191,7 +191,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
         let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
 
         if (answer == true) {
-          this.DeleteDatafromSourceMaster(deleteid);
+          await this.DeleteDatafromSourceMaster(deleteid);
           location.reload();
         }
 
@@ -309,9 +309,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
 
   private async DeleteDatafromSourceMaster(numId: any): Promise<void> {
 
-    let list = sp.web.lists.getByTitle("SourceMaster");
-
-    await list.items.getById(numId).delete();
+    let list = await sp.web.lists.getByTitle("SourceMaster").items.getById(numId).delete();
 
     console.log(list)
     

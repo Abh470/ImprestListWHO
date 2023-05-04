@@ -31,7 +31,7 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
     return super.onInit();
   }
 
-  public modalHtmlEdit=``;
+  public modalHtmlEdit = ``;
 
   public async render(): Promise<void> {
 
@@ -165,12 +165,12 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
       this.AddtoCityMaster();
     });
 
-    
+
 
   }
 
   private async fetchfromCountryMaster(): Promise<void> {
-    
+
     const items: any[] = await sp.web.lists.getByTitle("CountryMaster").items.get();
     console.log(items.length);
 
@@ -184,13 +184,13 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
     }
 
     document.getElementById('countrymaster').innerHTML = events;
-    ($('.select-assign')as any).select2({width: "100%"}); 
-    
+    ($('.select-assign') as any).select2({ width: "100%" });
+
   }
 
   private async fetchfromCityMaster(): Promise<void> {
     const items: any[] = await sp.web.lists.getByTitle("CityMaster").items.select("Country/Title,*")
-    .expand("Country").get();
+      .expand("Country").get();
     console.log(items);
     console.log(items.length);
     let table = ``;
@@ -212,38 +212,38 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
           </div>
          </td>
       </tr>`
-      
-      $(document).on('click', '#delete-data'+i ,async (): Promise<any>=>{
+
+      $(document).on('click', '#delete-data' + i, async (): Promise<any> => {
         var deleteid: any = items[i].ID
-        var deletename: any= items[i].Title
+        var deletename: any = items[i].Title
         let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
-        
-        if(answer == true){
-          this.DeleteDatafromCityMaster(deleteid);
+
+        if (answer == true) {
+          await this.DeleteDatafromCityMaster(deleteid);
           location.reload();
         }
 
-    });
+      });
 
-    $(document).on('click', '#edit-data'+i ,async (): Promise<any>=>{
-      var editid: any = items[i].ID
-      var editname: any= items[i].Title
-      var countryeditID: any= items[i].CountryId
-      let answer = window.confirm(`Do you want to edit (${editname}) ?`);
-      
-      if(answer == true){
-        $("#newcity").val(editname);
-        //$("#countrymaster").val(countryeditID);
-        $("#countrymaster").val(countryeditID).trigger('change');
-        
-        $("#add-button-box").hide();
-        $("#edit-button-box").show();
-        this.domElement.querySelector('#edit-data').addEventListener('click', () => { 
-          this.EdittoCityMaster(editid);
-        });
-      }
+      $(document).on('click', '#edit-data' + i, async (): Promise<any> => {
+        var editid: any = items[i].ID
+        var editname: any = items[i].Title
+        var countryeditID: any = items[i].CountryId
+        let answer = window.confirm(`Do you want to edit (${editname}) ?`);
 
-  });
+        if (answer == true) {
+          $("#newcity").val(editname);
+          //$("#countrymaster").val(countryeditID);
+          $("#countrymaster").val(countryeditID).trigger('change');
+
+          $("#add-button-box").hide();
+          $("#edit-button-box").show();
+          this.domElement.querySelector('#edit-data').addEventListener('click', () => {
+            this.EdittoCityMaster(editid);
+          });
+        }
+
+      });
 
 
     }
@@ -251,7 +251,7 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
 
   }
 
-  private async AddtoCityMaster(): Promise<void>{
+  private async AddtoCityMaster(): Promise<void> {
     const NewCity: any = $("#newcity").val();
     const CountryID: any = $("#countrymaster").val();
     var error = null;
@@ -260,30 +260,30 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
     if (NewCity === "") {
       error = "Please Enter a City";
       alert(error);
-  
+
     }
-    
-    else{
-    sp.web.lists.getByTitle('CityMaster').items.add({
 
-      Title:NewCity,
-      CountryId:CountryID
-    })
+    else {
+      sp.web.lists.getByTitle('CityMaster').items.add({
 
-    .then(_response => {
-      alert(`(${NewCity}) added to the List`)
-      location.reload()
-    })
+        Title: NewCity,
+        CountryId: CountryID
+      })
 
-    .catch(error => {
-      alert(error);
-    })
-    
-   }
+        .then(_response => {
+          alert(`(${NewCity}) added to the List`)
+          location.reload()
+        })
+
+        .catch(error => {
+          alert(error);
+        })
+
+    }
   }
 
-  private async EdittoCityMaster(numId:any) : Promise<void>{
-    
+  private async EdittoCityMaster(numId: any): Promise<void> {
+
     const NewCity: any = $("#newcity").val();
     const CountryID: any = $("#countrymaster").val();
     var error = null;
@@ -292,39 +292,37 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
     if (NewCity === "") {
       error = "Please Enter a City";
       alert(error);
-  
+
     }
-    
-    else{
-    sp.web.lists.getByTitle('CityMaster').items.getById(numId).update({
 
-      Title:NewCity,
-      CountryId:CountryID
-    })
+    else {
+      sp.web.lists.getByTitle('CityMaster').items.getById(numId).update({
 
-    .then(_response => {
-      alert(`(${NewCity}) edited to the List`)
-      location.reload()
-    })
+        Title: NewCity,
+        CountryId: CountryID
+      })
 
-    .catch(error => {
-      alert(error);
-    })
-    
-   }
+        .then(_response => {
+          alert(`(${NewCity}) edited to the List`)
+          location.reload()
+        })
+
+        .catch(error => {
+          alert(error);
+        })
+
+    }
 
   }
-  
 
 
 
 
-  private async DeleteDatafromCityMaster(numId:any) : Promise<void>{
-    
-    let list = sp.web.lists.getByTitle("CityMaster");
 
-  await list.items.getById(numId).delete();
-  console.log(list)
+  private async DeleteDatafromCityMaster(numId: any): Promise<void> {
+
+    let list = await sp.web.lists.getByTitle("CityMaster").items.getById(numId).delete();;
+    console.log(list)
 
   }
 
