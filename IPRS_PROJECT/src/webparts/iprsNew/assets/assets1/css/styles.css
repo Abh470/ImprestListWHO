@@ -627,7 +627,7 @@ label {
 }
  
 
-.ellipsis-2 {
+.ellipsis-2 { 
     display: inline;
     text-overflow: ellipsis;
     overflow: hidden;
