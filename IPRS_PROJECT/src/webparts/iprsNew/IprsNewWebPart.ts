@@ -705,7 +705,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
           $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
 
-          $(`#ExclusionCustomFieldDisplayName${i}`).val(CustomFieldNameExclusion);
+          $(`#ExclusionCustomFieldDisplayName${i}`).val(CustomFieldNameExclusion); 
           console.log(arrayexclusion, arrayexclusionName)
         })
       }
