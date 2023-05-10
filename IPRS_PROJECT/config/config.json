@@ -52,7 +52,7 @@
     },
     "admin-inclusion-web-part": {
       "components": [
-        {
+        { 
           "entrypoint": "./lib/webparts/adminInclusion/AdminInclusionWebPart.js",
           "manifest": "./src/webparts/adminInclusion/AdminInclusionWebPart.manifest.json"
         }

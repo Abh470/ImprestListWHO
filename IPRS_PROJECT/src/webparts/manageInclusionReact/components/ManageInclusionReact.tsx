@@ -19,7 +19,7 @@ const IprsLogo: any = require("../../CommonAssets/assets/images/IPRS-logo.png");
 export interface State {
   InclusionMasteritems: sourceItem[];
   SelectedSource:any;
-  Inclusion:string;
+  Inclusion:string; 
 
 
 }
