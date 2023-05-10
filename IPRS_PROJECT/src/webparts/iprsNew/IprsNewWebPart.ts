@@ -43,10 +43,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   protected onInit(): Promise<void> {
     sp.setup(this.context as any)
     return super.onInit();
-  }
+  } 
 
   //public fetchfromsocietymaster(): any[];
-  public CustomFieldGlobalName: any = "Others";
+  public CustomFieldGlobalName: any = "Others"; 
   public GrantMaster: any[];
   public InclusionMaster: any[];
   public ExclusionMaster: any[];

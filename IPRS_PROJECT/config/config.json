@@ -65,14 +65,6 @@
           "manifest": "./src/webparts/adminExclusion/AdminExclusionWebPart.manifest.json"
         }
       ]
-    },
-    "manage-inclusion-react-web-part": {
-      "components": [
-        {
-          "entrypoint": "./lib/webparts/manageInclusionReact/ManageInclusionReactWebPart.js",
-          "manifest": "./src/webparts/manageInclusionReact/ManageInclusionReactWebPart.manifest.json"
-        }
-      ]
     }
   },
   "externals": {
@@ -96,7 +88,6 @@
     "AdminSocitiesWebPartStrings": "lib/webparts/adminSocities/loc/{locale}.js",
     "AdminSourceWebPartStrings": "lib/webparts/adminSource/loc/{locale}.js",
     "AdminInclusionWebPartStrings": "lib/webparts/adminInclusion/loc/{locale}.js",
-    "AdminExclusionWebPartStrings": "lib/webparts/adminExclusion/loc/{locale}.js",
-    "ManageInclusionReactWebPartStrings": "lib/webparts/manageInclusionReact/loc/{locale}.js"
+    "AdminExclusionWebPartStrings": "lib/webparts/adminExclusion/loc/{locale}.js"
   }
 }
