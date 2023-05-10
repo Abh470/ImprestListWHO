@@ -210,7 +210,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
         let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
 
         if (answer == true) {
-          this.DeleteDatafromInclusionMaster(deleteid);
+         await this.DeleteDatafromInclusionMaster(deleteid);
           location.reload();
         }
 
@@ -342,9 +342,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
 
   private async DeleteDatafromInclusionMaster(numId: any): Promise<void> {
 
-    let list = sp.web.lists.getByTitle("InclusionMaster");
-
-    await list.items.getById(numId).delete();
+    let list = await sp.web.lists.getByTitle("InclusionMaster").items.getById(numId).delete();
     console.log(list)
 
   }

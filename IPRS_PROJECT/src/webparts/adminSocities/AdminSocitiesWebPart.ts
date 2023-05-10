@@ -284,7 +284,7 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
         let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
 
         if (answer == true) {
-          this.DeleteDatafromSocietyMaster(deleteid);
+         await this.DeleteDatafromSocietyMaster(deleteid);
           location.reload();
         }
       });
@@ -403,9 +403,9 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
 
   private async DeleteDatafromSocietyMaster(numId: any): Promise<void> {
 
-    let list = sp.web.lists.getByTitle("SocietyMaster");
+    let list = await sp.web.lists.getByTitle("SocietyMaster").items.getById(numId).delete();
 
-    await list.items.getById(numId).delete();
+    
     console.log(list)
   }
 

@@ -205,7 +205,7 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
         let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
 
         if (answer == true) {
-          this.DeleteDatafromExclusionMaster(deleteid);
+          await this.DeleteDatafromExclusionMaster(deleteid);
           location.reload();
         }
 
@@ -336,10 +336,8 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
 
   private async DeleteDatafromExclusionMaster(numId: any): Promise<void> {
 
-    let list = sp.web.lists.getByTitle("ExclusionMaster");
-
-    await list.items.getById(numId).delete();
-    console.log(list)
+    let list = await sp.web.lists.getByTitle("ExclusionMaster").items.getById(numId).delete();
+     console.log(list)
 
   }
 
