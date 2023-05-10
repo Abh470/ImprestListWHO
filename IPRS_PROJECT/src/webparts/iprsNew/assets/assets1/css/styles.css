@@ -590,6 +590,9 @@ label {
     width: 90px;
 }
 
+.wpx-110{
+    width: 110px;
+}
 .wpx-250 {
     width: 250px;
 }
@@ -622,9 +625,9 @@ label {
     background: #d43f3a;
     color: #ffffff;
 }
+ 
 
-
-.ellipsis-2 {
+.ellipsis-2 { 
     display: inline;
     text-overflow: ellipsis;
     overflow: hidden;
