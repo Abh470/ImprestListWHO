@@ -43,10 +43,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   protected onInit(): Promise<void> {
     sp.setup(this.context as any)
     return super.onInit();
-  } 
+  }
 
   //public fetchfromsocietymaster(): any[];
-  public CustomFieldGlobalName: any = "Others"; 
+  public CustomFieldGlobalName: any = "Others";
   public GrantMaster: any[];
   public InclusionMaster: any[];
   public ExclusionMaster: any[];
@@ -77,7 +77,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public IsContributor: boolean = false;
   public ShowEditButton: boolean = false;
   public ShowAddButton: boolean = false;
-  public SourceIDforMaster:any = null;
+  public SourceIDforMaster: any = null;
 
 
   public async render(): Promise<void> {
@@ -361,9 +361,10 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
 
   //fetchfrominclusionmasterlist
-  private async fetchfrominclusionmaster(): Promise<void> {
+  private async fetchfrominclusionmaster(): Promise<any> {
     this.InclusionMaster = await sp.web.lists.getByTitle("InclusionMaster").items.get();
     console.log(this.InclusionMaster)
+     return (this.InclusionMaster)
   }
 
 
@@ -453,7 +454,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
                       <input type="hidden" class="form-control InclusionCustomField-Id" name="InclusionCustomFieldDisplayName" id="InclusionCustomFieldDisplayName${i}" value="" disabled readonly>
                   </div>
                   <div class="project-edit-lock-btn-box ml5">
-                      <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" data-toggle="modal" data-target="#inclusionlist${i}" style="pointer-events:none">
+                      <a type="button" href="#" class="custom-edit-btn disable-anchor-tag" id="inclusion-modal-onClick${i}" data-toggle="modal" data-target="#inclusionlist${i}" style="pointer-events:none">
                           <i class="fa fa-plus"></i>
                       </a>
                   </div> 
@@ -534,10 +535,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         }
 
       })
+
       {
         this.modalHTMLInclusion += `<div id="inclusionlist${i}" class="modal fade" role="dialog">
-<div class="modal-dialog">
-
+  <div class="modal-dialog">
+  a
   <!-- Modal content-->
   <div class="modal-content reciprocal-custom-modal">
     <div class="modal-header">
@@ -553,7 +555,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
         }).join('')}
         </div>
       <div class="form-group custom-form-group wpx-250 Add-Custom-Field-Inclusion-DIV">
-       <input type="text" class="form-control Add-Custom-Field-Inclusion" name="" placeholder="custom text field" disabled>
+       <input type="text" class="form-control Add-Custom-Field-Inclusion" id="myInput${i}" name="" placeholder="custom text field" disabled>
        <button type="button" class="btn custom-btn mr5 wpx-110" id="Add-btn-modal-inclusion-custom-to-master${i}">Add to Master</button>
        <span class="inclusionSourceIdAddtomaster" hidden>${this.Sourceitems[i].Id}</span>
      </div>
@@ -562,9 +564,9 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
       <button type="button" data-dismiss="modal" class="btn custom-btn mr5 wpx-90" id="Add-btn-modal-inclusion${i}">Add</button>
     </div>
   </div>
-</div>
-</div>`
-
+  </div>
+  </div>`
+  
         $(document).on('click', `#Inclusion-Checkbox${i}`, async function (this) {
           let IsCheckInclusionCheckBox: any = $(this).is(":checked");
           if (IsCheckInclusionCheckBox) {
@@ -578,21 +580,24 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             }
           }
         })
-
-        $(document).on('click',`#Add-btn-modal-inclusion-custom-to-master${i}`,async function (this){
+  
+        $(document).on('click', `#Add-btn-modal-inclusion-custom-to-master${i}`, async function (this) {
           let SourceIncluionAddtoMaster: any = $(this).siblings('span.inclusionSourceIdAddtomaster').text();
           let OthersNameInclusion: any = $(this).siblings("input.Add-Custom-Field-Inclusion").val();
           console.log(SourceIncluionAddtoMaster)
-          let newInclsuionHTML :any =await scope.AddtoInclusionMaster(SourceIncluionAddtoMaster,OthersNameInclusion);
-          $(`#checkboxInclusion${i}`).append(newInclsuionHTML)
+          let newInclsuionHTML: any = await scope.AddtoInclusionMaster(SourceIncluionAddtoMaster, OthersNameInclusion);
+          $(`#checkboxInclusion${i}`).append(newInclsuionHTML);
+          $(this).siblings("input.Add-Custom-Field-Inclusion").val("").prop("disabled",true);
+          $(this).parent().siblings(`div#checkboxInclusion${i}`).find("input:checkbox").prop("checked",false);
           
+  
         })
-
+  
         $(document).on('click', `#Add-btn-modal-inclusion${i}`, async function (this) {
-
+  
           //  var checkedInclusion :any = '';
           //  checkedInclusion = $(`#inclusionID${i}`).find("div.checkbox").find("input:checked").val();
-
+  
           var arrayinclusion: any[] = [];
           var arrayinclusionName: any[] = [];
           var CustomFieldNameInclusion: any = $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").val();
@@ -613,15 +618,16 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
               $(`#inclusionID${i}`).find("input.Add-Custom-Field-Inclusion").prop("disabled", true);
               alert("Please enter the value of others for Inclusion");
             }
-
+  
           });
-
+  
           $(`#InclusionDisplayName${i}`).val(arrayinclusionName)
           $(`#InclusionDisplayID${i}`).val(arrayinclusion)
           console.log(arrayinclusion, arrayinclusionName)
           $(`#InclusionCustomFieldDisplayName${i}`).val(CustomFieldNameInclusion);
         });
       }
+
 
       {
         this.modalHTMLExclusion += ` <div id="exclusionlist${i}" class="modal fade" role="dialog">
@@ -668,13 +674,15 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           }
         })
 
-        $(document).on('click',`#Add-btn-modal-exclusion-custom-to-master${i}`,async function (this){
+        $(document).on('click', `#Add-btn-modal-exclusion-custom-to-master${i}`, async function (this) {
           let SourceExclusionAddtoMaster: any = $(this).siblings('span.exclusionSourceIdAddtomaster').text();
           let OthersNameExclusion: any = $(this).siblings("input.Add-Custom-Field-Exclusion").val();
           console.log(SourceExclusionAddtoMaster)
-          let newEXclsuionHTML:any = await scope.AddtoExclusionMaster(SourceExclusionAddtoMaster,OthersNameExclusion);
+          let newEXclsuionHTML: any = await scope.AddtoExclusionMaster(SourceExclusionAddtoMaster, OthersNameExclusion);
           $(`#checkboxExclusion${i}`).append(newEXclsuionHTML)
-          
+          $(this).siblings("input.Add-Custom-Field-Exclusion").val("").prop("disabled",true);
+          $(this).parent().siblings(`div#checkboxExclusion${i}`).find("input:checkbox").prop("checked",false);
+
         })
 
         $(document).on('click', `#Add-btn-modal-exclusion${i}`, async function (this) {
@@ -701,11 +709,11 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
             }
 
           });
- 
+
           $(`#ExclusionDisplayName${i}`).val(arrayexclusionName);
           $(`#ExclusionDisplayID${i}`).val(arrayexclusion);
 
-          $(`#ExclusionCustomFieldDisplayName${i}`).val(CustomFieldNameExclusion); 
+          $(`#ExclusionCustomFieldDisplayName${i}`).val(CustomFieldNameExclusion);
           console.log(arrayexclusion, arrayexclusionName)
         })
       }
@@ -720,78 +728,79 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
 
   }
 
-  private async AddtoInclusionMaster (Sourceid: any, CustomInclusion: any): Promise<any>{
+
+  private async AddtoInclusionMaster(Sourceid: any, CustomInclusion: any): Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
       var error = null;
 
-    if (CustomInclusion === "") {
-      error = "Please Enter an Inclusion";
-      alert(error);
+      if (CustomInclusion === "") {
+        error = "Please Enter an Inclusion";
+        alert(error);
 
-    }
-    else{
-    await sp.web.lists.getByTitle('InclusionMaster').items.add({
+      }
+      else {
+        await sp.web.lists.getByTitle('InclusionMaster').items.add({
 
-      Title: CustomInclusion,
-      SourceId: { results: [Sourceid] }
-    })
+          Title: CustomInclusion,
+          SourceId: { results: [Sourceid] }
+        })
 
-      .then(async _response => {
-        alert(`(${CustomInclusion}) added to the List`)
-       // location.reload()
-        console.log(_response)
-        let newInclsuionHTML = ``
-        newInclsuionHTML = `<div class="checkbox">
+          .then(async _response => {
+            alert(`(${CustomInclusion}) added to the List`)
+            // location.reload()
+            console.log(_response)
+            let newInclsuionHTML = ``
+            newInclsuionHTML = `<div class="checkbox">
          <label><input type="checkbox" name="type" value="${_response.data.ID}">${_response.data.Title}</label>
          </div>`;
-         resolve (newInclsuionHTML);
-         //$(`#inclusionID${i}`).append(newInclsuionHTML)
-      })
+             resolve(newInclsuionHTML);
+            
+          })
 
-      .catch(error => {
-        alert(error);
-        reject("");
-      })
-    }
+          .catch(error => {
+            alert(error);
+            reject("");
+          })
+      }
 
     })
-    
+
   }
 
 
-  private async AddtoExclusionMaster (Sourceid: any, CustomExclusion: any): Promise<any>{
+  private async AddtoExclusionMaster(Sourceid: any, CustomExclusion: any): Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
       var error = null;
 
-    if (CustomExclusion === "") {
-      error = "Please Enter an Exclusion";
-      alert(error);
+      if (CustomExclusion === "") {
+        error = "Please Enter an Exclusion";
+        alert(error);
 
-    }
-    else{
-    await sp.web.lists.getByTitle('ExclusionMaster').items.add({
+      }
+      else {
+        await sp.web.lists.getByTitle('ExclusionMaster').items.add({
 
-      Title: CustomExclusion,
-      SourceId: { results: [Sourceid] }
-    })
+          Title: CustomExclusion,
+          SourceId: { results: [Sourceid] }
+        })
 
-      .then(async _response => {
-        alert(`(${CustomExclusion}) added to the List`)
-        console.log(_response)
-        let newEXclsuionHTML =``
-        newEXclsuionHTML=`<div class="checkbox">
+          .then(async _response => {
+            alert(`(${CustomExclusion}) added to the List`)
+            console.log(_response)
+            let newEXclsuionHTML = ``
+            newEXclsuionHTML = `<div class="checkbox">
         <label><input type="checkbox" name="type" value="${_response.data.ID}">${_response.data.Title}</label>
         </div>`;
-        resolve(newEXclsuionHTML)
-      })
+            resolve(newEXclsuionHTML)
+          })
 
-      .catch(error => {
-        alert(error);
-        reject("");
-      })
-    }
+          .catch(error => {
+            alert(error);
+           reject("");
+          })
+      }
     })
-    
+
   }
 
   private async fetchfromIPRS(countryid: any, societyid: any, rightTypeid: any): Promise<void> {
