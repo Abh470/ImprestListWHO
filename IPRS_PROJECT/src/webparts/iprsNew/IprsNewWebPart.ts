@@ -75,6 +75,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
   public IsViewer: boolean = false;
   public IsInitiator: boolean = false;
   public IsContributor: boolean = false;
+  public IsAdmin: boolean = false;
   public ShowEditButton: boolean = false;
   public ShowAddButton: boolean = false;
   public SourceIDforMaster: any = null;
@@ -170,8 +171,13 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
     console.log(groups)
     groups.forEach((group: any) => {
 
+      if (group.Title == "IPRS_Admin") {
+        this.IsAdmin = true;
+        this.ShowAddButton = true;
+        this.ShowEditButton = true;
+      }
 
-      if (group.Title == "IPRS_Contributor") {
+      else if (group.Title == "IPRS_Contributor") {
         this.IsContributor = true;
         this.ShowAddButton = true;
         this.ShowEditButton = true;
@@ -589,9 +595,7 @@ export default class IprsNewWebPart extends BaseClientSideWebPart<IIprsNewWebPar
           $(`#checkboxInclusion${i}`).append(newInclsuionHTML);
           $(this).siblings("input.Add-Custom-Field-Inclusion").val("").prop("disabled",true);
           $(this).parent().siblings(`div#checkboxInclusion${i}`).find("input:checkbox").prop("checked",false);
-          
-  
-        })
+          })
   
         $(document).on('click', `#Add-btn-modal-inclusion${i}`, async function (this) {
   

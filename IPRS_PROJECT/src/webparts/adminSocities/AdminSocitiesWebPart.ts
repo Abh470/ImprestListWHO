@@ -26,12 +26,13 @@ export interface IAdminSocitiesWebPartProps {
 }
 
 export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSocitiesWebPartProps> {
-  public oldSociety: any = ''
+  
   protected onInit(): Promise<void> {
     sp.setup(this.context as any);
     return super.onInit();
   }
-
+  public oldSociety: any = ''
+  public IsAdmin: boolean = false;
   public async render(): Promise<void> {
 
 
@@ -43,15 +44,21 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
     let groups: [] = await sp.web.currentUser.groups();
     console.log(groups)
     groups.forEach((group: any) => {
-      if (group.Title != "IPRS_Admin") {
-        alert("Sorry, you are not allowed to access this page");
-        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
-      }
-      else {
-        console.log("admin")
-
-      }
+      if (group.Title == "IPRS_Admin") {
+        this.IsAdmin = true;
+        return false;
+        }
     });
+    if(this.IsAdmin == true)
+    {
+      
+      console.log("Admin")
+    }
+    else {
+      alert("Sorry, you are not allowed to access this page");
+      window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
+
+    }
 
     this.domElement.innerHTML = `
     <nav class="navbar navbar-custom header-nav">
@@ -114,6 +121,11 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
                         <button type="button" class="btn custom-btn mt25 tmt0 wpx-90">Edit</button>
                     </div>
                 </div>
+                <div class="col-md-1 col-sm-12 col-xs-12" hidden id="cancel-button-box">
+                               <div class="filter-button-area">
+                                    <button type="button" class="btn custom-btn mt25 tmt0 wpx-90" id="cancel-reload-btn">Cancel</button>
+                                </div>
+                            </div>
             </div>
             <div class="row mt15">
                 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -180,7 +192,7 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
                 <p class="font-18">Are you sure you want to edit this record?</p>
             </div>
             <div class="modal-footer">
-                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data">Yes</button>
+                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data-modal">Yes</button>
                 <button class="btn custom-btn-two-cancel" data-dismiss="modal">No</button>
             </div>
         </div>
@@ -279,7 +291,7 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
       <td>${items[i].City.Title}</td>
       <td>
           <div class="reciprocal-action-btn-box">
-              <a type="button" href="#" class="custom-edit-btn mr15" id="edit-data${i}">
+              <a type="button" href="#" class="custom-edit-btn mr15" id="edit-data-modal${i}">
                   <i class="fa fa-pencil"></i>
               </a>
               <a type="button" href="#" class="custom-edit-btn" id="delete${i}">
@@ -290,40 +302,47 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
   </tr>`
 
       $(document).on('click', `delete` + i, async (): Promise<any> => {
-        var deleteid: any = items[i].ID
-        var deletename: any = items[i].Title
-        let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
+        var deleteSocietyId: any = items[i].ID
+        var deleteSocietyName: any = items[i].Title
+        let answer = window.confirm(`Do you want to delete (${deleteSocietyName}) ?`);
 
         if (answer == true) {
-          await this.DeleteDatafromSocietyMaster(deleteid);
+          await this.DeleteDatafromSocietyMaster(deleteSocietyId);
           location.reload();
         }
       });
 
-      $(document).on('click', '#edit-data' + i, async (): Promise<any> => {
-        var editid: any = items[i].ID
-        var editname: any = items[i].Title
+      $(document).on('click', '#edit-data-modal' + i, async (): Promise<any> => {
+        var editSocietyId: any = items[i].ID
+        var editSocietyName: any = items[i].Title
         var editcode: any = items[i].Code
-        var countryeditID: any = items[i].CountryId
-        var cityeditID: any = items[i].CityId
-        let answer = window.confirm(`Do you want to edit (${editname}) ?`);
+        var countryEditId: any = items[i].CountryId
+        var cityEditId: any = items[i].CityId
+        let answer = window.confirm(`Do you want to edit (${editSocietyName}) ?`);
 
         if (answer == true) {
-          this.oldSociety = editname;
+          this.oldSociety = editSocietyName;
+          
+          $("#newSociety").val(editSocietyName);
+          $("#newSocietyCode").val(editcode);
+          $("#countrymaster").val(countryEditId).trigger('change');
+          setTimeout(() => {
+            $("#citymaster").val(cityEditId).trigger('change');
+          }, 250);
           $("#countrymaster").prop("disabled",true);
           $("#citymaster").prop("disabled",true);
-          $("#newSociety").val(editname);
-          $("#newSocietyCode").val(editcode);
-          $("#countrymaster").val(countryeditID).trigger('change');
-          setTimeout(() => {
-            $("#citymaster").val(cityeditID).trigger('change');
-          }, 190);
 
 
           $("#add-button-box").hide();
           $("#edit-button-box").show();
-          this.domElement.querySelector('#edit-data').addEventListener('click', () => {
-            this.EdittoSocietyMaster(editid);
+          $("#cancel-button-box").show();
+          
+          this.domElement.querySelector('#cancel-reload-btn').addEventListener('click', () => {
+            location.reload();
+          });
+
+          this.domElement.querySelector('#edit-data-modal').addEventListener('click', () => {
+            this.EdittoSocietyMaster(editSocietyId);
           });
         }
 
@@ -362,7 +381,7 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
       })
 
         .then(_response => {
-          alert(`(${NewSociety}) and (${NewSocietyCode}) added to the List`);
+          alert(`(${NewSociety}) having Society Code:(${NewSocietyCode}) added.`);
           
           location.reload()
         })

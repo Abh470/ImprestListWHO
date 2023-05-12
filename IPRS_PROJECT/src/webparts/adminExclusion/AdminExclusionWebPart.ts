@@ -34,6 +34,7 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
     return super.onInit();
   }
 public oldExclusion:any = '';
+public IsAdmin: boolean = false;
 
   public async render(): Promise<void> {
 
@@ -47,17 +48,21 @@ public oldExclusion:any = '';
     let groups: [] = await sp.web.currentUser.groups();
     console.log(groups)
     groups.forEach((group: any) => {
-      if (group.Title != "IPRS_Admin") {
-        alert("Sorry, you are not allowed to access this page");
-        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
-      }
-      else {
-        console.log("admin")
-
-      }
-      
+      if (group.Title == "IPRS_Admin") {
+        this.IsAdmin = true;
+        return false;
+        }
     });
+    if(this.IsAdmin == true)
+    {
+      
+      console.log("Admin")
+    }
+    else {
+      alert("Sorry, you are not allowed to access this page");
+      window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
 
+    }
     this.domElement.innerHTML = `
         <nav class="navbar navbar-custom header-nav">
             <div class="container-fluid">
@@ -103,6 +108,11 @@ public oldExclusion:any = '';
                         <div class="col-md-1 col-sm-12 col-xs-12" hidden id="edit-button-box">
                             <div class="filter-button-area" data-toggle="modal" data-target="#alert-edit">
                                     <button type="button" class="btn custom-btn mt25 tmt0 wpx-90">Edit</button>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-12 col-xs-12" hidden id="cancel-button-box">
+                               <div class="filter-button-area">
+                                    <button type="button" class="btn custom-btn mt25 tmt0 wpx-90" id="cancel-reload-btn">Cancel</button>
                                 </div>
                             </div>
                     </div>
@@ -168,7 +178,7 @@ public oldExclusion:any = '';
                 <p class="font-18">Are you sure you want to edit this record?</p>
               </div>
               <div class="modal-footer">
-                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data">Yes</button>
+                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data-modal">Yes</button>
                 <button class="btn custom-btn-two-cancel" data-dismiss="modal">No</button>
               </div>
             </div>
@@ -204,7 +214,7 @@ public oldExclusion:any = '';
   <td>${items[i].Title}</td>
   <td>
             <div class="reciprocal-action-btn-box">
-                  <a type="button" href="#" class="custom-edit-btn mr15" id="edit-data${i}">
+                  <a type="button" href="#" class="custom-edit-btn mr15" id="edit-data-modal${i}">
                     <i class="fa fa-pencil"></i>
                   </a>
                   <a type="button" href="#" class="custom-edit-btn" id="delete-data${i}">
@@ -215,34 +225,40 @@ public oldExclusion:any = '';
 </tr>`
 
       $(document).on('click', '#delete-data' + i, async (): Promise<any> => {
-        var deleteid: any = items[i].ID
-        var deletename: any = items[i].Title
-        let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
+        var deleteExclusionId: any = items[i].ID
+        var deleteExclusionName: any = items[i].Title
+        let answer = window.confirm(`Do you want to delete (${deleteExclusionName}) ?`);
 
         if (answer == true) {
-          await this.DeleteDatafromExclusionMaster(deleteid);
+          await this.DeleteDatafromExclusionMaster(deleteExclusionId);
           location.reload();
         }
 
       });
 
-      $(document).on('click', '#edit-data' + i, async (): Promise<any> => {
-        var editid: any = items[i].ID
-        var editname: any = items[i].Title
-        var sourceeditID: any = items[i].SourceId
-        let answer = window.confirm(`Do you want to edit (${editname}) ?`);
+      $(document).on('click', '#edit-data-modal' + i, async (): Promise<any> => {
+        var editExclsuionId: any = items[i].ID
+        var editExclsuionName: any = items[i].Title
+        var sourceEditId: any = items[i].SourceId
+        let answer = window.confirm(`Do you want to edit (${editExclsuionName}) ?`);
 
         if (answer == true) {
-          this.oldExclusion = editname;
-          $("#newExclusion").val(editname);
-          $("#SourceMaster").val(sourceeditID);
+          this.oldExclusion = editExclsuionName;
+          $("#newExclusion").val(editExclsuionName);
+          $("#SourceMaster").val(sourceEditId);
           ($('#SourceMaster') as any).multiselect('reload');
 
 
           $("#add-button-box").hide();
           $("#edit-button-box").show();
-          this.domElement.querySelector('#edit-data').addEventListener('click', () => {
-            this.EdittoExclusionMaster(editid);
+          $("#cancel-button-box").show();
+          
+          this.domElement.querySelector('#cancel-reload-btn').addEventListener('click', () => {
+            location.reload();
+          });
+          
+          this.domElement.querySelector('#edit-data-modal').addEventListener('click', () => {
+            this.EdittoExclusionMaster(editExclsuionId);
           });
         }
 
@@ -304,7 +320,7 @@ public oldExclusion:any = '';
       })
 
         .then(_response => {
-          alert(`(${NewExclusion}) added to the List`)
+          alert(`(${NewExclusion}) added.`)
           
           location.reload()
         })

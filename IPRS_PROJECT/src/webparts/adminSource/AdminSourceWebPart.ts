@@ -36,6 +36,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
 
   public CustomFieldGlobalName: any = "Others";
   public oldSource: any ='';
+  public IsAdmin: boolean = false;
 
   public async render(): Promise<void> {
 
@@ -47,16 +48,21 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
     let groups: [] = await sp.web.currentUser.groups();
     console.log(groups)
     groups.forEach((group: any) => {
-      if (group.Title != "IPRS_Admin") {
-        alert("Sorry, you are not allowed to access this page");
-        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
-      }
-      else {
-        console.log("admin")
-
-      }
+      if (group.Title == "IPRS_Admin") {
+        this.IsAdmin = true;
+        return false;
+        }
     });
+    if(this.IsAdmin == true)
+    {
+      
+      console.log("Admin")
+    }
+    else {
+      alert("Sorry, you are not allowed to access this page");
+      window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
 
+    }
 
     this.domElement.innerHTML = `
         <nav class="navbar navbar-custom header-nav">
@@ -97,6 +103,11 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
                             <div class="col-md-1 col-sm-12 col-xs-12" hidden id="edit-button-box">
                                <div class="filter-button-area">
                                     <button type="button" class="btn custom-btn mt25 tmt0 wpx-90" data-toggle="modal" data-target="#alert-edit-source">Edit</button>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-12 col-xs-12" hidden id="cancel-button-box">
+                               <div class="filter-button-area">
+                                    <button type="button" class="btn custom-btn mt25 tmt0 wpx-90" id="cancel-reload-btn">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -159,7 +170,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
                 <p class="font-18">Are you sure you want to edit this record?</p>
               </div>
               <div class="modal-footer">
-                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data">Yes</button>
+                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data-modal">Yes</button>
                 <button class="btn custom-btn-two-cancel" data-dismiss="modal">No</button>
               </div>
             </div>
@@ -204,12 +215,12 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
               </tr>`
 
       $(document).on('click', '#delete-data' + i, async (): Promise<any> => {
-        var deleteid: any = items[i].ID
-        var deletename: any = items[i].Title
-        let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
+        var deleteSourceId: any = items[i].ID
+        var deleteSourceName: any = items[i].Title
+        let answer = window.confirm(`Do you want to delete (${deleteSourceName}) ?`);
 
         if (answer == true) {
-          await this.DeleteDatafromSourceMaster(deleteid);
+          await this.DeleteDatafromSourceMaster(deleteSourceId);
           location.reload();
         }
 
@@ -217,17 +228,21 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
 
 
       $(document).on('click', '#edit-data' + i, async (): Promise<any> => {
-        var editid: any = items[i].ID
-        var editname: any = items[i].Title
-        let answer = window.confirm(`Do you want to edit (${editname}) ?`);
+        var editSourceId: any = items[i].ID
+        var editSourceName: any = items[i].Title
+        let answer = window.confirm(`Do you want to edit (${editSourceName}) ?`);
 
         if (answer == true) {
-          this.oldSource = editname;
-          $("#newsource").val(editname);
+          this.oldSource = editSourceName;
+          $("#newsource").val(editSourceName);
           $("#add-button-box").hide();
           $("#edit-button-box").show();
-          this.domElement.querySelector('#edit-data').addEventListener('click', () => {
-            this.EdittoSourceMaster(editid);
+          $("#cancel-button-box").show();
+          this.domElement.querySelector('#cancel-reload-btn').addEventListener('click', () => {
+            location.reload();
+          });
+          this.domElement.querySelector('#edit-data-modal').addEventListener('click', () => {
+            this.EdittoSourceMaster(editSourceId);
           });
         }
 
@@ -256,7 +271,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
         Title: NewSource
       })
 
-        .then(async (response) => {
+        .then(async (_response) => {
           //console.log(response.data.Id)
           let IDs = await sp.web.lists.getByTitle('SourceMaster').items.select('ID').get()
             const sourceIds = IDs.map(item => item['ID']);
@@ -283,7 +298,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
             }
 
 
-          alert(`(${NewSource}) added to the List`) 
+          alert(`(${NewSource}) added.`) 
           
           location.reload()
         })

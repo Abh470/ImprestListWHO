@@ -37,6 +37,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
 
   public CustomFieldGlobalName: any = "Others";
   public oldInclusion: any ='';
+  public IsAdmin: boolean = false;
 
   public async render(): Promise<void> {
 
@@ -49,15 +50,21 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
     let groups: [] = await sp.web.currentUser.groups();
     console.log(groups)
     groups.forEach((group: any) => {
-      if (group.Title != "IPRS_Admin") {
-        alert("Sorry, you are not allowed to access this page");
-        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
-      }
-      else {
-        console.log("admin")
-
-      }
+      if (group.Title == "IPRS_Admin") {
+        this.IsAdmin = true;
+        return false;
+        }
     });
+    if(this.IsAdmin == true)
+    {
+      
+      console.log("Admin")
+    }
+    else {
+      alert("Sorry, you are not allowed to access this page");
+      window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
+
+    }
 
     this.domElement.innerHTML = `
         <nav class="navbar navbar-custom header-nav">
@@ -105,6 +112,11 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
                         <div class="col-md-1 col-sm-12 col-xs-12" hidden id="edit-button-box">
                             <div class="filter-button-area" data-toggle="modal" data-target="#alert-edit">
                                     <button type="button" class="btn custom-btn mt25 tmt0 wpx-90">Edit</button>
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-12 col-xs-12" hidden id="cancel-button-box">
+                               <div class="filter-button-area">
+                                    <button type="button" class="btn custom-btn mt25 tmt0 wpx-90" id="cancel-reload-btn">Cancel</button>
                                 </div>
                             </div>
                     </div>
@@ -170,7 +182,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
                 <p class="font-18">Are you sure you want to edit this record?</p>
               </div>
               <div class="modal-footer">
-                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data">Yes</button>
+                <button class="btn custom-btn mr-8" data-dismiss="modal" id="edit-data-modal">Yes</button>
                 <button class="btn custom-btn-two-cancel" data-dismiss="modal">No</button>
               </div>
             </div>
@@ -207,7 +219,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
   <td>${items[i].Title}</td>
   <td>
       <div class="reciprocal-action-btn-box">
-          <a type="button" href="#" class="custom-edit-btn mr15" id="edit-data${i}">
+          <a type="button" href="#" class="custom-edit-btn mr15" id="edit-data-modal${i}">
               <i class="fa fa-pencil"></i>
           </a>
           <a type="button" href="#" class="custom-edit-btn" id="delete-data${i}">
@@ -219,34 +231,40 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
 
 
       $(document).on('click', '#delete-data' + i, async (): Promise<any> => {
-        var deleteid: any = items[i].ID
-        var deletename: any = items[i].Title
-        let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
+        var deleteInclusionId: any = items[i].ID
+        var deleteInclusionName: any = items[i].Title
+        let answer = window.confirm(`Do you want to delete (${deleteInclusionName}) ?`);
 
         if (answer == true) {
-         await this.DeleteDatafromInclusionMaster(deleteid);
+         await this.DeleteDatafromInclusionMaster(deleteInclusionId);
           location.reload();
         }
 
       });
 
-      $(document).on('click', '#edit-data' + i, async (): Promise<any> => {
-        var editid: any = items[i].ID
-        var editname: any = items[i].Title
-        var sourceeditID: any = items[i].SourceId
-        let answer = window.confirm(`Do you want to edit (${editname}) ?`);
+      $(document).on('click', '#edit-data-modal' + i, async (): Promise<any> => {
+        var editInclusionid: any = items[i].ID
+        var editInclusionName: any = items[i].Title
+        var sourceEditId: any = items[i].SourceId
+        let answer = window.confirm(`Do you want to edit (${editInclusionName}) ?`);
 
         if (answer == true) {
-          this.oldInclusion = editname;
-          $("#newInclsuion").val(editname);
-          $("#SourceMaster").val(sourceeditID);
+          this.oldInclusion = editInclusionName;
+          $("#newInclsuion").val(editInclusionName);
+          $("#SourceMaster").val(sourceEditId);
           ($('#SourceMaster') as any).multiselect('reload');
 
 
           $("#add-button-box").hide();
           $("#edit-button-box").show();
-          this.domElement.querySelector('#edit-data').addEventListener('click', () => {
-            this.EdittoInclusionMaster(editid);
+          $("#cancel-button-box").show();
+          
+          this.domElement.querySelector('#cancel-reload-btn').addEventListener('click', () => {
+            location.reload();
+          });
+
+          this.domElement.querySelector('#edit-data-modal').addEventListener('click', () => {
+            this.EdittoInclusionMaster(editInclusionid);
           });
         }
 
@@ -309,7 +327,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
       })
 
         .then(_response => {
-          alert(`(${NewInclusion}) added to the List`);
+          alert(`(${NewInclusion}) added.`);
           location.reload()
         })
 
