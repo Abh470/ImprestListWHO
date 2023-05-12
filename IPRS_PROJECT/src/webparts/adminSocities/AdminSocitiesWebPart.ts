@@ -26,7 +26,7 @@ export interface IAdminSocitiesWebPartProps {
 }
 
 export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSocitiesWebPartProps> {
-
+  public oldSociety: any = ''
   protected onInit(): Promise<void> {
     sp.setup(this.context as any);
     return super.onInit();
@@ -40,7 +40,18 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
     SPComponentLoader.loadScript("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js");
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
 
+    let groups: [] = await sp.web.currentUser.groups();
+    console.log(groups)
+    groups.forEach((group: any) => {
+      if (group.Title != "IPRS_Admin") {
+        alert("Sorry, you are not allowed to access this page");
+        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
+      }
+      else {
+        console.log("admin")
 
+      }
+    });
 
     this.domElement.innerHTML = `
     <nav class="navbar navbar-custom header-nav">
@@ -284,36 +295,39 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
         let answer = window.confirm(`Do you want to delete (${deletename}) ?`);
 
         if (answer == true) {
-         await this.DeleteDatafromSocietyMaster(deleteid);
+          await this.DeleteDatafromSocietyMaster(deleteid);
           location.reload();
         }
       });
 
-      $(document).on('click', '#edit-data'+i ,async (): Promise<any>=>{
+      $(document).on('click', '#edit-data' + i, async (): Promise<any> => {
         var editid: any = items[i].ID
-        var editname: any= items[i].Title
-        var editcode: any= items[i].Code
-        var countryeditID: any= items[i].CountryId
-        var cityeditID: any= items[i].CityId
+        var editname: any = items[i].Title
+        var editcode: any = items[i].Code
+        var countryeditID: any = items[i].CountryId
+        var cityeditID: any = items[i].CityId
         let answer = window.confirm(`Do you want to edit (${editname}) ?`);
-        
-        if(answer == true){
+
+        if (answer == true) {
+          this.oldSociety = editname;
+          $("#countrymaster").prop("disabled",true);
+          $("#citymaster").prop("disabled",true);
           $("#newSociety").val(editname);
           $("#newSocietyCode").val(editcode);
           $("#countrymaster").val(countryeditID).trigger('change');
           setTimeout(() => {
             $("#citymaster").val(cityeditID).trigger('change');
           }, 190);
-          
-          
+
+
           $("#add-button-box").hide();
           $("#edit-button-box").show();
-          this.domElement.querySelector('#edit-data').addEventListener('click', () => { 
+          this.domElement.querySelector('#edit-data').addEventListener('click', () => {
             this.EdittoSocietyMaster(editid);
           });
         }
-  
-    });
+
+      });
 
     }
     $("#societydata").html(table)
@@ -348,7 +362,8 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
       })
 
         .then(_response => {
-          alert(`(${NewSociety}) and (${NewSocietyCode}) added to the List`)
+          alert(`(${NewSociety}) and (${NewSocietyCode}) added to the List`);
+          
           location.reload()
         })
 
@@ -388,7 +403,7 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
       })
 
         .then(_response => {
-          alert(`(${NewSociety}) and (${NewSocietyCode}) added to the List`)
+          alert(`(${this.oldSociety}) replaced with (${NewSociety}) Code:(${NewSocietyCode})`)
           location.reload()
         })
 
@@ -405,7 +420,7 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
 
     let list = await sp.web.lists.getByTitle("SocietyMaster").items.getById(numId).delete();
 
-    
+
     console.log(list)
   }
 

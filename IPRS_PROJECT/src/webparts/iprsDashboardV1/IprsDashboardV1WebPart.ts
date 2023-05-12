@@ -72,7 +72,9 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
   public IsViewer: boolean = false;
   public IsInitiator: boolean = false;
   public IsContributor: boolean = false;
+  public IsAdmin: boolean = false;
   public ShowAddButton: boolean = false;
+  public ManageAdminPanel: boolean = false;
 
 
   public async render(): Promise<void> {
@@ -87,7 +89,13 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
     let groups: [] = await sp.web.currentUser.groups();
     console.log(groups)
     groups.forEach((group: any) => {
-      if (group.Title == "IPRS_Contributor") {
+      if (group.Title == "IPRS_Admin") {
+        //this.IsContributor = true;
+        this.IsAdmin = true;
+        this.ShowAddButton = true;
+        this.ManageAdminPanel =true;
+      }
+      else if (group.Title == "IPRS_Contributor") {
         this.IsContributor = true;
         this.ShowAddButton = true;
       }
@@ -190,11 +198,11 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                         </div>
                         <div class="dropdown dashboard-table-btn" id="admincontrol">
 
-                                                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                               ${this.ManageAdminPanel  ?`<button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                                     <img class="dashboard-icon-info mr2" src="${AdminManage}" alt="" data-themekey="#">
                                                     <span>Admin Controls</span>
                                                     <img class="dashboard-icon-info ml2" src="${Expandarrow}" alt="expand arrow" data-themekey="#">
-                                                </button>
+                                                </button>` :""}
 
                                                 <ul class="dropdown-menu dropdown-color-menu-icon">
                                                     <li>
@@ -204,7 +212,7 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                                                     </li>
                                                     <li>
                                                         <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageSocieties.aspx">
-                                                            <span class="">Manage Society</span>
+                                                            <span class="">Manage Societies</span>
                                                         </a>
                                                     </li>
                                                     <li>
@@ -214,12 +222,12 @@ export default class IprsDashboardV1WebPart extends BaseClientSideWebPart<IIprsD
                                                     </li>
                                                     <li>
                                                         <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageInclusions.aspx">
-                                                            <span class="">Manage Inclusion</span>
+                                                            <span class="">Manage Inclusions</span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="${this.context.pageContext.web.absoluteUrl}/SitePages/ManageExclusions.aspx">
-                                                            <span class="">Manage Exclusion</span>
+                                                            <span class="">Manage Exclusions</span>
                                                         </a>
                                                     </li>
                                                 </ul>

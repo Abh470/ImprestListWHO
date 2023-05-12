@@ -36,6 +36,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
   }
 
   public CustomFieldGlobalName: any = "Others";
+  public oldInclusion: any ='';
 
   public async render(): Promise<void> {
 
@@ -44,6 +45,19 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
     // SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 
+
+    let groups: [] = await sp.web.currentUser.groups();
+    console.log(groups)
+    groups.forEach((group: any) => {
+      if (group.Title != "IPRS_Admin") {
+        alert("Sorry, you are not allowed to access this page");
+        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
+      }
+      else {
+        console.log("admin")
+
+      }
+    });
 
     this.domElement.innerHTML = `
         <nav class="navbar navbar-custom header-nav">
@@ -223,6 +237,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
         let answer = window.confirm(`Do you want to edit (${editname}) ?`);
 
         if (answer == true) {
+          this.oldInclusion = editname;
           $("#newInclsuion").val(editname);
           $("#SourceMaster").val(sourceeditID);
           ($('#SourceMaster') as any).multiselect('reload');
@@ -294,7 +309,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
       })
 
         .then(_response => {
-          alert(`(${NewInclusion}) added to the List`)
+          alert(`(${NewInclusion}) added to the List`);
           location.reload()
         })
 
@@ -327,7 +342,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
       })
 
         .then(_response => {
-          alert(`(${NewInclusion}) edited to the List`)
+          alert(`(${this.oldInclusion}) replaced with (${NewInclusion})`)
           location.reload()
         })
 

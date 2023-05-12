@@ -32,6 +32,7 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
   }
 
   public modalHtmlEdit = ``;
+  public oldCity: any ='';
 
   public async render(): Promise<void> {
 
@@ -40,6 +41,19 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
     //SPComponentLoader.loadScript("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js");
     SPComponentLoader.loadScript("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js");
+
+    let groups: [] = await sp.web.currentUser.groups();
+    console.log(groups)
+    groups.forEach((group: any) => {
+      if (group.Title != "IPRS_Admin") {
+        alert("Sorry, you are not allowed to access this page");
+        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
+      }
+      else {
+        console.log("admin")
+
+      }
+    });
 
 
     this.domElement.innerHTML = `
@@ -188,7 +202,9 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
     }
 
     document.getElementById('countrymaster').innerHTML = events;
-    ($('.select-assign') as any).select2({ width: "100%" });
+    ($('#countrymaster') as any).select2({ 
+      width: "100%"
+    });
 
   }
 
@@ -236,6 +252,8 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
         let answer = window.confirm(`Do you want to edit (${editname}) ?`);
 
         if (answer == true) {
+          this.oldCity = editname;
+          $("#countrymaster").prop("disabled",true);
           $("#newcity").val(editname);
           //$("#countrymaster").val(countryeditID);
           $("#countrymaster").val(countryeditID).trigger('change');
@@ -307,7 +325,8 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
       })
 
         .then(_response => {
-          alert(`(${NewCity}) edited to the List`)
+          alert(`(${this.oldCity}) replaced with (${NewCity})`);
+          
           location.reload()
         })
 

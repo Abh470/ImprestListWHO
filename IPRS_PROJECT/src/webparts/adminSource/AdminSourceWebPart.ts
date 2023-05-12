@@ -35,6 +35,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
   }
 
   public CustomFieldGlobalName: any = "Others";
+  public oldSource: any ='';
 
   public async render(): Promise<void> {
 
@@ -42,6 +43,19 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
     //SPComponentLoader.loadScript("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js");
     //SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+
+    let groups: [] = await sp.web.currentUser.groups();
+    console.log(groups)
+    groups.forEach((group: any) => {
+      if (group.Title != "IPRS_Admin") {
+        alert("Sorry, you are not allowed to access this page");
+        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
+      }
+      else {
+        console.log("admin")
+
+      }
+    });
 
 
     this.domElement.innerHTML = `
@@ -208,6 +222,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
         let answer = window.confirm(`Do you want to edit (${editname}) ?`);
 
         if (answer == true) {
+          this.oldSource = editname;
           $("#newsource").val(editname);
           $("#add-button-box").hide();
           $("#edit-button-box").show();
@@ -269,6 +284,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
 
 
           alert(`(${NewSource}) added to the List`) 
+          
           location.reload()
         })
 
@@ -299,7 +315,7 @@ export default class AdminSourceWebPart extends BaseClientSideWebPart<IAdminSour
       })
 
         .then(_response => {
-          alert(`(${ NewSource }) edited to the List`)
+          alert(`(${this.oldSource}) replaced with (${ NewSource })`);
           location.reload()
         })
 

@@ -33,6 +33,7 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
     sp.setup(this.context as any);
     return super.onInit();
   }
+public oldExclusion:any = '';
 
   public async render(): Promise<void> {
 
@@ -42,6 +43,20 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
     SPComponentLoader.loadCss("https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css");
     //SPComponentLoader.loadScript("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 
+
+    let groups: [] = await sp.web.currentUser.groups();
+    console.log(groups)
+    groups.forEach((group: any) => {
+      if (group.Title != "IPRS_Admin") {
+        alert("Sorry, you are not allowed to access this page");
+        window.location.href = `${this.context.pageContext.web.absoluteUrl}/SitePages/IPRSDashboard.aspx`;
+      }
+      else {
+        console.log("admin")
+
+      }
+      
+    });
 
     this.domElement.innerHTML = `
         <nav class="navbar navbar-custom header-nav">
@@ -218,6 +233,7 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
         let answer = window.confirm(`Do you want to edit (${editname}) ?`);
 
         if (answer == true) {
+          this.oldExclusion = editname;
           $("#newExclusion").val(editname);
           $("#SourceMaster").val(sourceeditID);
           ($('#SourceMaster') as any).multiselect('reload');
@@ -289,6 +305,7 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
 
         .then(_response => {
           alert(`(${NewExclusion}) added to the List`)
+          
           location.reload()
         })
 
@@ -321,7 +338,7 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
       })
 
         .then(_response => {
-          alert(`(${NewExclusion}) edited to the List`)
+          alert(`(${this.oldExclusion}) replaced with (${NewExclusion})`)
           location.reload()
         })
 
