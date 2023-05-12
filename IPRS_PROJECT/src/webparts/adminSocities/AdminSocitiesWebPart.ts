@@ -26,7 +26,7 @@ export interface IAdminSocitiesWebPartProps {
 }
 
 export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSocitiesWebPartProps> {
-  
+
   protected onInit(): Promise<void> {
     sp.setup(this.context as any);
     return super.onInit();
@@ -47,11 +47,10 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
       if (group.Title == "IPRS_Admin") {
         this.IsAdmin = true;
         return false;
-        }
+      }
     });
-    if(this.IsAdmin == true)
-    {
-      
+    if (this.IsAdmin == true) {
+
       console.log("Admin")
     }
     else {
@@ -322,21 +321,21 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
 
         if (answer == true) {
           this.oldSociety = editSocietyName;
-          
+
           $("#newSociety").val(editSocietyName);
           $("#newSocietyCode").val(editcode);
           $("#countrymaster").val(countryEditId).trigger('change');
           setTimeout(() => {
             $("#citymaster").val(cityEditId).trigger('change');
           }, 250);
-          $("#countrymaster").prop("disabled",true);
-          $("#citymaster").prop("disabled",true);
+          $("#countrymaster").prop("disabled", true);
+          $("#citymaster").prop("disabled", true);
 
 
           $("#add-button-box").hide();
           $("#edit-button-box").show();
           $("#cancel-button-box").show();
-          
+
           this.domElement.querySelector('#cancel-reload-btn').addEventListener('click', () => {
             location.reload();
           });
@@ -361,7 +360,15 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
     var error = null;
     console.log(NewSociety)
 
-    if (NewSociety === "") {
+    if (CountryID === null) {
+      error = "Please select a Country"
+      alert(error);
+    }
+    else if (CityID === null) {
+      error = "Please select a City"
+      alert(error);
+    }
+    else if (NewSociety === "") {
       error = "Please Enter a Society";
       alert(error);
 
@@ -382,7 +389,7 @@ export default class AdminSocitiesWebPart extends BaseClientSideWebPart<IAdminSo
 
         .then(_response => {
           alert(`(${NewSociety}) having Society Code:(${NewSocietyCode}) added.`);
-          
+
           location.reload()
         })
 

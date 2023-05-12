@@ -33,8 +33,8 @@ export default class AdminExclusionWebPart extends BaseClientSideWebPart<IAdminE
     sp.setup(this.context as any);
     return super.onInit();
   }
-public oldExclusion:any = '';
-public IsAdmin: boolean = false;
+  public oldExclusion: any = '';
+  public IsAdmin: boolean = false;
 
   public async render(): Promise<void> {
 
@@ -51,11 +51,10 @@ public IsAdmin: boolean = false;
       if (group.Title == "IPRS_Admin") {
         this.IsAdmin = true;
         return false;
-        }
+      }
     });
-    if(this.IsAdmin == true)
-    {
-      
+    if (this.IsAdmin == true) {
+
       console.log("Admin")
     }
     else {
@@ -252,11 +251,11 @@ public IsAdmin: boolean = false;
           $("#add-button-box").hide();
           $("#edit-button-box").show();
           $("#cancel-button-box").show();
-          
+
           this.domElement.querySelector('#cancel-reload-btn').addEventListener('click', () => {
             location.reload();
           });
-          
+
           this.domElement.querySelector('#edit-data-modal').addEventListener('click', () => {
             this.EdittoExclusionMaster(editExclsuionId);
           });
@@ -306,7 +305,12 @@ public IsAdmin: boolean = false;
     var error = null;
     console.log(NewExclusion)
 
-    if (NewExclusion === "") {
+    if (SourceID.length === 0) {
+      error = "Please select a Source"
+      alert(error);
+    }
+
+    else if (NewExclusion === "") {
       error = "Please Enter an Exclusion";
       alert(error);
 
@@ -321,7 +325,7 @@ public IsAdmin: boolean = false;
 
         .then(_response => {
           alert(`(${NewExclusion}) added.`)
-          
+
           location.reload()
         })
 
@@ -370,7 +374,7 @@ public IsAdmin: boolean = false;
   private async DeleteDatafromExclusionMaster(numId: any): Promise<void> {
 
     let list = await sp.web.lists.getByTitle("ExclusionMaster").items.getById(numId).delete();
-     console.log(list)
+    console.log(list)
 
   }
 

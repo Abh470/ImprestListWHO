@@ -36,7 +36,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
   }
 
   public CustomFieldGlobalName: any = "Others";
-  public oldInclusion: any ='';
+  public oldInclusion: any = '';
   public IsAdmin: boolean = false;
 
   public async render(): Promise<void> {
@@ -53,11 +53,10 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
       if (group.Title == "IPRS_Admin") {
         this.IsAdmin = true;
         return false;
-        }
+      }
     });
-    if(this.IsAdmin == true)
-    {
-      
+    if (this.IsAdmin == true) {
+
       console.log("Admin")
     }
     else {
@@ -236,7 +235,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
         let answer = window.confirm(`Do you want to delete (${deleteInclusionName}) ?`);
 
         if (answer == true) {
-         await this.DeleteDatafromInclusionMaster(deleteInclusionId);
+          await this.DeleteDatafromInclusionMaster(deleteInclusionId);
           location.reload();
         }
 
@@ -258,7 +257,7 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
           $("#add-button-box").hide();
           $("#edit-button-box").show();
           $("#cancel-button-box").show();
-          
+
           this.domElement.querySelector('#cancel-reload-btn').addEventListener('click', () => {
             location.reload();
           });
@@ -310,10 +309,14 @@ export default class AdminInclusionWebPart extends BaseClientSideWebPart<IAdminI
 
     const NewInclusion: any = $("#newInclsuion").val();
     const SourceID: any = $("#SourceMaster").val();
+    console.log(SourceID)
     var error = null;
     console.log(NewInclusion)
-
-    if (NewInclusion === "") {
+    if (SourceID.length === 0) {
+      error = "Please select a Source"
+      alert(error);
+    }
+    else if (NewInclusion === "") {
       error = "Please Enter an Inclusion";
       alert(error);
 

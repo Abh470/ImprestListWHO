@@ -295,7 +295,13 @@ export default class AdminCitiesWebPart extends BaseClientSideWebPart<IAdminCiti
     var error = null;
     console.log(NewCity)
 
-    if (NewCity === "") {
+    if (CountryID === null)
+    {
+      error = "Please select a Country"
+      alert(error);
+    }
+
+    else if (NewCity === "") {
       error = "Please Enter a City";
       alert(error);
 
